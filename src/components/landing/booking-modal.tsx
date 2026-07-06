@@ -316,7 +316,7 @@ export function BookingModal({
                       disabled={!canSubmit && submitAttempted}
                       className="w-full rounded-full bg-[#4a3e39] px-8 text-primary-foreground hover:bg-[#7a6457] sm:w-auto disabled:cursor-not-allowed disabled:bg-[#d8cbbb] justify-self-end"
                     >
-                      Validate and preview confirmation
+                      Book consultation
                     </Button>
                   </div>
                 </DialogFooter>
