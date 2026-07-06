@@ -239,7 +239,7 @@ export function AboutSection({ onBook }: { onBook: () => void }) {
   return (
     <section
       id={sectionLinks.about.id}
-      className="mx-auto grid max-w-6xl gap-10 px-4 py-20 sm:px-6 sm:py-24 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12"
+      className="mx-auto grid max-w-380 gap-10 px-4 py-20 sm:px-6 sm:py-24 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12"
     >
       <div className="rounded-[2.5rem] border border-border bg-[#f8f1e8] p-8">
         <div className="flex aspect-square items-center justify-center rounded-[2rem] bg-white text-center">
