@@ -46,7 +46,7 @@ export const services: Service[] = [
   {
     title: "Individual Coaching",
     duration: "12 weeks",
-    cadence: "Weekly 75-minute private sessions",
+    cadence: "Weekly 60-minute private sessions",
     description:
       "Private coaching for burnout, anxiety, identity shifts, boundaries, and emotional clarity.",
     bestFor: ["Burnout", "Anxiety", "Major transitions"],

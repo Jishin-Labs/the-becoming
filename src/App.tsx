@@ -98,7 +98,7 @@ export default function App() {
   };
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground">
       <Navbar
         links={sectionLinks}
         menuOpen={menuOpen}
@@ -107,23 +107,25 @@ export default function App() {
         onBook={() => openBooking()}
       />
 
-      <Hero
-        servicesHref={`#${sectionLinks.services.id}`}
-        onBook={() => openBooking()}
-      />
+      <main className="pt-[4.5rem] sm:pt-20">
+        <Hero
+          servicesHref={`#${sectionLinks.services.id}`}
+          onBook={() => openBooking()}
+        />
 
-      <TrustSection />
-      <AboutSection onBook={() => openBooking()} />
-      <WhoIHelpSection />
-      <ServicesSection onBook={openBooking} />
-      <ApproachSection />
+        <TrustSection />
+        <AboutSection onBook={() => openBooking()} />
+        <WhoIHelpSection />
+        <ServicesSection onBook={openBooking} />
+        <ApproachSection />
 
-      {/* <TestimonialsSection /> */}
+        {/* <TestimonialsSection /> */}
 
-      <FaqSection />
+        <FaqSection />
 
-      <FinalCta onBook={() => openBooking()} />
-      <Footer />
+        <FinalCta onBook={() => openBooking()} />
+        <Footer />
+      </main>
 
       <BookingModal
         booking={booking}
@@ -136,6 +138,6 @@ export default function App() {
         onChange={updateBooking}
         onSubmit={handleBookingSubmit}
       />
-    </main>
+    </div>
   );
 }

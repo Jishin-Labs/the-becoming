@@ -80,7 +80,7 @@ export function Navbar({
   onBook: () => void;
 }) {
   return (
-    <header className="sticky top-0 z-40 border-b border-border/80 bg-background/90 backdrop-blur-xl">
+    <header className="fixed inset-x-0 top-0 z-40 border-b border-border/80 bg-background/90 backdrop-blur-xl">
       <div className="mx-auto flex h-[4.5rem] w-full max-w-380 items-center justify-between gap-3 px-4 sm:h-20 sm:px-6">
         <a href="#" className="shrink-0">
           <BrandMark />
@@ -691,18 +691,18 @@ export function Footer() {
 
           <div className="space-y-3 text-sm text-[#6e5d53]">
             <a
-              href="mailto:kamohelo@thebecoming.co.za"
+              href="mailto:kamohelomariti98@yahoo.com"
               className="motion-link flex items-center gap-2 break-all transition-gentle hover:text-[#a98961] sm:break-normal"
             >
               <Mail size={15} className="text-[#a98961]" />
-              kamohelo@thebecoming.co.za
+              kamohelomariti98@yahoo.com
             </a>
             <a
               href="tel:+27724567891"
               className="motion-link flex items-center gap-2 transition-gentle hover:text-[#a98961]"
             >
               <Phone size={15} className="text-[#a98961]" />
-              +27 72 456 7891
+              +27 74 698 6276
             </a>
             <p className="pt-2 text-xs leading-6 text-[#8c7a6b]">
               Ready to begin? Request a consultation. Need to ask a question
