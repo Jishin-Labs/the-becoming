@@ -80,7 +80,7 @@ export function Navbar({
 }) {
   return (
     <header className="sticky top-0 z-40 border-b border-border/80 bg-background/90 backdrop-blur-xl">
-      <div className="mx-auto flex h-20 w-full max-w-380 items-center justify-between px-4 sm:px-6">
+      <div className="mx-auto flex h-[4.5rem] w-full max-w-380 items-center justify-between gap-3 px-4 sm:h-20 sm:px-6">
         <a href="#" className="shrink-0">
           <BrandMark />
         </a>
@@ -109,7 +109,7 @@ export function Navbar({
         <button
           type="button"
           onClick={onMenuToggle}
-          className="rounded-full border border-border p-2 text-[#4a3e39] transition-gentle hover:bg-[#f7efe6] md:hidden"
+          className="shrink-0 rounded-full border border-border p-2 text-[#4a3e39] transition-gentle hover:bg-[#f7efe6] md:hidden"
           aria-label="Toggle menu"
           aria-expanded={menuOpen}
         >
@@ -118,10 +118,10 @@ export function Navbar({
       </div>
 
       {menuOpen && (
-        <div className="border-t border-border bg-background px-6 py-6 md:hidden animate-fade-up-soft">
+        <div className="animate-fade-up-soft border-t border-border bg-background px-4 py-5 sm:px-6 md:hidden">
           <nav className="flex flex-col gap-5">
             <a href="#" className="mb-2">
-              <BrandMark />
+              <BrandMark compact />
             </a>
             {primaryLinks.map((link) => (
               <a
@@ -155,30 +155,30 @@ export function Hero({
 }) {
   return (
     <section className="relative overflow-hidden">
-      <div className="animate-glow-pulse absolute left-1/2 top-0 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-[#f2e8dc] blur-3xl" />
+      <div className="animate-glow-pulse absolute left-1/2 top-0 h-[380px] w-[380px] -translate-x-1/2 rounded-full bg-[#f2e8dc] blur-3xl sm:h-[520px] sm:w-[520px]" />
 
-      <div className="relative mx-auto grid min-h-[calc(100vh-5rem)] max-w-380 items-center gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
-        <div className="animate-fade-up-soft">
-          <h1 className="max-w-3xl font-heading text-4xl font-light leading-tight tracking-tight text-[#2a2421] sm:text-5xl md:text-7xl">
+      <div className="relative mx-auto grid min-h-[calc(100vh-4.5rem)] max-w-380 items-center gap-10 px-4 py-12 sm:min-h-[calc(100vh-5rem)] sm:px-6 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
+        <div className="order-2 animate-fade-up-soft lg:order-1">
+          <h1 className="max-w-3xl font-heading text-[2.25rem] font-light leading-[1.08] tracking-tight text-[#2a2421] sm:text-5xl md:text-7xl">
             Move from burnout, anxiety, and transition into clarity and peace.
           </h1>
 
-          <p className="mt-6 max-w-xl text-base leading-8 text-[#6e5d53] md:text-lg">
+          <p className="mt-5 max-w-xl text-sm leading-7 text-[#6e5d53] sm:mt-6 sm:text-base sm:leading-8 md:text-lg">
             Somatic wellness support for high-capacity people who look composed
             on the outside but feel overextended, anxious, or disconnected on
             the inside.
           </p>
 
-          <p className="mt-5 max-w-xl text-sm leading-7 text-muted-foreground">
+          <p className="mt-4 max-w-xl text-sm leading-7 text-muted-foreground sm:mt-5">
             Begin with a clarity consultation, understand which support format
             fits your season, and leave with a clearer sense of what needs care
             next.
           </p>
 
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row animate-fade-up-soft-delay-1">
+          <div className="animate-fade-up-soft-delay-1 mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:gap-4">
             <Button
               onClick={onBook}
-              className="w-full rounded-full bg-[#4a3e39] px-7 text-primary-foreground transition-gentle hover:-translate-y-0.5 hover:bg-[#7a6457] sm:w-auto"
+              className="w-full rounded-full bg-[#4a3e39] px-6 text-primary-foreground transition-gentle hover:-translate-y-0.5 hover:bg-[#7a6457] sm:w-auto sm:px-7"
             >
               Book Consultation
               <ArrowRight size={16} />
@@ -186,16 +186,20 @@ export function Hero({
 
             <a
               href={servicesHref}
-              className="inline-flex h-10 w-full items-center justify-center rounded-full border border-[#d8cbbb] px-7 text-center text-sm font-semibold uppercase tracking-[0.12em] text-[#4a3e39] transition-gentle hover:-translate-y-0.5 hover:border-[#4a3e39] hover:bg-[#f7efe6] sm:w-auto"
+              className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-[#d8cbbb] px-6 text-center text-xs font-semibold uppercase tracking-[0.12em] text-[#4a3e39] transition-gentle hover:-translate-y-0.5 hover:border-[#4a3e39] hover:bg-[#f7efe6] sm:w-auto sm:px-7 sm:text-sm"
             >
               View Services
             </a>
           </div>
         </div>
 
-        <div className="relative animate-fade-up-soft-delay-1">
-          <div className="aspect-[4/5] overflow-hidden rounded-[2rem] border border-border bg-[#f8f1e8] shadow-sm transition-gentle hover:-translate-y-1 hover:shadow-xl sm:rounded-[2.5rem]">
-              <img src="/hero-image.jpeg" className="rounded-xl"/>
+        <div className="relative order-1 animate-fade-up-soft-delay-1 lg:order-2">
+          <div className="aspect-[4/5] overflow-hidden rounded-[1.75rem] border border-border bg-[#f8f1e8] shadow-sm transition-gentle hover:-translate-y-1 hover:shadow-xl sm:rounded-[2.5rem]">
+            <img
+              src="/hero-image.jpeg"
+              alt="Portrait for The Becoming hero section"
+              className="h-full w-full rounded-[1.4rem] object-cover sm:rounded-[2rem]"
+            />
           </div>
         </div>
       </div>
@@ -205,7 +209,7 @@ export function Hero({
 
 export function TrustSection() {
   return (
-    <section className="border-y border-border bg-[#faf6ef] py-16">
+    <section className="border-y border-border bg-[#faf6ef] py-12 sm:py-16">
       <div className="mx-auto grid max-w-380 gap-4 px-4 sm:px-6 md:grid-cols-3">
         {trustItems.map((item) => (
           <div
@@ -231,20 +235,24 @@ export function AboutSection({ onBook }: { onBook: () => void }) {
   return (
     <section
       id={sectionLinks.about.id}
-      className="mx-auto grid max-w-380 gap-10 px-4 py-20 sm:px-6 sm:py-24 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12"
+      className="mx-auto grid max-w-380 gap-8 px-4 py-16 sm:gap-10 sm:px-6 sm:py-24 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12"
     >
-      <div className="rounded-[2.5rem] border border-border bg-[#f8f1e8]">
-          <img src="/about-image.jpeg" className="rounded-xl" />
+      <div className="overflow-hidden rounded-[1.75rem] border border-border bg-[#f8f1e8] sm:rounded-[2.5rem]">
+        <img
+          src="/about-image.jpeg"
+          alt="About Kamohelo"
+          className="h-full w-full rounded-[1.25rem] object-cover sm:rounded-[2rem]"
+        />
       </div>
 
       <div className="flex flex-col justify-center">
         <SectionLabel>About Kamohelo</SectionLabel>
-        <h2 className="mt-4 font-heading text-4xl font-light tracking-tight md:text-5xl">
+        <h2 className="mt-4 font-heading text-[2rem] font-light tracking-tight sm:text-4xl md:text-5xl">
           Grounded guidance for people who need both emotional safety and real
           direction.
         </h2>
 
-        <div className="mt-7 space-y-5 text-base leading-8 text-[#6e5d53]">
+        <div className="mt-6 space-y-4 text-sm leading-7 text-[#6e5d53] sm:mt-7 sm:space-y-5 sm:text-base sm:leading-8">
           <p>
             The Becoming exists for people who look functional on the outside
             but feel overwhelmed, tired, anxious, or disconnected on the inside.
@@ -263,7 +271,7 @@ export function AboutSection({ onBook }: { onBook: () => void }) {
         <div className="mt-8">
           <Button
             onClick={onBook}
-            className="rounded-full bg-[#4a3e39] px-7 text-primary-foreground transition-gentle hover:-translate-y-0.5 hover:bg-[#7a6457]"
+            className="w-full rounded-full bg-[#4a3e39] px-7 text-primary-foreground transition-gentle hover:-translate-y-0.5 hover:bg-[#7a6457] sm:w-auto"
           >
             Start with a clarity consultation
           </Button>
@@ -277,21 +285,21 @@ export function WhoIHelpSection() {
   return (
     <section
       id={sectionLinks.who.id}
-      className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24"
+      className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24"
     >
       <div className="mx-auto max-w-3xl text-center">
         <SectionLabel>Who this is for</SectionLabel>
-        <h2 className="mt-4 font-heading text-4xl font-light tracking-tight md:text-5xl">
+        <h2 className="mt-4 font-heading text-[2rem] font-light tracking-tight sm:text-4xl md:text-5xl">
           Support for the season where carrying everything alone no longer
           works.
         </h2>
       </div>
 
-      <div className="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-10 grid gap-4 sm:mt-14 md:grid-cols-2 lg:grid-cols-3">
         {whoIHelpItems.map((item) => (
           <div
             key={item}
-            className="rounded-[1.75rem] border border-border bg-white p-6 text-lg font-medium text-[#4a3e39] shadow-sm transition-gentle hover:-translate-y-0.5 hover:shadow-md"
+            className="rounded-[1.5rem] border border-border bg-white p-5 text-base font-medium text-[#4a3e39] shadow-sm transition-gentle hover:-translate-y-0.5 hover:shadow-md sm:rounded-[1.75rem] sm:p-6 sm:text-lg"
           >
             {item}
           </div>
@@ -309,31 +317,31 @@ export function ServicesSection({
   return (
     <section
       id={sectionLinks.services.id}
-      className="bg-[#faf6ef] py-20 sm:py-24"
+      className="bg-[#faf6ef] py-16 sm:py-24"
     >
       <div className="mx-auto max-w-380 px-4 sm:px-6">
         <div>
           <SectionLabel>Services</SectionLabel>
-          <h2 className="mt-4 font-heading text-4xl font-light tracking-tight md:text-5xl">
+          <h2 className="mt-4 font-heading text-[2rem] font-light tracking-tight sm:text-4xl md:text-5xl">
             Choose the format that matches the support you need.
           </h2>
-          <p className="mt-5 max-w-3xl text-base leading-8 text-muted-foreground">
+          <p className="mt-5 max-w-3xl text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8">
             Compare the time commitment, rhythm, and intended outcome first. The
             cards are structured so a visitor can identify fit before reading
             every sentence.
           </p>
         </div>
 
-        <div className="mt-14 grid gap-6 lg:grid-cols-2">
+        <div className="mt-10 grid gap-6 sm:mt-14 lg:grid-cols-2">
           {services.map((service) => (
             <Card
               key={service.title}
-              className="rounded-[2rem] border border-border bg-white py-0 shadow-sm transition-gentle hover:-translate-y-1 hover:shadow-xl"
+              className="rounded-[1.75rem] border border-border bg-white py-0 shadow-sm transition-gentle hover:-translate-y-1 hover:shadow-xl sm:rounded-[2rem]"
             >
-              <CardHeader className="rounded-t-[2rem] border-b border-border bg-[#fcf8f2] px-5 py-6 sm:px-8 sm:py-8">
+              <CardHeader className="rounded-t-[1.75rem] border-b border-border bg-[#fcf8f2] px-5 py-6 sm:rounded-t-[2rem] sm:px-8 sm:py-8">
                 <div className="flex flex-wrap items-start justify-between gap-4">
-                  <div>
-                    <CardTitle className="font-heading text-3xl font-light tracking-tight text-[#4a3e39] normal-case">
+                  <div className="min-w-0">
+                    <CardTitle className="font-heading text-[1.75rem] font-light tracking-tight text-[#4a3e39] normal-case sm:text-3xl">
                       {service.title}
                     </CardTitle>
                     <CardDescription className="mt-2 text-xs uppercase tracking-[0.18em] text-[#a98961]">
@@ -357,7 +365,7 @@ export function ServicesSection({
               <CardFooter className="flex-col items-stretch justify-between gap-4 border-t border-border px-5 py-6 sm:px-8 md:flex-row md:items-center">
                 <Button
                   onClick={() => onBook(service.title)}
-                  className="w-full rounded-full bg-[#4a3e39] px-6 text-primary-foreground transition-gentle hover:-translate-y-0.5 hover:bg-[#7a6457] md:w-auto justify-end"
+                  className="w-full justify-center rounded-full bg-[#4a3e39] px-6 text-primary-foreground transition-gentle hover:-translate-y-0.5 hover:bg-[#7a6457] md:w-auto"
                 >
                   Book this service
                   <ArrowRight size={15} />
@@ -375,15 +383,15 @@ export function ApproachSection() {
   return (
     <section
       id={sectionLinks.approach.id}
-      className="bg-[#4a3e39] py-24 text-white"
+      className="bg-[#4a3e39] py-16 text-white sm:py-24"
     >
       <div className="mx-auto grid max-w-380 gap-10 px-4 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:gap-12">
         <div>
           <SectionLabel>Kamo’s approach</SectionLabel>
-          <h2 className="mt-4 font-heading text-4xl font-light tracking-tight text-white md:text-5xl">
+          <h2 className="mt-4 font-heading text-[2rem] font-light tracking-tight text-white sm:text-4xl md:text-5xl">
             How the work is held, paced, and made practical.
           </h2>
-          <p className="mt-6 max-w-xl text-base leading-8 text-[#eadfd3]">
+          <p className="mt-6 max-w-xl text-sm leading-7 text-[#eadfd3] sm:text-base sm:leading-8">
             This section is about methodology rather than biography. The goal is
             to show how Kamo works in session: emotionally safe, body-aware, and
             concrete enough to create real movement.
@@ -394,12 +402,12 @@ export function ApproachSection() {
           {approachPrinciples.map((principle, index) => (
             <div
               key={principle.title}
-              className="rounded-[2rem] border border-white/15 bg-white/8 p-6 backdrop-blur-sm transition-gentle hover:-translate-y-1 hover:bg-white/10"
+              className="rounded-[1.5rem] border border-white/15 bg-white/8 p-5 backdrop-blur-sm transition-gentle hover:-translate-y-1 hover:bg-white/10 sm:rounded-[2rem] sm:p-6"
             >
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#d9c3a5]">
                 0{index + 1}
               </p>
-              <h3 className="mt-4 font-heading text-2xl text-white">
+              <h3 className="mt-4 font-heading text-xl text-white sm:text-2xl">
                 {principle.title}
               </h3>
               <p className="mt-3 text-sm leading-7 text-[#eadfd3]">
@@ -419,25 +427,25 @@ export function TestimonialsSection() {
   return (
     <section
       id={sectionLinks.testimonials.id}
-      className="px-4 py-20 sm:px-6 sm:py-24"
+      className="px-4 py-16 sm:px-6 sm:py-24"
     >
       <div className="mx-auto max-w-380">
         <div className="mx-auto max-w-2xl text-center">
           <SectionLabel>Testimonials</SectionLabel>
-          <h2 className="mt-4 font-heading text-4xl font-light tracking-tight md:text-5xl">
+          <h2 className="mt-4 font-heading text-[2rem] font-light tracking-tight sm:text-4xl md:text-5xl">
             Client stories of clarity, steadiness, and growth.
           </h2>
         </div>
 
-        <div className="mt-14 grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-          <article className="rounded-[2rem] bg-[#f4eadf] p-6 sm:p-8 md:rounded-[2.5rem] md:p-10 transition-gentle hover:-translate-y-1 hover:shadow-lg">
+        <div className="mt-10 grid gap-6 sm:mt-14 lg:grid-cols-[1.2fr_0.8fr]">
+          <article className="rounded-[1.75rem] bg-[#f4eadf] p-5 transition-gentle hover:-translate-y-1 hover:shadow-lg sm:rounded-[2rem] sm:p-8 md:rounded-[2.5rem] md:p-10">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#a98961]">
               {editorialQuote.eyebrow}
             </p>
-            <h3 className="mt-4 max-w-2xl font-heading text-3xl font-light leading-tight text-[#4a3e39] sm:text-4xl">
+            <h3 className="mt-4 max-w-2xl font-heading text-[1.9rem] font-light leading-tight text-[#4a3e39] sm:text-4xl">
               “{featured.quote}”
             </h3>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-[#6e5d53]">
+            <p className="mt-6 max-w-2xl text-sm leading-7 text-[#6e5d53] sm:text-base sm:leading-8">
               {editorialQuote.body}
             </p>
             <div className="mt-8 grid gap-4 border-t border-[#dbc9b7] pt-6 sm:grid-cols-2">
@@ -470,7 +478,7 @@ export function TestimonialsSection() {
               <article
                 key={testimonial.name}
                 className={cn(
-                  "rounded-[2rem] border p-7 shadow-sm transition-gentle hover:-translate-y-1 hover:shadow-lg",
+                  "rounded-[1.75rem] border p-5 shadow-sm transition-gentle hover:-translate-y-1 hover:shadow-lg sm:rounded-[2rem] sm:p-7",
                   index === 0
                     ? "border-border bg-white"
                     : "border-[#e0d0bf] bg-[#fff8ef]",
@@ -523,18 +531,18 @@ export function FaqSection() {
   return (
     <section
       id={sectionLinks.faq.id}
-      className="mx-auto max-w-4xl px-4 py-20 sm:px-6 sm:py-24"
+      className="mx-auto max-w-4xl px-4 py-16 sm:px-6 sm:py-24"
     >
       <div className="text-center">
         <SectionLabel>FAQ</SectionLabel>
-        <h2 className="mt-4 font-heading text-4xl font-light tracking-tight md:text-5xl">
+        <h2 className="mt-4 font-heading text-[2rem] font-light tracking-tight sm:text-4xl md:text-5xl">
           Common questions.
         </h2>
       </div>
 
       <Accordion
         defaultValue={["faq-0"]}
-        className="mt-12 rounded-[2rem] border border-border bg-white px-4 sm:px-6"
+        className="mt-10 rounded-[1.5rem] border border-border bg-white px-4 sm:mt-12 sm:rounded-[2rem] sm:px-6"
       >
         {faqs.map((faq, index) => (
           <AccordionItem
@@ -545,7 +553,7 @@ export function FaqSection() {
               index !== faqs.length - 1 && "border-b",
             )}
           >
-            <AccordionTrigger className="py-6 text-base font-semibold text-[#4a3e39] hover:no-underline">
+            <AccordionTrigger className="py-5 text-left text-sm font-semibold text-[#4a3e39] hover:no-underline sm:py-6 sm:text-base">
               {faq.question}
             </AccordionTrigger>
             <AccordionContent className="pb-6 text-sm leading-7 text-[#6e5d53]">
@@ -562,10 +570,10 @@ export function FinalCta({ onBook }: { onBook: () => void }) {
   return (
     <section
       id={sectionLinks.contact.id}
-      className="px-4 pb-20 sm:px-6 sm:pb-24"
+      className="px-4 pb-16 sm:px-6 sm:pb-24"
     >
-      <div className="mx-auto max-w-6xl rounded-[2rem] bg-[#4a3e39] px-5 py-12 text-center text-white sm:px-8 sm:py-16 md:rounded-[2.5rem] md:px-16 transition-gentle hover:shadow-xl">
-        <h2 className="mx-auto max-w-3xl font-heading text-4xl font-light tracking-tight md:text-5xl">
+      <div className="mx-auto max-w-6xl rounded-[1.75rem] bg-[#4a3e39] px-5 py-10 text-center text-white transition-gentle hover:shadow-xl sm:rounded-[2rem] sm:px-8 sm:py-16 md:rounded-[2.5rem] md:px-16">
+        <h2 className="mx-auto max-w-3xl font-heading text-[2rem] font-light tracking-tight sm:text-4xl md:text-5xl">
           You do not need to have the right words before asking for support.
         </h2>
 
@@ -617,7 +625,7 @@ export function Footer() {
           </h4>
 
           <div className="space-y-3 text-sm text-[#6e5d53]">
-            <p className="flex items-center gap-2">
+            <p className="flex items-center gap-2 break-all sm:break-normal">
               <Mail size={15} className="text-[#a98961]" />
               kamohelo@thebecoming.co.za
             </p>

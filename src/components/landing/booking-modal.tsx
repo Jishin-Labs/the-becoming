@@ -99,11 +99,11 @@ export function BookingModal({
       }}
     >
       <DialogContent
-        className="max-h-[calc(100vh-1rem)] overflow-hidden rounded-[1.5rem] bg-[#fffdf9] p-0 sm:max-h-[calc(100vh-2rem)] sm:rounded-[2rem] lg:max-w-6xl"
+        className="max-h-[calc(100vh-0.75rem)] overflow-hidden rounded-[1.25rem] bg-[#fffdf9] p-0 sm:max-h-[calc(100vh-2rem)] sm:rounded-[2rem] lg:max-w-6xl"
         showCloseButton
       >
-        <DialogHeader className="border-b border-border bg-[#fcf6ee] px-6 py-6 sm:px-8">
-          <DialogTitle className="font-heading text-2xl font-light normal-case tracking-tight text-[#4a3e39]">
+        <DialogHeader className="border-b border-border bg-[#fcf6ee] px-4 py-5 sm:px-8 sm:py-6">
+          <DialogTitle className="pr-10 font-heading text-xl font-light normal-case tracking-tight text-[#4a3e39] sm:text-2xl">
             Book a consultation
           </DialogTitle>
           <DialogDescription className="max-w-2xl text-sm leading-7 text-[#6e5d53]">
@@ -112,12 +112,12 @@ export function BookingModal({
         </DialogHeader>
 
         {bookingComplete ? (
-          <div className="px-8 py-10 text-center">
+          <div className="px-4 py-8 text-center sm:px-8 sm:py-10">
             <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
               <Check size={32} />
             </div>
 
-            <h3 className="font-heading text-3xl font-light text-[#4a3e39]">
+            <h3 className="font-heading text-2xl font-light text-[#4a3e39] sm:text-3xl">
               Booking flow preview complete
             </h3>
 
@@ -133,12 +133,12 @@ export function BookingModal({
             </DialogFooter>
           </div>
         ) : (
-          <div className="grid max-h-[calc(100vh-8rem)] overflow-y-auto">
+          <div className="grid max-h-[calc(100vh-7rem)] overflow-y-auto sm:max-h-[calc(100vh-8rem)]">
             <form
               onSubmit={onSubmit}
-              className="min-w-0 px-4 py-5 sm:px-8 sm:py-6"
+              className="min-w-0 px-4 py-4 sm:px-8 sm:py-6"
             >
-              <FieldGroup className="gap-8">
+              <FieldGroup className="gap-6 sm:gap-8">
                 <FieldSet>
                   <FieldLegend className="text-[#6e5d53]">
                     Booking details
@@ -179,7 +179,7 @@ export function BookingModal({
                   </FieldContent>
                 </Field>
 
-                <div className="grid gap-6 md:grid-cols-2 md:gap-8">
+                <div className="grid gap-5 md:grid-cols-2 md:gap-8">
                   <Field data-invalid={Boolean(visibleErrors.date)}>
                     <FieldContent>
                       <Label htmlFor="booking-date" className="text-[#6e5d53]">
@@ -236,7 +236,7 @@ export function BookingModal({
                       onChange("time", String(value));
                       markTouched("time");
                     }}
-                    className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5"
+                    className="grid gap-3 min-[420px]:grid-cols-2 xl:grid-cols-5"
                   >
                     {timeSlots.map((time) => {
                       const checked = booking.time === time;
@@ -244,7 +244,7 @@ export function BookingModal({
                         <Label
                           key={time}
                           className={[
-                            "flex min-h-16 items-center gap-3 rounded-2xl border p-3.5 normal-case tracking-normal transition sm:p-4",
+                            "flex min-h-14 items-center gap-3 rounded-xl border p-3 normal-case tracking-normal transition sm:min-h-16 sm:rounded-2xl sm:p-4",
                             checked
                               ? "border-[#4a3e39] bg-[#4a3e39] text-white shadow-sm"
                               : "border-[#e1d4c8] bg-white text-[#4a3e39] hover:border-[#b79b7d] hover:bg-[#faf2e8]",
@@ -258,7 +258,7 @@ export function BookingModal({
                                 : undefined
                             }
                           />
-                          <span className="text-sm leading-5 font-medium sm:text-base">
+                          <span className="text-sm leading-5 font-medium">
                             {time}
                           </span>
                         </Label>
@@ -268,7 +268,7 @@ export function BookingModal({
                   <FieldError>{visibleErrors.time}</FieldError>
                 </FieldSet>
 
-                <div className="grid gap-6 md:grid-cols-2 md:gap-8">
+                <div className="grid gap-5 md:grid-cols-2 md:gap-8">
                   <Field data-invalid={Boolean(visibleErrors.name)}>
                     <FieldContent>
                       <Label htmlFor="booking-name" className="text-[#6e5d53]">
@@ -309,12 +309,12 @@ export function BookingModal({
                   </Field>
                 </div>
 
-                <DialogFooter className="sticky bottom-0 -mx-4 border-t border-border bg-[#fffdf9] px-4 pt-5 sm:-mx-8 sm:px-8">
-                  <div className="flex w-full flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                <DialogFooter className="sticky bottom-0 -mx-4 border-t border-border bg-[#fffdf9]/95 px-4 pt-4 backdrop-blur-sm sm:-mx-8 sm:px-8 sm:pt-5">
+                  <div className="flex w-full flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
                     <Button
                       type="submit"
                       disabled={!canSubmit && submitAttempted}
-                      className="w-full rounded-full bg-[#4a3e39] px-8 text-primary-foreground hover:bg-[#7a6457] sm:w-auto disabled:cursor-not-allowed disabled:bg-[#d8cbbb] justify-self-end"
+                      className="w-full justify-center rounded-full bg-[#4a3e39] px-8 text-primary-foreground hover:bg-[#7a6457] sm:w-auto disabled:cursor-not-allowed disabled:bg-[#d8cbbb]"
                     >
                       Book consultation
                     </Button>
