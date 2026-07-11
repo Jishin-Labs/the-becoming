@@ -35,6 +35,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  NativeSelect,
+  NativeSelectOption,
+} from "@/components/ui/native-select";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type BookingFieldErrors = Partial<Record<keyof BookingDetails, string>>;
 
@@ -64,6 +69,7 @@ export function BookingModal({
   onChange,
   onSubmit,
 }: BookingModalProps) {
+  const isMobile = useIsMobile();
   const [touched, setTouched] = useState<
     Partial<Record<keyof BookingDetails, boolean>>
   >({});
@@ -99,7 +105,7 @@ export function BookingModal({
       }}
     >
       <DialogContent
-        className="max-h-[calc(100vh-0.75rem)] overflow-hidden rounded-[1.25rem] bg-[#fffdf9] p-0 sm:max-h-[calc(100vh-2rem)] sm:rounded-[2rem] lg:max-w-6xl"
+        className="animate-scale-in-soft max-h-[calc(100vh-0.75rem)] overflow-y-auto rounded-[1.25rem] bg-[#fffdf9] p-0 sm:max-h-[calc(100vh-2rem)] sm:rounded-[2rem] lg:max-w-6xl"
         showCloseButton
       >
         <DialogHeader className="border-b border-border bg-[#fcf6ee] px-4 py-5 sm:px-8 sm:py-6">
@@ -112,16 +118,19 @@ export function BookingModal({
         </DialogHeader>
 
         {bookingComplete ? (
-          <div className="px-4 py-8 text-center sm:px-8 sm:py-10">
+          <div className="animate-fade-up-soft px-4 py-8 text-center sm:px-8 sm:py-10">
             <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
               <Check size={32} />
             </div>
 
             <h3 className="font-heading text-2xl font-light text-[#4a3e39] sm:text-3xl">
-              Booking flow preview complete
+              Thank you for your booking
             </h3>
 
-      
+            <p className="mt-4 text-sm leading-7 text-[#6e5d53] sm:text-base">
+              Kamo will be in touch soon to confirm your consultation details
+              and next steps.
+            </p>
 
             <DialogFooter className="mt-8 justify-center">
               <Button
@@ -133,7 +142,7 @@ export function BookingModal({
             </DialogFooter>
           </div>
         ) : (
-          <div className="grid max-h-[calc(100vh-7rem)] overflow-y-auto sm:max-h-[calc(100vh-8rem)]">
+          <div className="grid">
             <form
               onSubmit={onSubmit}
               className="min-w-0 px-4 py-4 sm:px-8 sm:py-6"
@@ -152,29 +161,52 @@ export function BookingModal({
                 <Field data-invalid={Boolean(visibleErrors.service)}>
                   <FieldContent>
                     <FieldTitle>Service</FieldTitle>
-                    <Select
-                      value={booking.service}
-                      onValueChange={(value) => {
-                        onChange("service", String(value));
-                        markTouched("service");
-                      }}
-                      items={serviceOptions}
-                    >
-                      <SelectTrigger
+                    {isMobile ? (
+                      <NativeSelect
                         aria-label="Service"
                         aria-invalid={Boolean(visibleErrors.service)}
-                        className="h-12 w-full min-w-0 rounded-xl border border-[#e1d4c8] bg-white px-4"
+                        className="w-full"
+                        value={booking.service}
+                        onBlur={() => markTouched("service")}
+                        onChange={(event) => {
+                          onChange("service", event.target.value);
+                          markTouched("service");
+                        }}
                       >
-                        <SelectValue placeholder="Select a service" />
-                      </SelectTrigger>
-                      <SelectContent>
                         {serviceOptions.map((service) => (
-                          <SelectItem key={service.value} value={service.value}>
+                          <NativeSelectOption
+                            key={service.value}
+                            value={service.value}
+                          >
                             {service.label}
-                          </SelectItem>
+                          </NativeSelectOption>
                         ))}
-                      </SelectContent>
-                    </Select>
+                      </NativeSelect>
+                    ) : (
+                      <Select
+                        value={booking.service}
+                        onValueChange={(value) => {
+                          onChange("service", String(value));
+                          markTouched("service");
+                        }}
+                        items={serviceOptions}
+                      >
+                        <SelectTrigger
+                          aria-label="Service"
+                          aria-invalid={Boolean(visibleErrors.service)}
+                          className="motion-field h-12 w-full min-w-0 rounded-xl border border-[#e1d4c8] bg-white px-4 focus-visible:border-[#b79b7d] focus-visible:ring-[#d8cbbb]/60"
+                        >
+                          <SelectValue placeholder="Select a service" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {serviceOptions.map((service) => (
+                            <SelectItem key={service.value} value={service.value}>
+                              {service.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
                     <FieldError>{visibleErrors.service}</FieldError>
                   </FieldContent>
                 </Field>
@@ -195,7 +227,7 @@ export function BookingModal({
                           onChange("date", event.target.value)
                         }
                         aria-invalid={Boolean(visibleErrors.date)}
-                        className="h-12 rounded-xl border border-[#e1d4c8] bg-white px-4"
+                        className="motion-field h-12 rounded-xl border border-[#e1d4c8] bg-white px-4 focus-visible:border-[#b79b7d] focus-visible:ring-[#d8cbbb]/60"
                       />
                       <FieldError>{visibleErrors.date}</FieldError>
                     </FieldContent>
@@ -215,7 +247,7 @@ export function BookingModal({
                           onChange("phone", event.target.value)
                         }
                         aria-invalid={Boolean(visibleErrors.phone)}
-                        className="h-12 rounded-xl border border-[#e1d4c8] bg-white px-4"
+                        className="motion-field h-12 rounded-xl border border-[#e1d4c8] bg-white px-4 focus-visible:border-[#b79b7d] focus-visible:ring-[#d8cbbb]/60"
                       />
                       <FieldError>{visibleErrors.phone}</FieldError>
                     </FieldContent>
@@ -244,10 +276,10 @@ export function BookingModal({
                         <Label
                           key={time}
                           className={[
-                            "flex min-h-14 items-center gap-3 rounded-xl border p-3 normal-case tracking-normal transition sm:min-h-16 sm:rounded-2xl sm:p-4",
+                            "flex min-h-14 items-center gap-3 rounded-xl border p-3 normal-case tracking-normal transition-silk sm:min-h-16 sm:rounded-2xl sm:p-4",
                             checked
-                              ? "border-[#4a3e39] bg-[#4a3e39] text-white shadow-sm"
-                              : "border-[#e1d4c8] bg-white text-[#4a3e39] hover:border-[#b79b7d] hover:bg-[#faf2e8]",
+                              ? "border-[#4a3e39] bg-[#4a3e39] text-white shadow-[0_10px_24px_rgba(74,62,57,0.18)]"
+                              : "border-[#e1d4c8] bg-white text-[#4a3e39] hover:-translate-y-0.5 hover:border-[#b79b7d] hover:bg-[#faf2e8]",
                           ].join(" ")}
                         >
                           <RadioGroupItem
@@ -282,7 +314,7 @@ export function BookingModal({
                           onChange("name", event.target.value)
                         }
                         aria-invalid={Boolean(visibleErrors.name)}
-                        className="h-12 rounded-xl border border-[#e1d4c8] bg-white px-4"
+                        className="motion-field h-12 rounded-xl border border-[#e1d4c8] bg-white px-4 focus-visible:border-[#b79b7d] focus-visible:ring-[#d8cbbb]/60"
                       />
                       <FieldError>{visibleErrors.name}</FieldError>
                     </FieldContent>
@@ -302,19 +334,19 @@ export function BookingModal({
                           onChange("email", event.target.value)
                         }
                         aria-invalid={Boolean(visibleErrors.email)}
-                        className="h-12 rounded-xl border border-[#e1d4c8] bg-white px-4"
+                        className="motion-field h-12 rounded-xl border border-[#e1d4c8] bg-white px-4 focus-visible:border-[#b79b7d] focus-visible:ring-[#d8cbbb]/60"
                       />
                       <FieldError>{visibleErrors.email}</FieldError>
                     </FieldContent>
                   </Field>
                 </div>
 
-                <DialogFooter className="sticky bottom-0 -mx-4 border-t border-border bg-[#fffdf9]/95 px-4 pt-4 backdrop-blur-sm sm:-mx-8 sm:px-8 sm:pt-5">
+                <DialogFooter className="sticky bottom-0 -mx-4 border-t border-border bg-[#fffdf9]/95 px-4 pt-4 shadow-[0_-10px_30px_rgba(74,62,57,0.06)] backdrop-blur-sm sm:-mx-8 sm:px-8 sm:pt-5">
                   <div className="flex w-full flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
                     <Button
                       type="submit"
                       disabled={!canSubmit && submitAttempted}
-                      className="w-full justify-center rounded-full bg-[#4a3e39] px-8 text-primary-foreground hover:bg-[#7a6457] sm:w-auto disabled:cursor-not-allowed disabled:bg-[#d8cbbb]"
+                      className="motion-button w-full justify-center rounded-full bg-[#4a3e39] px-8 text-primary-foreground transition-silk hover:bg-[#7a6457] sm:w-auto disabled:cursor-not-allowed disabled:bg-[#d8cbbb]"
                     >
                       Book consultation
                     </Button>

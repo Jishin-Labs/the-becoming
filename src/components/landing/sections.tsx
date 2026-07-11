@@ -41,17 +41,17 @@ const primaryLinks = [
 
 function BrandMark({ compact = false }: { compact?: boolean }) {
   return (
-    <span className="flex items-center gap-3">
+    <span className="group/brand flex items-center gap-3">
       <img
         src="/logo.jpeg"
         alt="The Becoming logo"
-        className="size-11 rounded-full border border-[#e7d9cb] object-cover shadow-sm sm:size-12"
+        className="size-11 rounded-full border border-[#e7d9cb] object-cover shadow-sm transition-silk group-hover/brand:scale-[1.03] group-hover/brand:shadow-md sm:size-12"
       />
       <span className={cn("leading-none", compact && "hidden sm:block")}>
-        <span className="block font-heading text-sm tracking-[0.22em] text-[#4a3e39] sm:text-lg sm:tracking-[0.28em]">
+        <span className="block font-heading text-sm tracking-[0.22em] text-[#4a3e39] transition-gentle group-hover/brand:text-[#7a6457] sm:text-lg sm:tracking-[0.28em]">
           THE BECOMING
         </span>
-        <span className="block text-[9px] uppercase tracking-[0.3em] text-[#8c7a6b] sm:text-[10px] sm:tracking-[0.35em]">
+        <span className="block text-[9px] uppercase tracking-[0.3em] text-[#8c7a6b] transition-gentle group-hover/brand:text-[#9a866f] sm:text-[10px] sm:tracking-[0.35em]">
           by Kamohelo
         </span>
       </span>
@@ -90,7 +90,7 @@ export function Navbar({
             <a
               key={link.id}
               href={`#${link.id}`}
-              className="text-xs font-semibold uppercase tracking-[0.18em] text-[#6e5d53] transition-gentle hover:text-[#a98961]"
+              className="motion-link text-xs font-semibold uppercase tracking-[0.18em] text-[#6e5d53] transition-gentle hover:text-[#a98961]"
             >
               {link.label}
             </a>
@@ -100,7 +100,7 @@ export function Navbar({
         <div className="hidden md:block">
           <Button
             onClick={onBook}
-            className="rounded-full bg-[#4a3e39] px-6 text-primary-foreground transition-gentle hover:-translate-y-0.5 hover:bg-[#7a6457]"
+            className="motion-button rounded-full bg-[#4a3e39] px-6 text-primary-foreground transition-silk hover:-translate-y-0.5 hover:bg-[#7a6457]"
           >
             Book Consultation
           </Button>
@@ -109,7 +109,7 @@ export function Navbar({
         <button
           type="button"
           onClick={onMenuToggle}
-          className="shrink-0 rounded-full border border-border p-2 text-[#4a3e39] transition-gentle hover:bg-[#f7efe6] md:hidden"
+          className="shrink-0 rounded-full border border-border p-2 text-[#4a3e39] transition-silk hover:rotate-90 hover:bg-[#f7efe6] md:hidden"
           aria-label="Toggle menu"
           aria-expanded={menuOpen}
         >
@@ -117,17 +117,32 @@ export function Navbar({
         </button>
       </div>
 
-      {menuOpen && (
-        <div className="animate-fade-up-soft border-t border-border bg-background px-4 py-5 sm:px-6 md:hidden">
-          <nav className="flex flex-col gap-5">
-            <a href="#" className="mb-2">
-              <BrandMark compact />
-            </a>
-            {primaryLinks.map((link) => (
+      <div
+        aria-hidden={!menuOpen}
+        className={cn(
+          "grid overflow-hidden border-t border-border bg-background transition-[grid-template-rows,opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] md:hidden",
+          menuOpen
+            ? "grid-rows-[1fr] opacity-100"
+            : "pointer-events-none grid-rows-[0fr] opacity-0",
+        )}
+      >
+        <div className="min-h-0">
+          <nav
+            className={cn(
+              "flex flex-col gap-5 px-4 py-5 transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] sm:px-6",
+              menuOpen
+                ? "translate-y-0 opacity-100"
+                : "-translate-y-3 opacity-0",
+            )}
+          >
+            {primaryLinks.map((link, index) => (
               <a
                 key={link.id}
                 href={`#${link.id}`}
-                className="text-sm font-semibold uppercase tracking-[0.18em] text-[#4a3e39] transition-gentle hover:text-[#a98961]"
+                className="motion-link text-sm font-semibold uppercase tracking-[0.18em] text-[#4a3e39] transition-gentle hover:text-[#a98961]"
+                style={{
+                  transitionDelay: menuOpen ? `${index * 40}ms` : "0ms",
+                }}
               >
                 {link.label}
               </a>
@@ -135,13 +150,19 @@ export function Navbar({
 
             <Button
               onClick={onBook}
-              className="rounded-full bg-[#4a3e39] px-6 text-primary-foreground transition-gentle hover:bg-[#7a6457]"
+              className={cn(
+                "motion-button rounded-full bg-[#4a3e39] px-6 text-primary-foreground transition-silk hover:bg-[#7a6457]",
+                menuOpen ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0",
+              )}
+              style={{
+                transitionDelay: menuOpen ? `${primaryLinks.length * 40}ms` : "0ms",
+              }}
             >
               Book Consultation
             </Button>
           </nav>
         </div>
-      )}
+      </div>
     </header>
   );
 }
@@ -178,15 +199,15 @@ export function Hero({
           <div className="animate-fade-up-soft-delay-1 mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:gap-4">
             <Button
               onClick={onBook}
-              className="w-full rounded-full bg-[#4a3e39] px-6 text-primary-foreground transition-gentle hover:-translate-y-0.5 hover:bg-[#7a6457] sm:w-auto sm:px-7"
+              className="motion-button w-full rounded-full bg-[#4a3e39] px-6 text-primary-foreground transition-silk hover:-translate-y-0.5 hover:bg-[#7a6457] sm:w-auto sm:px-7"
             >
               Book Consultation
-              <ArrowRight size={16} />
+              <ArrowRight size={16} className="transition-silk group-hover/button:translate-x-1" />
             </Button>
 
             <a
               href={servicesHref}
-              className="inline-flex min-h-11 w-full items-center justify-center rounded-full border border-[#d8cbbb] px-6 text-center text-xs font-semibold uppercase tracking-[0.12em] text-[#4a3e39] transition-gentle hover:-translate-y-0.5 hover:border-[#4a3e39] hover:bg-[#f7efe6] sm:w-auto sm:px-7 sm:text-sm"
+              className="motion-button inline-flex min-h-11 w-full items-center justify-center rounded-full border border-[#d8cbbb] px-6 text-center text-xs font-semibold uppercase tracking-[0.12em] text-[#4a3e39] transition-silk hover:-translate-y-0.5 hover:border-[#4a3e39] hover:bg-[#f7efe6] sm:w-auto sm:px-7 sm:text-sm"
             >
               View Services
             </a>
@@ -194,11 +215,11 @@ export function Hero({
         </div>
 
         <div className="relative order-1 animate-fade-up-soft-delay-1 lg:order-2">
-          <div className="aspect-[4/5] overflow-hidden rounded-[1.75rem] border border-border bg-[#f8f1e8] shadow-sm transition-gentle hover:-translate-y-1 hover:shadow-xl sm:rounded-[2.5rem]">
+          <div className="motion-card motion-panel group aspect-[4/5] overflow-hidden rounded-[1.75rem] border border-border bg-[#f8f1e8] shadow-sm transition-silk hover:shadow-xl sm:rounded-[2.5rem]">
             <img
               src="/hero-image.jpeg"
               alt="Portrait for The Becoming hero section"
-              className="h-full w-full rounded-[1.4rem] object-cover sm:rounded-[2rem]"
+              className="motion-card-media animate-drift-soft h-full w-full rounded-[1.4rem] object-cover sm:rounded-[2rem]"
             />
           </div>
         </div>
@@ -214,10 +235,10 @@ export function TrustSection() {
         {trustItems.map((item) => (
           <div
             key={item.title}
-            className="group rounded-[1.75rem] border border-[#eadfd3] bg-white p-6 transition-gentle hover:-translate-y-1 hover:shadow-md"
+            className="motion-card motion-panel group rounded-[1.75rem] border border-[#eadfd3] bg-white p-6 transition-silk hover:shadow-md"
           >
             <item.icon
-              className="mb-4 text-[#a98961] transition-gentle group-hover:scale-105"
+              className="mb-4 text-[#a98961] transition-silk group-hover:scale-105 group-hover:-translate-y-0.5"
               size={24}
             />
             <h3 className="text-sm font-bold uppercase tracking-[0.18em] text-[#4a3e39]">
@@ -237,11 +258,11 @@ export function AboutSection({ onBook }: { onBook: () => void }) {
       id={sectionLinks.about.id}
       className="mx-auto grid max-w-380 gap-8 px-4 py-16 sm:gap-10 sm:px-6 sm:py-24 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12"
     >
-      <div className="overflow-hidden rounded-[1.75rem] border border-border bg-[#f8f1e8] sm:rounded-[2.5rem]">
+      <div className="motion-card motion-panel group overflow-hidden rounded-[1.75rem] border border-border bg-[#f8f1e8] transition-silk sm:rounded-[2.5rem]">
         <img
           src="/about-image.jpeg"
           alt="About Kamohelo"
-          className="h-full w-full rounded-[1.25rem] object-cover sm:rounded-[2rem]"
+          className="motion-card-media h-full w-full rounded-[1.25rem] object-cover sm:rounded-[2rem]"
         />
       </div>
 
@@ -271,7 +292,7 @@ export function AboutSection({ onBook }: { onBook: () => void }) {
         <div className="mt-8">
           <Button
             onClick={onBook}
-            className="w-full rounded-full bg-[#4a3e39] px-7 text-primary-foreground transition-gentle hover:-translate-y-0.5 hover:bg-[#7a6457] sm:w-auto"
+            className="motion-button w-full rounded-full bg-[#4a3e39] px-7 text-primary-foreground transition-silk hover:-translate-y-0.5 hover:bg-[#7a6457] sm:w-auto"
           >
             Start with a clarity consultation
           </Button>
@@ -299,7 +320,7 @@ export function WhoIHelpSection() {
         {whoIHelpItems.map((item) => (
           <div
             key={item}
-            className="rounded-[1.5rem] border border-border bg-white p-5 text-base font-medium text-[#4a3e39] shadow-sm transition-gentle hover:-translate-y-0.5 hover:shadow-md sm:rounded-[1.75rem] sm:p-6 sm:text-lg"
+            className="motion-card motion-panel rounded-[1.5rem] border border-border bg-white p-5 text-base font-medium text-[#4a3e39] shadow-sm transition-silk hover:shadow-md sm:rounded-[1.75rem] sm:p-6 sm:text-lg"
           >
             {item}
           </div>
@@ -336,7 +357,7 @@ export function ServicesSection({
           {services.map((service) => (
             <Card
               key={service.title}
-              className="rounded-[1.75rem] border border-border bg-white py-0 shadow-sm transition-gentle hover:-translate-y-1 hover:shadow-xl sm:rounded-[2rem]"
+              className="motion-card motion-panel group rounded-[1.75rem] border border-border bg-white py-0 shadow-sm transition-silk hover:shadow-xl sm:rounded-[2rem]"
             >
               <CardHeader className="rounded-t-[1.75rem] border-b border-border bg-[#fcf8f2] px-5 py-6 sm:rounded-t-[2rem] sm:px-8 sm:py-8">
                 <div className="flex flex-wrap items-start justify-between gap-4">
@@ -348,7 +369,7 @@ export function ServicesSection({
                       {service.duration}
                     </CardDescription>
                   </div>
-                  <div className="rounded-full border border-[#d8cbbb] bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#6e5d53]">
+                  <div className="rounded-full border border-[#d8cbbb] bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#6e5d53] transition-silk group-hover:border-[#bfa58a] group-hover:bg-[#fff8ef]">
                     {service.cadence}
                   </div>
                 </div>
@@ -365,10 +386,10 @@ export function ServicesSection({
               <CardFooter className="flex-col items-stretch justify-between gap-4 border-t border-border px-5 py-6 sm:px-8 md:flex-row md:items-center">
                 <Button
                   onClick={() => onBook(service.title)}
-                  className="w-full justify-center rounded-full bg-[#4a3e39] px-6 text-primary-foreground transition-gentle hover:-translate-y-0.5 hover:bg-[#7a6457] md:w-auto"
+                  className="motion-button w-full justify-center rounded-full bg-[#4a3e39] px-6 text-primary-foreground transition-silk hover:-translate-y-0.5 hover:bg-[#7a6457] md:w-auto"
                 >
                   Book this service
-                  <ArrowRight size={15} />
+                  <ArrowRight size={15} className="transition-silk group-hover/button:translate-x-1" />
                 </Button>
               </CardFooter>
             </Card>
@@ -402,7 +423,7 @@ export function ApproachSection() {
           {approachPrinciples.map((principle, index) => (
             <div
               key={principle.title}
-              className="rounded-[1.5rem] border border-white/15 bg-white/8 p-5 backdrop-blur-sm transition-gentle hover:-translate-y-1 hover:bg-white/10 sm:rounded-[2rem] sm:p-6"
+              className="motion-card rounded-[1.5rem] border border-white/15 bg-white/8 p-5 backdrop-blur-sm transition-silk hover:bg-white/10 sm:rounded-[2rem] sm:p-6"
             >
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#d9c3a5]">
                 0{index + 1}
@@ -438,7 +459,7 @@ export function TestimonialsSection() {
         </div>
 
         <div className="mt-10 grid gap-6 sm:mt-14 lg:grid-cols-[1.2fr_0.8fr]">
-          <article className="rounded-[1.75rem] bg-[#f4eadf] p-5 transition-gentle hover:-translate-y-1 hover:shadow-lg sm:rounded-[2rem] sm:p-8 md:rounded-[2.5rem] md:p-10">
+          <article className="motion-card motion-panel rounded-[1.75rem] bg-[#f4eadf] p-5 transition-silk hover:shadow-lg sm:rounded-[2rem] sm:p-8 md:rounded-[2.5rem] md:p-10">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#a98961]">
               {editorialQuote.eyebrow}
             </p>
@@ -478,7 +499,7 @@ export function TestimonialsSection() {
               <article
                 key={testimonial.name}
                 className={cn(
-                  "rounded-[1.75rem] border p-5 shadow-sm transition-gentle hover:-translate-y-1 hover:shadow-lg sm:rounded-[2rem] sm:p-7",
+                  "group motion-card motion-panel rounded-[1.75rem] border p-5 shadow-sm transition-silk hover:shadow-lg sm:rounded-[2rem] sm:p-7",
                   index === 0
                     ? "border-border bg-white"
                     : "border-[#e0d0bf] bg-[#fff8ef]",
@@ -486,7 +507,13 @@ export function TestimonialsSection() {
               >
                 <div className="mb-4 flex gap-1 text-[#a98961]">
                   {Array.from({ length: 5 }).map((_, starIndex) => (
-                    <Star key={starIndex} size={15} fill="currentColor" />
+                    <Star
+                      key={starIndex}
+                      size={15}
+                      fill="currentColor"
+                      className="transition-silk group-hover:scale-110"
+                      style={{ transitionDelay: `${starIndex * 35}ms` }}
+                    />
                   ))}
                 </div>
                 <p className="text-sm leading-7 text-[#6e5d53]">
@@ -553,7 +580,7 @@ export function FaqSection() {
               index !== faqs.length - 1 && "border-b",
             )}
           >
-            <AccordionTrigger className="py-5 text-left text-sm font-semibold text-[#4a3e39] hover:no-underline sm:py-6 sm:text-base">
+            <AccordionTrigger className="py-5 text-left text-sm font-semibold text-[#4a3e39] transition-silk hover:text-[#7a6457] hover:no-underline sm:py-6 sm:text-base">
               {faq.question}
             </AccordionTrigger>
             <AccordionContent className="pb-6 text-sm leading-7 text-[#6e5d53]">
@@ -572,7 +599,7 @@ export function FinalCta({ onBook }: { onBook: () => void }) {
       id={sectionLinks.contact.id}
       className="px-4 pb-16 sm:px-6 sm:pb-24"
     >
-      <div className="mx-auto max-w-6xl rounded-[1.75rem] bg-[#4a3e39] px-5 py-10 text-center text-white transition-gentle hover:shadow-xl sm:rounded-[2rem] sm:px-8 sm:py-16 md:rounded-[2.5rem] md:px-16">
+      <div className="motion-panel mx-auto max-w-6xl rounded-[1.75rem] bg-[#4a3e39] px-5 py-10 text-center text-white transition-silk hover:shadow-xl sm:rounded-[2rem] sm:px-8 sm:py-16 md:rounded-[2.5rem] md:px-16">
         <h2 className="mx-auto max-w-3xl font-heading text-[2rem] font-light tracking-tight sm:text-4xl md:text-5xl">
           You do not need to have the right words before asking for support.
         </h2>
@@ -585,10 +612,10 @@ export function FinalCta({ onBook }: { onBook: () => void }) {
         <div className="mt-9">
           <Button
             onClick={onBook}
-            className="w-full rounded-full bg-white px-8 text-[#4a3e39] transition-gentle hover:-translate-y-0.5 hover:bg-[#f2e8dc] sm:w-auto"
+            className="motion-button w-full rounded-full bg-white px-8 text-[#4a3e39] transition-silk hover:-translate-y-0.5 hover:bg-[#f2e8dc] sm:w-auto"
           >
             Book Consultation
-            <ArrowRight size={16} />
+            <ArrowRight size={16} className="transition-silk group-hover/button:translate-x-1" />
           </Button>
         </div>
       </div>
@@ -612,7 +639,7 @@ export function Footer() {
               href="https://jishin-website.vercel.app/"
               target="_blank"
               rel="noreferrer"
-              className="text-[#4a3e39] transition-gentle hover:text-[#a98961]"
+              className="motion-link text-[#4a3e39] transition-gentle hover:text-[#a98961]"
             >
               Jishin-Labs
             </a>
@@ -646,7 +673,7 @@ export function Footer() {
               <a
                 key={link.id}
                 href={`#${link.id}`}
-                className="transition-gentle hover:text-[#a98961]"
+                className="motion-link transition-gentle hover:text-[#a98961]"
               >
                 {link.label}
               </a>

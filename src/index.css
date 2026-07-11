@@ -7,6 +7,11 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+    --ease-gentle: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-emphasis: cubic-bezier(0.16, 1, 0.3, 1);
+    --duration-fast: 220ms;
+    --duration-base: 320ms;
+    --duration-slow: 560ms;
     --background: oklch(1 0 0);
     --foreground: oklch(0.147 0.004 49.3);
     --card: oklch(1 0 0);
@@ -168,17 +173,61 @@
   }
 }
 
+@keyframes drift-soft {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
+@keyframes scale-in-soft {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer-sweep {
+  from {
+    transform: translateX(-140%);
+  }
+  to {
+    transform: translateX(180%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 @layer utilities {
   .animate-fade-up-soft {
-    animation: fade-up-soft 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: fade-up-soft 700ms var(--ease-gentle) both;
   }
 
   .animate-fade-up-soft-delay-1 {
-    animation: fade-up-soft 700ms cubic-bezier(0.22, 1, 0.36, 1) 120ms both;
+    animation: fade-up-soft 700ms var(--ease-gentle) 120ms both;
   }
 
   .animate-fade-up-soft-delay-2 {
-    animation: fade-up-soft 700ms cubic-bezier(0.22, 1, 0.36, 1) 220ms both;
+    animation: fade-up-soft 700ms var(--ease-gentle) 220ms both;
+  }
+
+  .animate-fade-up-soft-delay-3 {
+    animation: fade-up-soft 700ms var(--ease-gentle) 320ms both;
   }
 
   .animate-float-soft {
@@ -189,9 +238,129 @@
     animation: glow-pulse 7s ease-in-out infinite;
   }
 
+  .animate-drift-soft {
+    animation: drift-soft 9s ease-in-out infinite;
+  }
+
+  .animate-scale-in-soft {
+    animation: scale-in-soft 520ms var(--ease-emphasis) both;
+  }
+
   .transition-gentle {
-    transition-property: transform, opacity, color, background-color, border-color, box-shadow;
-    transition-duration: 260ms;
-    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    transition-property: transform, opacity, color, background-color, border-color, box-shadow, filter;
+    transition-duration: var(--duration-fast);
+    transition-timing-function: var(--ease-gentle);
+  }
+
+  .transition-silk {
+    transition-property: transform, opacity, color, background-color, border-color, box-shadow, filter;
+    transition-duration: var(--duration-base);
+    transition-timing-function: var(--ease-gentle);
+  }
+
+  .motion-link {
+    position: relative;
+    transition: color var(--duration-fast) var(--ease-gentle);
+  }
+
+  .motion-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -0.2rem;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform: scaleX(0.35);
+    transform-origin: left center;
+    opacity: 0;
+    transition:
+      transform var(--duration-base) var(--ease-gentle),
+      opacity var(--duration-fast) var(--ease-gentle);
+  }
+
+  .motion-button {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .motion-button::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, transparent 20%, rgb(255 255 255 / 0.16) 48%, transparent 76%);
+    transform: translateX(-140%);
+    pointer-events: none;
+  }
+
+  .motion-card {
+    transform-origin: center bottom;
+  }
+
+  .motion-card-media {
+    transition:
+      transform var(--duration-slow) var(--ease-emphasis),
+      filter var(--duration-base) var(--ease-gentle);
+  }
+
+  .motion-icon {
+    transition:
+      transform var(--duration-fast) var(--ease-gentle),
+      color var(--duration-fast) var(--ease-gentle);
+  }
+
+  .motion-field {
+    transition:
+      border-color var(--duration-fast) var(--ease-gentle),
+      box-shadow var(--duration-fast) var(--ease-gentle),
+      background-color var(--duration-fast) var(--ease-gentle),
+      transform var(--duration-fast) var(--ease-gentle);
+  }
+
+  .motion-panel {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .motion-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.14), transparent 35%);
+    opacity: 0;
+    transition: opacity var(--duration-base) var(--ease-gentle);
+    pointer-events: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .motion-link:hover::after,
+    .motion-link:focus-visible::after {
+      transform: scaleX(1);
+      opacity: 0.55;
+    }
+
+    .motion-button:hover::after,
+    .motion-button:focus-visible::after {
+      animation: shimmer-sweep 820ms var(--ease-gentle) 1;
+    }
+
+    .motion-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .motion-card:hover .motion-card-media {
+      transform: scale(1.035);
+      filter: saturate(1.04);
+    }
+
+    .motion-panel:hover::before {
+      opacity: 1;
+    }
+
+    .motion-icon:hover {
+      transform: translateX(2px);
+    }
   }
 }
