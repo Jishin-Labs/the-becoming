@@ -17,7 +17,14 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 type SectionLinkMap = typeof sectionLinks;
@@ -59,7 +66,6 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
     </p>
   );
 }
-
 
 export function Navbar({
   links,
@@ -153,8 +159,6 @@ export function Hero({
 
       <div className="relative mx-auto grid min-h-[calc(100vh-5rem)] max-w-380 items-center gap-10 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
         <div className="animate-fade-up-soft">
-         
-
           <h1 className="max-w-3xl font-heading text-4xl font-light leading-tight tracking-tight text-[#2a2421] sm:text-5xl md:text-7xl">
             Move from burnout, anxiety, and transition into clarity and peace.
           </h1>
@@ -187,25 +191,12 @@ export function Hero({
               View Services
             </a>
           </div>
-
-      
         </div>
 
         <div className="relative animate-fade-up-soft-delay-1">
           <div className="aspect-[4/5] overflow-hidden rounded-[2rem] border border-border bg-[#f8f1e8] shadow-sm transition-gentle hover:-translate-y-1 hover:shadow-xl sm:rounded-[2.5rem]">
-            <div className="flex h-full items-center justify-center p-10 text-center">
-              <div>
-                <div className="animate-float-soft mx-auto mb-6 flex h-28 w-28 items-center justify-center rounded-full bg-white font-heading text-3xl text-[#a98961] shadow-sm">
-                  KB
-                </div>
-                <p className="mx-auto max-w-sm font-heading text-3xl leading-tight text-[#4a3e39]">
-                  Isthombe sakho
-                </p>
-              </div>
-            </div>
+              <img src="/hero-image.jpeg" className="rounded-xl"/>
           </div>
-
-
         </div>
       </div>
     </section>
@@ -221,13 +212,14 @@ export function TrustSection() {
             key={item.title}
             className="group rounded-[1.75rem] border border-[#eadfd3] bg-white p-6 transition-gentle hover:-translate-y-1 hover:shadow-md"
           >
-            <item.icon className="mb-4 text-[#a98961] transition-gentle group-hover:scale-105" size={24} />
+            <item.icon
+              className="mb-4 text-[#a98961] transition-gentle group-hover:scale-105"
+              size={24}
+            />
             <h3 className="text-sm font-bold uppercase tracking-[0.18em] text-[#4a3e39]">
               {item.title}
             </h3>
-            <p className="mt-3 text-sm leading-6 text-[#6e5d53]">
-              {item.text}
-            </p>
+            <p className="mt-3 text-sm leading-6 text-[#6e5d53]">{item.text}</p>
           </div>
         ))}
       </div>
@@ -241,18 +233,15 @@ export function AboutSection({ onBook }: { onBook: () => void }) {
       id={sectionLinks.about.id}
       className="mx-auto grid max-w-380 gap-10 px-4 py-20 sm:px-6 sm:py-24 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12"
     >
-      <div className="rounded-[2.5rem] border border-border bg-[#f8f1e8] p-8">
-        <div className="flex aspect-square items-center justify-center rounded-[2rem] bg-white text-center">
-          <p className="max-w-xs font-heading text-3xl leading-tight text-[#4a3e39]">
-                  Isthombe sakho
-          </p>
-        </div>
+      <div className="rounded-[2.5rem] border border-border bg-[#f8f1e8]">
+          <img src="/about-image.jpeg" className="rounded-xl" />
       </div>
 
       <div className="flex flex-col justify-center">
         <SectionLabel>About Kamohelo</SectionLabel>
         <h2 className="mt-4 font-heading text-4xl font-light tracking-tight md:text-5xl">
-          Grounded guidance for people who need both emotional safety and real direction.
+          Grounded guidance for people who need both emotional safety and real
+          direction.
         </h2>
 
         <div className="mt-7 space-y-5 text-base leading-8 text-[#6e5d53]">
@@ -261,8 +250,8 @@ export function AboutSection({ onBook }: { onBook: () => void }) {
             but feel overwhelmed, tired, anxious, or disconnected on the inside.
           </p>
           <p>
-            The work combines coaching, somatic awareness, emotional
-            reflection, practical boundaries, and grounded next steps.
+            The work combines coaching, somatic awareness, emotional reflection,
+            practical boundaries, and grounded next steps.
           </p>
           <p>
             Kamo’s credibility comes from the combination of calm presence,
@@ -286,7 +275,10 @@ export function AboutSection({ onBook }: { onBook: () => void }) {
 
 export function WhoIHelpSection() {
   return (
-    <section id={sectionLinks.who.id} className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24">
+    <section
+      id={sectionLinks.who.id}
+      className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24"
+    >
       <div className="mx-auto max-w-3xl text-center">
         <SectionLabel>Who this is for</SectionLabel>
         <h2 className="mt-4 font-heading text-4xl font-light tracking-tight md:text-5xl">
@@ -309,9 +301,16 @@ export function WhoIHelpSection() {
   );
 }
 
-export function ServicesSection({ onBook }: { onBook: (service: string) => void }) {
+export function ServicesSection({
+  onBook,
+}: {
+  onBook: (service: string) => void;
+}) {
   return (
-    <section id={sectionLinks.services.id} className="bg-[#faf6ef] py-20 sm:py-24">
+    <section
+      id={sectionLinks.services.id}
+      className="bg-[#faf6ef] py-20 sm:py-24"
+    >
       <div className="mx-auto max-w-380 px-4 sm:px-6">
         <div>
           <SectionLabel>Services</SectionLabel>
@@ -319,9 +318,9 @@ export function ServicesSection({ onBook }: { onBook: (service: string) => void 
             Choose the format that matches the support you need.
           </h2>
           <p className="mt-5 max-w-3xl text-base leading-8 text-muted-foreground">
-            Compare the time commitment, rhythm, and intended outcome first.
-            The cards are structured so a visitor can identify fit before
-            reading every sentence.
+            Compare the time commitment, rhythm, and intended outcome first. The
+            cards are structured so a visitor can identify fit before reading
+            every sentence.
           </p>
         </div>
 
@@ -356,8 +355,6 @@ export function ServicesSection({ onBook }: { onBook: (service: string) => void 
               </CardContent>
 
               <CardFooter className="flex-col items-stretch justify-between gap-4 border-t border-border px-5 py-6 sm:px-8 md:flex-row md:items-center">
-         
-
                 <Button
                   onClick={() => onBook(service.title)}
                   className="w-full rounded-full bg-[#4a3e39] px-6 text-primary-foreground transition-gentle hover:-translate-y-0.5 hover:bg-[#7a6457] md:w-auto justify-end"
@@ -376,7 +373,10 @@ export function ServicesSection({ onBook }: { onBook: (service: string) => void 
 
 export function ApproachSection() {
   return (
-    <section id={sectionLinks.approach.id} className="bg-[#4a3e39] py-24 text-white">
+    <section
+      id={sectionLinks.approach.id}
+      className="bg-[#4a3e39] py-24 text-white"
+    >
       <div className="mx-auto grid max-w-380 gap-10 px-4 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:gap-12">
         <div>
           <SectionLabel>Kamo’s approach</SectionLabel>
@@ -385,8 +385,8 @@ export function ApproachSection() {
           </h2>
           <p className="mt-6 max-w-xl text-base leading-8 text-[#eadfd3]">
             This section is about methodology rather than biography. The goal is
-            to show how Kamo works in session: emotionally safe, body-aware,
-            and concrete enough to create real movement.
+            to show how Kamo works in session: emotionally safe, body-aware, and
+            concrete enough to create real movement.
           </p>
         </div>
 
@@ -417,7 +417,10 @@ export function TestimonialsSection() {
   const [featured, ...supporting] = testimonials;
 
   return (
-    <section id={sectionLinks.testimonials.id} className="px-4 py-20 sm:px-6 sm:py-24">
+    <section
+      id={sectionLinks.testimonials.id}
+      className="px-4 py-20 sm:px-6 sm:py-24"
+    >
       <div className="mx-auto max-w-380">
         <div className="mx-auto max-w-2xl text-center">
           <SectionLabel>Testimonials</SectionLabel>
@@ -442,13 +445,17 @@ export function TestimonialsSection() {
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8c7a6b]">
                   Came for
                 </p>
-                <p className="mt-1 text-sm text-[#4a3e39]">{featured.cameFor}</p>
+                <p className="mt-1 text-sm text-[#4a3e39]">
+                  {featured.cameFor}
+                </p>
               </div>
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8c7a6b]">
                   Outcome
                 </p>
-                <p className="mt-1 text-sm text-[#4a3e39]">{featured.outcome}</p>
+                <p className="mt-1 text-sm text-[#4a3e39]">
+                  {featured.outcome}
+                </p>
               </div>
             </div>
 
@@ -514,7 +521,10 @@ export function TestimonialsSection() {
 
 export function FaqSection() {
   return (
-    <section id={sectionLinks.faq.id} className="mx-auto max-w-4xl px-4 py-20 sm:px-6 sm:py-24">
+    <section
+      id={sectionLinks.faq.id}
+      className="mx-auto max-w-4xl px-4 py-20 sm:px-6 sm:py-24"
+    >
       <div className="text-center">
         <SectionLabel>FAQ</SectionLabel>
         <h2 className="mt-4 font-heading text-4xl font-light tracking-tight md:text-5xl">
@@ -530,7 +540,10 @@ export function FaqSection() {
           <AccordionItem
             key={faq.question}
             value={`faq-${index}`}
-            className={cn("border-border", index !== faqs.length - 1 && "border-b")}
+            className={cn(
+              "border-border",
+              index !== faqs.length - 1 && "border-b",
+            )}
           >
             <AccordionTrigger className="py-6 text-base font-semibold text-[#4a3e39] hover:no-underline">
               {faq.question}
@@ -547,7 +560,10 @@ export function FaqSection() {
 
 export function FinalCta({ onBook }: { onBook: () => void }) {
   return (
-    <section id={sectionLinks.contact.id} className="px-4 pb-20 sm:px-6 sm:pb-24">
+    <section
+      id={sectionLinks.contact.id}
+      className="px-4 pb-20 sm:px-6 sm:pb-24"
+    >
       <div className="mx-auto max-w-6xl rounded-[2rem] bg-[#4a3e39] px-5 py-12 text-center text-white sm:px-8 sm:py-16 md:rounded-[2.5rem] md:px-16 transition-gentle hover:shadow-xl">
         <h2 className="mx-auto max-w-3xl font-heading text-4xl font-light tracking-tight md:text-5xl">
           You do not need to have the right words before asking for support.
@@ -561,7 +577,7 @@ export function FinalCta({ onBook }: { onBook: () => void }) {
         <div className="mt-9">
           <Button
             onClick={onBook}
-          className="w-full rounded-full bg-white px-8 text-[#4a3e39] transition-gentle hover:-translate-y-0.5 hover:bg-[#f2e8dc] sm:w-auto"
+            className="w-full rounded-full bg-white px-8 text-[#4a3e39] transition-gentle hover:-translate-y-0.5 hover:bg-[#f2e8dc] sm:w-auto"
           >
             Book Consultation
             <ArrowRight size={16} />
@@ -579,8 +595,8 @@ export function Footer() {
         <div>
           <BrandMark />
           <p className="mt-4 max-w-sm text-sm leading-7 text-[#6e5d53]">
-            Somatic support, and wellness guidance
-            for emotional clarity and personal growth.
+            Somatic support, and wellness guidance for emotional clarity and
+            personal growth.
           </p>
           <p className="mt-5 text-xs uppercase tracking-[0.16em] text-[#8c7a6b]">
             Built and maintained by{" "}
@@ -619,7 +635,11 @@ export function Footer() {
 
           <div className="flex flex-col gap-3 text-sm text-[#6e5d53]">
             {primaryLinks.map((link) => (
-              <a key={link.id} href={`#${link.id}`} className="transition-gentle hover:text-[#a98961]">
+              <a
+                key={link.id}
+                href={`#${link.id}`}
+                className="transition-gentle hover:text-[#a98961]"
+              >
                 {link.label}
               </a>
             ))}
