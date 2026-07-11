@@ -1,10 +1,4 @@
-import {
-  Award,
-  HeartHandshake,
-  ShieldCheck,
-  Sparkles,
-  type LucideIcon,
-} from "lucide-react";
+import { Award, ShieldCheck, Sparkles, type LucideIcon } from "lucide-react";
 
 export type Service = {
   title: string;
@@ -211,7 +205,10 @@ export const heroStats = [
 
 
 export const serviceOptions = [
-  { label: "Free Clarity Consultation", value: "Free Clarity Consultation" },
+  {
+    label: "Free Clarity Consultation Request",
+    value: "Free Clarity Consultation Request",
+  },
   ...services.map((service) => ({ label: service.title, value: service.title })),
 ];
 
@@ -234,10 +231,3 @@ export const timeSlots = Array.from({ length: 10 }, (_, index) => {
 
   return `${formatHour(startHour)} - ${formatHour(endHour)}`;
 });
-
-export const editorialQuote = {
-  icon: HeartHandshake,
-  eyebrow: "Editorial note",
-  title: "The strongest trust signal here should be emotional steadiness.",
-  body: "This page is designed to feel composed rather than clinical. The updated sections separate reassurance, service comparison, and personal credibility so each part of the decision feels clearer.",
-};

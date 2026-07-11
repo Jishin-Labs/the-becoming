@@ -110,10 +110,11 @@ export function BookingModal({
       >
         <DialogHeader className="border-b border-border bg-[#fcf6ee] px-4 py-5 sm:px-8 sm:py-6">
           <DialogTitle className="pr-10 font-heading text-xl font-light normal-case tracking-tight text-[#4a3e39] sm:text-2xl">
-            Book a consultation
+            Request a consultation
           </DialogTitle>
           <DialogDescription className="max-w-2xl text-sm leading-7 text-[#6e5d53]">
-            Choose your service, preferred time, and contact details.
+            Share your preferred service, timing, and contact details for
+            follow-up.
           </DialogDescription>
         </DialogHeader>
 
@@ -124,12 +125,12 @@ export function BookingModal({
             </div>
 
             <h3 className="font-heading text-2xl font-light text-[#4a3e39] sm:text-3xl">
-              Thank you for your booking
+              Consultation request received
             </h3>
 
             <p className="mt-4 text-sm leading-7 text-[#6e5d53] sm:text-base">
-              Kamo will be in touch soon to confirm your consultation details
-              and next steps.
+              Kamo will review your preferred timing and follow up soon to
+              confirm the best next step.
             </p>
 
             <DialogFooter className="mt-8 justify-center">
@@ -153,7 +154,7 @@ export function BookingModal({
                     Booking details
                   </FieldLegend>
                   <FieldDescription>
-                    Start with the service, choose a date and one-hour slot,
+                    Start with the service, share your preferred date and time,
                     then add the contact details Kamo would use for follow-up.
                   </FieldDescription>
                 </FieldSet>
@@ -259,7 +260,8 @@ export function BookingModal({
                     Preferred time
                   </FieldLegend>
                   <FieldDescription>
-                    Select a one-hour daytime slot from 08:00 through 17:00.
+                    Select the time window you would prefer. Availability will
+                    be confirmed during follow-up.
                   </FieldDescription>
                   <RadioGroup
                     aria-label="Preferred time"
@@ -348,7 +350,7 @@ export function BookingModal({
                       disabled={!canSubmit && submitAttempted}
                       className="motion-button w-full justify-center rounded-full bg-[#4a3e39] px-8 text-primary-foreground transition-silk hover:bg-[#7a6457] sm:w-auto disabled:cursor-not-allowed disabled:bg-[#d8cbbb]"
                     >
-                      Book consultation
+                      Send request
                     </Button>
                   </div>
                 </DialogFooter>

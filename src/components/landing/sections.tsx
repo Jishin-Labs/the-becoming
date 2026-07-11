@@ -2,7 +2,6 @@ import { ArrowRight, Mail, Menu, Phone, Star, X } from "lucide-react";
 
 import {
   approachPrinciples,
-  editorialQuote,
   faqs,
   sectionLinks,
   services,
@@ -70,11 +69,13 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 export function Navbar({
   links,
   menuOpen,
+  onNavigate,
   onMenuToggle,
   onBook,
 }: {
   links: SectionLinkMap;
   menuOpen: boolean;
+  onNavigate: () => void;
   onMenuToggle: () => void;
   onBook: () => void;
 }) {
@@ -90,6 +91,7 @@ export function Navbar({
             <a
               key={link.id}
               href={`#${link.id}`}
+              onClick={onNavigate}
               className="motion-link text-xs font-semibold uppercase tracking-[0.18em] text-[#6e5d53] transition-gentle hover:text-[#a98961]"
             >
               {link.label}
@@ -139,6 +141,7 @@ export function Navbar({
               <a
                 key={link.id}
                 href={`#${link.id}`}
+                onClick={onNavigate}
                 className="motion-link text-sm font-semibold uppercase tracking-[0.18em] text-[#4a3e39] transition-gentle hover:text-[#a98961]"
                 style={{
                   transitionDelay: menuOpen ? `${index * 40}ms` : "0ms",
@@ -191,9 +194,9 @@ export function Hero({
           </p>
 
           <p className="mt-4 max-w-xl text-sm leading-7 text-muted-foreground sm:mt-5">
-            Begin with a clarity consultation, understand which support format
-            fits your season, and leave with a clearer sense of what needs care
-            next.
+            This is coaching and wellness support, not therapy. Start with a
+            clarity consultation request to understand which format fits your
+            season and what support makes sense next.
           </p>
 
           <div className="animate-fade-up-soft-delay-1 mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:gap-4">
@@ -201,7 +204,7 @@ export function Hero({
               onClick={onBook}
               className="motion-button w-full rounded-full bg-[#4a3e39] px-6 text-primary-foreground transition-silk hover:-translate-y-0.5 hover:bg-[#7a6457] sm:w-auto sm:px-7"
             >
-              Book Consultation
+              Request Consultation
               <ArrowRight size={16} className="transition-silk group-hover/button:translate-x-1" />
             </Button>
 
@@ -306,25 +309,61 @@ export function WhoIHelpSection() {
   return (
     <section
       id={sectionLinks.who.id}
-      className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24"
+      className="relative overflow-hidden bg-[#f7f1e8] py-16 sm:py-24"
     >
-      <div className="mx-auto max-w-3xl text-center">
-        <SectionLabel>Who this is for</SectionLabel>
-        <h2 className="mt-4 font-heading text-[2rem] font-light tracking-tight sm:text-4xl md:text-5xl">
-          Support for the season where carrying everything alone no longer
-          works.
-        </h2>
-      </div>
+      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-white/80 to-transparent" />
+      <div className="absolute right-[-5rem] top-16 h-56 w-56 rounded-full bg-[#ead9c4] blur-3xl" />
+      <div className="absolute left-[-4rem] bottom-8 h-44 w-44 rounded-full bg-[#efe1cf] blur-3xl" />
 
-      <div className="mt-10 grid gap-4 sm:mt-14 md:grid-cols-2 lg:grid-cols-3">
-        {whoIHelpItems.map((item) => (
-          <div
-            key={item}
-            className="motion-card motion-panel rounded-[1.5rem] border border-border bg-white p-5 text-base font-medium text-[#4a3e39] shadow-sm transition-silk hover:shadow-md sm:rounded-[1.75rem] sm:p-6 sm:text-lg"
-          >
-            {item}
+      <div className="relative mx-auto grid max-w-380 gap-8 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-10">
+        <div className="motion-panel rounded-[2rem] border border-[#e5d5c5] bg-[#4a3e39] p-6 text-white shadow-[0_24px_70px_rgba(74,62,57,0.14)] sm:rounded-[2.5rem] sm:p-8">
+          <SectionLabel>Who this is for</SectionLabel>
+          <h2 className="mt-4 font-heading text-[2rem] font-light tracking-tight text-white sm:text-4xl md:text-5xl">
+            Support for the season where carrying everything alone no longer
+            works.
+          </h2>
+          <p className="mt-6 max-w-xl text-sm leading-7 text-[#eadfd3] sm:text-base sm:leading-8">
+            This space is built for people who have kept functioning, coping,
+            and showing up, but can feel that something underneath now needs
+            care, language, and steadier support.
+          </p>
+          <div className="mt-8 rounded-[1.5rem] border border-white/12 bg-white/8 p-5 backdrop-blur-sm sm:p-6">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#d9c3a5]">
+              What this usually sounds like
+            </p>
+            <p className="mt-3 text-sm leading-7 text-[#f3e8dc] sm:text-base">
+              You may not be in full collapse. You may simply know that the way
+              you have been holding everything is no longer sustainable.
+            </p>
           </div>
-        ))}
+        </div>
+
+        <div className="grid auto-rows-fr gap-4 sm:grid-cols-2">
+          {whoIHelpItems.map((item, index) => (
+            <article
+              key={item}
+              className={[
+                "motion-card motion-panel group relative flex h-full min-h-[11rem] flex-col overflow-hidden rounded-[1.5rem] border p-5 shadow-sm transition-silk hover:-translate-y-1 hover:shadow-xl sm:rounded-[1.75rem] sm:p-6",
+                index % 3 === 0
+                  ? "border-[#d7c3ad] bg-[#fff8ef]"
+                  : index % 3 === 1
+                    ? "border-[#e5d9cd] bg-white"
+                    : "border-[#d8cbbb] bg-[#f9f2e8]",
+              ].join(" ")}
+            >
+              <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-[#c49a6c] via-[#e7d4bf] to-transparent opacity-80 transition-silk group-hover:opacity-100" />
+              <div className="flex items-start justify-between gap-4">
+                <span className="inline-flex size-10 items-center justify-center rounded-full border border-[#dbc9b7] bg-white/80 text-xs font-semibold tracking-[0.18em] text-[#8c7a6b]">
+                  0{index + 1}
+                </span>
+       
+              </div>
+              <p className="mt-8 flex-1 text-base font-medium leading-7 text-[#4a3e39] sm:text-lg">
+                {item}
+              </p>
+            </article>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -347,9 +386,8 @@ export function ServicesSection({
             Choose the format that matches the support you need.
           </h2>
           <p className="mt-5 max-w-3xl text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8">
-            Compare the time commitment, rhythm, and intended outcome first. The
-            cards are structured so a visitor can identify fit before reading
-            every sentence.
+            Compare the format, pace, and support level first, then request the
+            option that feels most aligned with what you are navigating now.
           </p>
         </div>
 
@@ -413,9 +451,9 @@ export function ApproachSection() {
             How the work is held, paced, and made practical.
           </h2>
           <p className="mt-6 max-w-xl text-sm leading-7 text-[#eadfd3] sm:text-base sm:leading-8">
-            This section is about methodology rather than biography. The goal is
-            to show how Kamo works in session: emotionally safe, body-aware, and
-            concrete enough to create real movement.
+            The work is held with emotional steadiness, body awareness, and
+            practical structure so each session feels safe, useful, and easier
+            to carry into daily life.
           </p>
         </div>
 
@@ -460,15 +498,9 @@ export function TestimonialsSection() {
 
         <div className="mt-10 grid gap-6 sm:mt-14 lg:grid-cols-[1.2fr_0.8fr]">
           <article className="motion-card motion-panel rounded-[1.75rem] bg-[#f4eadf] p-5 transition-silk hover:shadow-lg sm:rounded-[2rem] sm:p-8 md:rounded-[2.5rem] md:p-10">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#a98961]">
-              {editorialQuote.eyebrow}
-            </p>
             <h3 className="mt-4 max-w-2xl font-heading text-[1.9rem] font-light leading-tight text-[#4a3e39] sm:text-4xl">
               “{featured.quote}”
             </h3>
-            <p className="mt-6 max-w-2xl text-sm leading-7 text-[#6e5d53] sm:text-base sm:leading-8">
-              {editorialQuote.body}
-            </p>
             <div className="mt-8 grid gap-4 border-t border-[#dbc9b7] pt-6 sm:grid-cols-2">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8c7a6b]">
@@ -605,18 +637,24 @@ export function FinalCta({ onBook }: { onBook: () => void }) {
         </h2>
 
         <p className="mx-auto mt-6 max-w-2xl text-sm leading-7 text-[#eadfd3]">
-          Start with a simple clarity consultation. You can explain where you
-          are, and Kamohelo will help you identify the next right step.
+          Start with a simple clarity consultation request. You can explain
+          where you are, and Kamohelo will follow up with the best next step.
         </p>
 
-        <div className="mt-9">
+        <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Button
             onClick={onBook}
             className="motion-button w-full rounded-full bg-white px-8 text-[#4a3e39] transition-silk hover:-translate-y-0.5 hover:bg-[#f2e8dc] sm:w-auto"
           >
-            Book Consultation
+            Request Consultation
             <ArrowRight size={16} className="transition-silk group-hover/button:translate-x-1" />
           </Button>
+          {/* <a
+            href="mailto:kamohelo@thebecoming.co.za"
+            className="motion-button inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/20 px-8 text-sm font-semibold text-white transition-silk hover:-translate-y-0.5 hover:bg-white/8 sm:w-auto"
+          >
+            Email Kamohelo
+          </a> */}
         </div>
       </div>
     </section>
@@ -652,13 +690,23 @@ export function Footer() {
           </h4>
 
           <div className="space-y-3 text-sm text-[#6e5d53]">
-            <p className="flex items-center gap-2 break-all sm:break-normal">
+            <a
+              href="mailto:kamohelo@thebecoming.co.za"
+              className="motion-link flex items-center gap-2 break-all transition-gentle hover:text-[#a98961] sm:break-normal"
+            >
               <Mail size={15} className="text-[#a98961]" />
               kamohelo@thebecoming.co.za
-            </p>
-            <p className="flex items-center gap-2">
+            </a>
+            <a
+              href="tel:+27724567891"
+              className="motion-link flex items-center gap-2 transition-gentle hover:text-[#a98961]"
+            >
               <Phone size={15} className="text-[#a98961]" />
               +27 72 456 7891
+            </a>
+            <p className="pt-2 text-xs leading-6 text-[#8c7a6b]">
+              Ready to begin? Request a consultation. Need to ask a question
+              first? Email or call directly.
             </p>
           </div>
         </div>

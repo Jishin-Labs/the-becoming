@@ -65,6 +65,7 @@ export default function App() {
   const canSubmit = Object.keys(bookingErrors).length === 0;
 
   const openBooking = (service = initialBooking.service) => {
+    setMenuOpen(false);
     setBooking((current) => ({ ...current, service }));
     setBookingComplete(false);
     setSubmitAttempted(false);
@@ -73,6 +74,10 @@ export default function App() {
 
   const closeBooking = () => {
     setBookingOpen(false);
+  };
+
+  const handleNavigate = () => {
+    setMenuOpen(false);
   };
 
   const updateBooking = <Key extends keyof BookingDetails>(
@@ -99,6 +104,7 @@ export default function App() {
         links={sectionLinks}
         menuOpen={menuOpen}
         onMenuToggle={() => setMenuOpen((value) => !value)}
+        onNavigate={handleNavigate}
         onBook={() => openBooking()}
       />
 
@@ -113,7 +119,7 @@ export default function App() {
       <ServicesSection onBook={openBooking} />
       <ApproachSection />
 
-      <TestimonialsSection />
+      {/* <TestimonialsSection /> */}
 
       <FaqSection />
 
