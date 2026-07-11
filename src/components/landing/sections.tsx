@@ -218,7 +218,7 @@ export function Hero({
         </div>
 
         <div className="relative order-1 animate-fade-up-soft-delay-1 lg:order-2">
-          <div className="motion-card motion-panel group aspect-[4/5] overflow-hidden rounded-[1.75rem] border border-border bg-[#f8f1e8] shadow-sm transition-silk hover:shadow-xl sm:rounded-[2.5rem]">
+          <div>
             <img
               src="/hero-image.jpeg"
               alt="Portrait for The Becoming hero section"
