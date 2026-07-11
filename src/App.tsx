@@ -10,7 +10,6 @@ import {
   Hero,
   Navbar,
   ServicesSection,
-  TestimonialsSection,
   TrustSection,
   WhoIHelpSection,
 } from "@/components/landing/sections";
