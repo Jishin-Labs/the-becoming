@@ -24,12 +24,16 @@ const initialBooking: BookingDetails = {
   name: "",
   email: "",
   phone: "",
+  companyName: "",
+  jobTitle: "",
+  description: "",
 };
 
 function validateBooking(booking: BookingDetails): BookingFieldErrors {
   const errors: BookingFieldErrors = {};
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const phoneDigits = booking.phone.replace(/\D/g, "");
+  const isCorporateRequest = booking.service === "Corporate Wellness";
 
   if (!booking.service.trim()) {
     errors.service = "Choose the service you want to discuss.";
@@ -46,8 +50,14 @@ function validateBooking(booking: BookingDetails): BookingFieldErrors {
   if (!emailPattern.test(booking.email.trim())) {
     errors.email = "Enter a valid email address.";
   }
-  if (phoneDigits.length < 8) {
-    errors.phone = "Enter a phone number with at least 8 digits.";
+  if (phoneDigits.length !== 10) {
+    errors.phone = "Enter a valid 10-digit South African phone number.";
+  }
+  if (isCorporateRequest && booking.companyName.trim().length < 2) {
+    errors.companyName = "Enter the company or organisation name.";
+  }
+  if (isCorporateRequest && booking.jobTitle.trim().length < 2) {
+    errors.jobTitle = "Enter your role or job title.";
   }
 
   return errors;
@@ -58,21 +68,32 @@ export default function App() {
   const [bookingOpen, setBookingOpen] = useState(false);
   const [bookingComplete, setBookingComplete] = useState(false);
   const [submitAttempted, setSubmitAttempted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
   const [booking, setBooking] = useState<BookingDetails>(initialBooking);
 
   const bookingErrors = useMemo(() => validateBooking(booking), [booking]);
   const canSubmit = Object.keys(bookingErrors).length === 0;
 
+  const resetBooking = (service = initialBooking.service) => {
+    setBooking({
+      ...initialBooking,
+      service,
+    });
+  };
+
   const openBooking = (service = initialBooking.service) => {
     setMenuOpen(false);
-    setBooking((current) => ({ ...current, service }));
+    resetBooking(service);
     setBookingComplete(false);
     setSubmitAttempted(false);
+    setSubmitError(null);
     setBookingOpen(true);
   };
 
   const closeBooking = () => {
     setBookingOpen(false);
+    setSubmitting(false);
   };
 
   const handleNavigate = () => {
@@ -86,15 +107,48 @@ export default function App() {
     setBooking((current) => ({ ...current, [key]: value }));
   };
 
-  const handleBookingSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleBookingSubmit = async (
+    event: React.FormEvent<HTMLFormElement>,
+  ) => {
     event.preventDefault();
     setSubmitAttempted(true);
+    setSubmitError(null);
 
     if (!canSubmit) {
       return;
     }
 
-    setBookingComplete(true);
+    setSubmitting(true);
+
+    try {
+      const response = await fetch("/api/consultation-request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(booking),
+      });
+
+      if (!response.ok) {
+        const result = (await response.json().catch(() => null)) as
+          | { error?: string }
+          | null;
+        throw new Error(
+          result?.error ?? "Unable to send the consultation request.",
+        );
+      }
+
+      resetBooking();
+      setBookingComplete(true);
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "Unable to send the consultation request.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -131,6 +185,8 @@ export default function App() {
         booking={booking}
         bookingComplete={bookingComplete}
         errors={bookingErrors}
+        submitError={submitError}
+        submitting={submitting}
         open={bookingOpen}
         submitAttempted={submitAttempted}
         canSubmit={canSubmit}

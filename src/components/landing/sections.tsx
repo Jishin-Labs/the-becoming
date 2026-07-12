@@ -664,69 +664,77 @@ export function FinalCta({ onBook }: { onBook: () => void }) {
 export function Footer() {
   return (
     <footer className="border-t border-border bg-white py-12">
-      <div className="mx-auto grid max-w-360 gap-8 px-4 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr]">
-        <div>
-          <BrandMark />
-          <p className="mt-4 max-w-sm text-sm leading-7 text-[#6e5d53]">
-            Somatic support, and wellness guidance for emotional clarity and
-            personal growth.
-          </p>
-          <p className="mt-5 text-xs uppercase tracking-[0.16em] text-[#8c7a6b]">
-            Built and maintained by{" "}
-            <a
-              href="https://jishin-website.vercel.app/"
-              target="_blank"
-              rel="noreferrer"
-              className="motion-link text-[#4a3e39] transition-gentle hover:text-[#a98961]"
-            >
-              Jishin-Labs
-            </a>
-          </p>
-        </div>
-
-        <div>
-          <h4 className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-[#4a3e39]">
-            Contact
-          </h4>
-
-          <div className="space-y-3 text-sm text-[#6e5d53]">
-            <a
-              href="mailto:kamohelomariti98@yahoo.com"
-              className="motion-link flex items-center gap-2 break-all transition-gentle hover:text-[#a98961] sm:break-normal"
-            >
-              <Mail size={15} className="text-[#a98961]" />
-              kamohelomariti98@yahoo.com
-            </a>
-            <a
-              href="tel:+27724567891"
-              className="motion-link flex items-center gap-2 transition-gentle hover:text-[#a98961]"
-            >
-              <Phone size={15} className="text-[#a98961]" />
-              +27 74 698 6276
-            </a>
-            <p className="pt-2 text-xs leading-6 text-[#8c7a6b]">
-              Ready to begin? Request a consultation. Need to ask a question
-              first? Email or call directly.
+      <div className="mx-auto max-w-360 px-4 sm:px-6">
+        <div className="grid gap-8 md:grid-cols-[1.4fr_1fr_1fr]">
+          <div>
+            <BrandMark />
+            <p className="mt-4 max-w-sm text-sm leading-7 text-[#6e5d53]">
+              Somatic support, and wellness guidance for emotional clarity and
+              personal growth.
+            </p>
+            <p className="mt-5 text-xs tracking-[0.08em] text-[#8c7a6b]">
+              Website by{" "}
+              <a
+                href="https://jishin-website.vercel.app/"
+                target="_blank"
+                rel="noreferrer"
+                className="motion-link font-medium text-[#6e5d53] transition-gentle hover:text-[#a98961]"
+              >
+                Jishin Labs
+              </a>
             </p>
           </div>
+
+          <div>
+            <h4 className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-[#4a3e39]">
+              Contact
+            </h4>
+
+            <div className="space-y-3 text-sm text-[#6e5d53]">
+              <a
+                href="mailto:kamohelomariti98@yahoo.com"
+                className="motion-link flex items-center gap-2 break-all transition-gentle hover:text-[#a98961] sm:break-normal"
+              >
+                <Mail size={15} className="text-[#a98961]" />
+                kamohelomariti98@yahoo.com
+              </a>
+              <a
+                href="tel:+27724567891"
+                className="motion-link flex items-center gap-2 transition-gentle hover:text-[#a98961]"
+              >
+                <Phone size={15} className="text-[#a98961]" />
+                +27 74 698 6276
+              </a>
+              <p className="pt-2 text-xs leading-6 text-[#8c7a6b]">
+                Ready to begin? Request a consultation. Need to ask a question
+                first? Email or call directly.
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-[#4a3e39]">
+              Links
+            </h4>
+
+            <div className="flex flex-col gap-3 text-sm text-[#6e5d53]">
+              {primaryLinks.map((link) => (
+                <a
+                  key={link.id}
+                  href={`#${link.id}`}
+                  className="motion-link transition-gentle hover:text-[#a98961]"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </div>
         </div>
 
-        <div>
-          <h4 className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-[#4a3e39]">
-            Links
-          </h4>
-
-          <div className="flex flex-col gap-3 text-sm text-[#6e5d53]">
-            {primaryLinks.map((link) => (
-              <a
-                key={link.id}
-                href={`#${link.id}`}
-                className="motion-link transition-gentle hover:text-[#a98961]"
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
+        <div className="mt-10 border-t border-border pt-6 text-center">
+          <p className="text-xs tracking-[0.08em] text-[#8c7a6b]">
+            © {new Date().getFullYear()} The Becoming. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

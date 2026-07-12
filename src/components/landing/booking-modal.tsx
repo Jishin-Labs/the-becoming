@@ -28,6 +28,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -48,6 +49,8 @@ type BookingModalProps = {
   bookingComplete: boolean;
   canSubmit: boolean;
   errors: BookingFieldErrors;
+  submitError: string | null;
+  submitting: boolean;
   open: boolean;
   submitAttempted: boolean;
   onClose: () => void;
@@ -63,6 +66,8 @@ export function BookingModal({
   bookingComplete,
   canSubmit,
   errors,
+  submitError,
+  submitting,
   open,
   submitAttempted,
   onClose,
@@ -70,6 +75,7 @@ export function BookingModal({
   onSubmit,
 }: BookingModalProps) {
   const isMobile = useIsMobile();
+  const isCorporateRequest = booking.service === "Corporate Wellness";
   const [touched, setTouched] = useState<
     Partial<Record<keyof BookingDetails, boolean>>
   >({});
@@ -108,16 +114,6 @@ export function BookingModal({
         className="animate-scale-in-soft max-h-[calc(100vh-0.75rem)] overflow-y-auto rounded-[1.25rem] bg-[#fffdf9] p-0 sm:max-h-[calc(100vh-2rem)] sm:rounded-[2rem] lg:max-w-6xl"
         showCloseButton
       >
-        <DialogHeader className="border-b border-border bg-[#fcf6ee] px-4 py-5 sm:px-8 sm:py-6">
-          <DialogTitle className="pr-10 font-heading text-xl font-light normal-case tracking-tight text-[#4a3e39] sm:text-2xl">
-            Request a consultation
-          </DialogTitle>
-          <DialogDescription className="max-w-2xl text-sm leading-7 text-[#6e5d53]">
-            Share your preferred service, timing, and contact details for
-            follow-up.
-          </DialogDescription>
-        </DialogHeader>
-
         {bookingComplete ? (
           <div className="animate-fade-up-soft px-4 py-8 text-center sm:px-8 sm:py-10">
             <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
@@ -144,6 +140,16 @@ export function BookingModal({
           </div>
         ) : (
           <div className="grid">
+            <DialogHeader className="border-b border-border bg-[#fcf6ee] px-4 py-5 sm:px-8 sm:py-6">
+              <DialogTitle className="pr-10 font-heading text-xl font-light normal-case tracking-tight text-[#4a3e39] sm:text-2xl">
+                Request a consultation
+              </DialogTitle>
+              <DialogDescription className="max-w-2xl text-sm leading-7 text-[#6e5d53]">
+                Share your preferred service, timing, and contact details for
+                follow-up.
+              </DialogDescription>
+            </DialogHeader>
+
             <form
               onSubmit={onSubmit}
               className="min-w-0 px-4 py-4 sm:px-8 sm:py-6"
@@ -343,15 +349,91 @@ export function BookingModal({
                   </Field>
                 </div>
 
+                {isCorporateRequest ? (
+                  <div className="grid gap-5 md:grid-cols-2 md:gap-8">
+                    <Field data-invalid={Boolean(visibleErrors.companyName)}>
+                      <FieldContent>
+                        <Label
+                          htmlFor="booking-company-name"
+                          className="text-[#6e5d53]"
+                        >
+                          Company name
+                        </Label>
+                        <Input
+                          id="booking-company-name"
+                          value={booking.companyName}
+                          onBlur={() => markTouched("companyName")}
+                          onChange={(event) =>
+                            onChange("companyName", event.target.value)
+                          }
+                          aria-invalid={Boolean(visibleErrors.companyName)}
+                          className="motion-field h-12 rounded-xl border border-[#e1d4c8] bg-white px-4 focus-visible:border-[#b79b7d] focus-visible:ring-[#d8cbbb]/60"
+                        />
+                        <FieldError>{visibleErrors.companyName}</FieldError>
+                      </FieldContent>
+                    </Field>
+
+                    <Field data-invalid={Boolean(visibleErrors.jobTitle)}>
+                      <FieldContent>
+                        <Label
+                          htmlFor="booking-job-title"
+                          className="text-[#6e5d53]"
+                        >
+                          Your role
+                        </Label>
+                        <Input
+                          id="booking-job-title"
+                          value={booking.jobTitle}
+                          onBlur={() => markTouched("jobTitle")}
+                          onChange={(event) =>
+                            onChange("jobTitle", event.target.value)
+                          }
+                          aria-invalid={Boolean(visibleErrors.jobTitle)}
+                          className="motion-field h-12 rounded-xl border border-[#e1d4c8] bg-white px-4 focus-visible:border-[#b79b7d] focus-visible:ring-[#d8cbbb]/60"
+                        />
+                        <FieldError>{visibleErrors.jobTitle}</FieldError>
+                      </FieldContent>
+                    </Field>
+                  </div>
+                ) : null}
+
+                <Field>
+                  <FieldContent>
+                    <Label
+                      htmlFor="booking-description"
+                      className="text-[#6e5d53]"
+                    >
+                      Description
+                    </Label>
+                    <Textarea
+                      id="booking-description"
+                      value={booking.description}
+                      onBlur={() => markTouched("description")}
+                      onChange={(event) =>
+                        onChange("description", event.target.value)
+                      }
+                      placeholder={
+                        isCorporateRequest
+                          ? "Share what your team is navigating, what kind of support you need, and any workshop or wellness goals."
+                          : "Share a little about what you are navigating and what kind of support you are looking for."
+                      }
+                      className="motion-field min-h-32 rounded-xl border border-[#e1d4c8] bg-white px-4 py-3 focus-visible:border-[#b79b7d] focus-visible:ring-[#d8cbbb]/60"
+                    />
+                  </FieldContent>
+                </Field>
+
                 <DialogFooter className="sticky bottom-0 -mx-4 border-t border-border bg-[#fffdf9]/95 px-4 pt-4 shadow-[0_-10px_30px_rgba(74,62,57,0.06)] backdrop-blur-sm sm:-mx-8 sm:px-8 sm:pt-5">
                   <div className="flex w-full flex-col gap-3 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
                     <Button
                       type="submit"
-                      disabled={!canSubmit && submitAttempted}
+                      disabled={submitting || (!canSubmit && submitAttempted)}
                       className="motion-button w-full justify-center rounded-full bg-[#4a3e39] px-8 text-primary-foreground transition-silk hover:bg-[#7a6457] sm:w-auto disabled:cursor-not-allowed disabled:bg-[#d8cbbb]"
                     >
-                      Send request
+                      {submitting ? "Sending..." : "Send request"}
                     </Button>
+                    {submitError ? (
+                      <p className="text-sm text-red-700">{submitError}</p>
+                    ) : null}
                   </div>
                 </DialogFooter>
               </FieldGroup>

@@ -1,0 +1,16 @@
+name: the-becoming
+
+services:
+
+  mail:
+    restart: unless-stopped
+    image: 'axllent/mailpit:latest'
+    ports:
+      - '1025:1025'
+      - '8025:8025'
+    volumes:
+      - 'mail-data:/mail'
+
+
+volumes:
+  mail-data:
