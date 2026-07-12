@@ -77,7 +77,7 @@ export const services: Service[] = [
   {
     title: "Wellness Conversation",
     duration: "Single session",
-    cadence: "One 95-minute consultation",
+    cadence: "One 60-minute consultation",
     description:
       "A focused consultation for immediate emotional clarity, grounding, and next-step direction.",
     bestFor: ["Decision anxiety", "Current stress", "Short-term support"],
