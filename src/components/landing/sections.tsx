@@ -672,7 +672,7 @@ export function Footer() {
               Somatic support, and wellness guidance for emotional clarity and
               personal growth.
             </p>
-            <p className="mt-5 text-xs tracking-[0.08em] text-[#8c7a6b]">
+            {/* <p className="mt-5 text-xs tracking-[0.08em] text-[#8c7a6b]">
               Website by{" "}
               <a
                 href="https://jishin-website.vercel.app/"
@@ -682,7 +682,7 @@ export function Footer() {
               >
                 Jishin Labs
               </a>
-            </p>
+            </p> */}
           </div>
 
           <div>
