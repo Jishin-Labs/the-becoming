@@ -10,8 +10,8 @@ import {
   Row,
   Section,
   Text,
-  render,
 } from "react-email";
+import { render } from "@react-email/render";
 
 const h = createElement as (...args: unknown[]) => ReturnType<typeof createElement>;
 

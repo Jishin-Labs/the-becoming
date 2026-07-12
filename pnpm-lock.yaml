@@ -17,6 +17,9 @@ importers:
       '@fontsource-variable/playfair-display':
         specifier: ^5.2.8
         version: 5.2.8
+      '@react-email/render':
+        specifier: ^2.1.0
+        version: 2.1.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@shadcn/react':
         specifier: ^0.2.0
         version: 0.2.1(@types/react@19.2.17)(react@19.2.7)
