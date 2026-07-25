@@ -202,6 +202,79 @@
   }
 }
 
+@keyframes loader-aura {
+  0%, 100% {
+    opacity: 0.72;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+@keyframes loader-mark {
+  0% {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+  45%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes loader-ring {
+  0% {
+    opacity: 0.45;
+    transform: rotate(0deg) scale(0.94);
+  }
+  50% {
+    opacity: 0.9;
+    transform: rotate(180deg) scale(1);
+  }
+  100% {
+    opacity: 0.45;
+    transform: rotate(360deg) scale(0.94);
+  }
+}
+
+@keyframes loader-ring-reverse {
+  0% {
+    opacity: 0.38;
+    transform: rotate(360deg) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: rotate(180deg) scale(0.94);
+  }
+  100% {
+    opacity: 0.38;
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+@keyframes loader-copy {
+  0%, 100% {
+    opacity: 0.58;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes loader-progress {
+  0% {
+    transform: translateX(-100%) scaleX(0.35);
+  }
+  55% {
+    transform: translateX(-15%) scaleX(0.8);
+  }
+  100% {
+    transform: translateX(100%) scaleX(0.35);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -244,6 +317,31 @@
 
   .animate-scale-in-soft {
     animation: scale-in-soft 520ms var(--ease-emphasis) both;
+  }
+
+  .animate-loader-aura {
+    animation: loader-aura 4.8s ease-in-out infinite;
+  }
+
+  .animate-loader-mark {
+    animation: loader-mark 900ms var(--ease-emphasis) both;
+  }
+
+  .animate-loader-ring {
+    animation: loader-ring 4s var(--ease-gentle) infinite;
+  }
+
+  .animate-loader-ring-reverse {
+    animation: loader-ring-reverse 5.2s var(--ease-gentle) infinite;
+  }
+
+  .animate-loader-copy {
+    animation: loader-copy 2s ease-in-out infinite;
+  }
+
+  .animate-loader-progress {
+    animation: loader-progress 1.6s var(--ease-gentle) infinite;
+    transform-origin: left center;
   }
 
   .transition-gentle {
