@@ -110,7 +110,7 @@ export default function App() {
         onBook={() => openBooking()}
       />
 
-      <main className="pt-[4.5rem] sm:pt-20">
+      <main className="pt-18 sm:pt-20">
         {page === "moments" ? (
           <MomentsPage onBook={() => openBooking()} />
         ) : (
