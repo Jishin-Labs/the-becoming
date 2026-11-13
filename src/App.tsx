@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { BookingModal } from "@/components/landing/booking-modal";
 import {
@@ -13,21 +13,10 @@ import {
   TrustSection,
   WhoIHelpSection,
 } from "@/components/landing/sections";
-import { type BookingDetails, sectionLinks } from "@/components/landing/content";
-
-type BookingFieldErrors = Partial<Record<keyof BookingDetails, string>>;
-
-const initialBooking: BookingDetails = {
-  service: "Free Clarity Consultation",
-  date: "",
-  time: "",
-  name: "",
-  email: "",
-  phone: "",
-  companyName: "",
-  jobTitle: "",
-  description: "",
-};
+import { sectionLinks } from "@/components/landing/content";
+import { MomentsPage } from "@/components/moments/moments-page";
+import { useBooking } from "@/hooks/use-booking";
+import { getPage, usePage } from "@/lib/router";
 
 function InitialLoader({ leaving }: { leaving: boolean }) {
   return (
@@ -69,55 +58,21 @@ function InitialLoader({ leaving }: { leaving: boolean }) {
   );
 }
 
-function validateBooking(booking: BookingDetails): BookingFieldErrors {
-  const errors: BookingFieldErrors = {};
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const phoneDigits = booking.phone.replace(/\D/g, "");
-  const isCorporateRequest = booking.service === "Corporate Wellness";
-
-  if (!booking.service.trim()) {
-    errors.service = "Choose the service you want to discuss.";
-  }
-  if (!booking.date) {
-    errors.date = "Select your preferred date.";
-  }
-  if (!booking.time) {
-    errors.time = "Choose a one-hour slot.";
-  }
-  if (booking.name.trim().length < 2) {
-    errors.name = "Enter your full name.";
-  }
-  if (!emailPattern.test(booking.email.trim())) {
-    errors.email = "Enter a valid email address.";
-  }
-  if (phoneDigits.length !== 10) {
-    errors.phone = "Enter a valid 10-digit South African phone number.";
-  }
-  if (isCorporateRequest && booking.companyName.trim().length < 2) {
-    errors.companyName = "Enter the company or organisation name.";
-  }
-  if (isCorporateRequest && booking.jobTitle.trim().length < 2) {
-    errors.jobTitle = "Enter your role or job title.";
-  }
-
-  return errors;
-}
-
 export default function App() {
-  const [showInitialLoader, setShowInitialLoader] = useState(true);
+  const page = usePage();
+  // The intro loader only plays when the site is first opened on the home page.
+  const [showInitialLoader, setShowInitialLoader] = useState(
+    () => getPage(window.location.pathname) === "home",
+  );
   const [loaderLeaving, setLoaderLeaving] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [bookingOpen, setBookingOpen] = useState(false);
-  const [bookingComplete, setBookingComplete] = useState(false);
-  const [submitAttempted, setSubmitAttempted] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false);
-  const [booking, setBooking] = useState<BookingDetails>(initialBooking);
-
-  const bookingErrors = useMemo(() => validateBooking(booking), [booking]);
-  const canSubmit = Object.keys(bookingErrors).length === 0;
+  const { openBooking: openBookingModal, modalProps } = useBooking();
 
   useEffect(() => {
+    if (!showInitialLoader) {
+      return;
+    }
+
     const prefersReducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -135,82 +90,11 @@ export default function App() {
       window.clearTimeout(leaveTimer);
       window.clearTimeout(hideTimer);
     };
-  }, []);
+  }, [showInitialLoader]);
 
-  const resetBooking = (service = initialBooking.service) => {
-    setBooking({
-      ...initialBooking,
-      service,
-    });
-  };
-
-  const openBooking = (service = initialBooking.service) => {
+  const openBooking = (service?: string) => {
     setMenuOpen(false);
-    resetBooking(service);
-    setBookingComplete(false);
-    setSubmitAttempted(false);
-    setSubmitError(null);
-    setBookingOpen(true);
-  };
-
-  const closeBooking = () => {
-    setBookingOpen(false);
-    setSubmitting(false);
-  };
-
-  const handleNavigate = () => {
-    setMenuOpen(false);
-  };
-
-  const updateBooking = <Key extends keyof BookingDetails>(
-    key: Key,
-    value: BookingDetails[Key],
-  ) => {
-    setBooking((current) => ({ ...current, [key]: value }));
-  };
-
-  const handleBookingSubmit = async (
-    event: React.FormEvent<HTMLFormElement>,
-  ) => {
-    event.preventDefault();
-    setSubmitAttempted(true);
-    setSubmitError(null);
-
-    if (!canSubmit) {
-      return;
-    }
-
-    setSubmitting(true);
-
-    try {
-      const response = await fetch("/api/consultation-request", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(booking),
-      });
-
-      if (!response.ok) {
-        const result = (await response.json().catch(() => null)) as
-          | { error?: string }
-          | null;
-        throw new Error(
-          result?.error ?? "Unable to send the consultation request.",
-        );
-      }
-
-      resetBooking();
-      setBookingComplete(true);
-    } catch (error) {
-      setSubmitError(
-        error instanceof Error
-          ? error.message
-          : "Unable to send the consultation request.",
-      );
-    } finally {
-      setSubmitting(false);
-    }
+    openBookingModal(service);
   };
 
   return (
@@ -218,46 +102,41 @@ export default function App() {
       {showInitialLoader && <InitialLoader leaving={loaderLeaving} />}
 
       <Navbar
+        page={page}
         links={sectionLinks}
         menuOpen={menuOpen}
         onMenuToggle={() => setMenuOpen((value) => !value)}
-        onNavigate={handleNavigate}
+        onNavigate={() => setMenuOpen(false)}
         onBook={() => openBooking()}
       />
 
       <main className="pt-[4.5rem] sm:pt-20">
-        <Hero
-          servicesHref={`#${sectionLinks.services.id}`}
-          onBook={() => openBooking()}
-        />
+        {page === "moments" ? (
+          <MomentsPage onBook={() => openBooking()} />
+        ) : (
+          <>
+            <Hero
+              servicesHref={`#${sectionLinks.services.id}`}
+              onBook={() => openBooking()}
+            />
 
-        <TrustSection />
-        <AboutSection onBook={() => openBooking()} />
-        <WhoIHelpSection />
-        <ServicesSection onBook={openBooking} />
-        <ApproachSection />
+            <TrustSection />
+            <AboutSection onBook={() => openBooking()} />
+            <WhoIHelpSection />
+            <ServicesSection onBook={openBooking} />
+            <ApproachSection />
 
-        {/* <TestimonialsSection /> */}
+            {/* <TestimonialsSection /> */}
 
-        <FaqSection />
+            <FaqSection />
 
-        <FinalCta onBook={() => openBooking()} />
+            <FinalCta onBook={() => openBooking()} />
+          </>
+        )}
         <Footer />
       </main>
 
-      <BookingModal
-        booking={booking}
-        bookingComplete={bookingComplete}
-        errors={bookingErrors}
-        submitError={submitError}
-        submitting={submitting}
-        open={bookingOpen}
-        submitAttempted={submitAttempted}
-        canSubmit={canSubmit}
-        onClose={closeBooking}
-        onChange={updateBooking}
-        onSubmit={handleBookingSubmit}
-      />
+      <BookingModal {...modalProps} />
     </div>
   );
 }

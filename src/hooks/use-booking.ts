@@ -1,0 +1,152 @@
+import { useMemo, useState } from "react";
+
+import type { BookingDetails } from "@/components/landing/content";
+
+export type BookingFieldErrors = Partial<Record<keyof BookingDetails, string>>;
+
+const initialBooking: BookingDetails = {
+  service: "Free Clarity Consultation",
+  date: "",
+  time: "",
+  name: "",
+  email: "",
+  phone: "",
+  companyName: "",
+  jobTitle: "",
+  description: "",
+};
+
+function validateBooking(booking: BookingDetails): BookingFieldErrors {
+  const errors: BookingFieldErrors = {};
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const phoneDigits = booking.phone.replace(/\D/g, "");
+  const isCorporateRequest = booking.service === "Corporate Wellness";
+
+  if (!booking.service.trim()) {
+    errors.service = "Choose the service you want to discuss.";
+  }
+  if (!booking.date) {
+    errors.date = "Select your preferred date.";
+  }
+  if (!booking.time) {
+    errors.time = "Choose a one-hour slot.";
+  }
+  if (booking.name.trim().length < 2) {
+    errors.name = "Enter your full name.";
+  }
+  if (!emailPattern.test(booking.email.trim())) {
+    errors.email = "Enter a valid email address.";
+  }
+  if (phoneDigits.length !== 10) {
+    errors.phone = "Enter a valid 10-digit South African phone number.";
+  }
+  if (isCorporateRequest && booking.companyName.trim().length < 2) {
+    errors.companyName = "Enter the company or organisation name.";
+  }
+  if (isCorporateRequest && booking.jobTitle.trim().length < 2) {
+    errors.jobTitle = "Enter your role or job title.";
+  }
+
+  return errors;
+}
+
+/** Consultation booking state, shared by every page through the layout. */
+export function useBooking() {
+  const [bookingOpen, setBookingOpen] = useState(false);
+  const [bookingComplete, setBookingComplete] = useState(false);
+  const [submitAttempted, setSubmitAttempted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [booking, setBooking] = useState<BookingDetails>(initialBooking);
+
+  const bookingErrors = useMemo(() => validateBooking(booking), [booking]);
+  const canSubmit = Object.keys(bookingErrors).length === 0;
+
+  const resetBooking = (service = initialBooking.service) => {
+    setBooking({
+      ...initialBooking,
+      service,
+    });
+  };
+
+  const openBooking = (service = initialBooking.service) => {
+    resetBooking(service);
+    setBookingComplete(false);
+    setSubmitAttempted(false);
+    setSubmitError(null);
+    setBookingOpen(true);
+  };
+
+  const closeBooking = () => {
+    setBookingOpen(false);
+    setSubmitting(false);
+  };
+
+  const updateBooking = <Key extends keyof BookingDetails>(
+    key: Key,
+    value: BookingDetails[Key],
+  ) => {
+    setBooking((current) => ({ ...current, [key]: value }));
+  };
+
+  const handleBookingSubmit = async (
+    event: React.FormEvent<HTMLFormElement>,
+  ) => {
+    event.preventDefault();
+    setSubmitAttempted(true);
+    setSubmitError(null);
+
+    if (!canSubmit) {
+      return;
+    }
+
+    setSubmitting(true);
+
+    try {
+      const response = await fetch("/api/consultation-request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(booking),
+      });
+
+      if (!response.ok) {
+        const result = (await response.json().catch(() => null)) as
+          | { error?: string }
+          | null;
+        throw new Error(
+          result?.error ?? "Unable to send the consultation request.",
+        );
+      }
+
+      resetBooking();
+      setBookingComplete(true);
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "Unable to send the consultation request.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return {
+    openBooking,
+    modalProps: {
+      booking,
+      bookingComplete,
+      errors: bookingErrors,
+      submitError,
+      submitting,
+      open: bookingOpen,
+      submitAttempted,
+      canSubmit,
+      onClose: closeBooking,
+      onChange: updateBooking,
+      onSubmit: handleBookingSubmit,
+    },
+  };
+}
