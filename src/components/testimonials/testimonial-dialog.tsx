@@ -145,18 +145,20 @@ function TestimonialForm({ onSubmit }: { onSubmit: SubmitTestimonial }) {
 
   if (status === "shared") {
     return (
-      <div className="animate-fade-up-soft px-4 py-8 text-center sm:px-8 sm:py-10">
-        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
-          <Check size={32} />
+      <div className="overflow-hidden">
+        <div className="animate-fade-up-soft px-4 py-8 text-center sm:px-8 sm:py-10">
+          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
+            <Check size={32} />
+          </div>
+          <DialogTitle className="font-heading text-2xl font-light normal-case tracking-tight text-[#4a3e39] sm:text-3xl">
+            {copy.successTitle}
+          </DialogTitle>
+          <DialogFooter className="mt-8 justify-center">
+            <DialogClose render={<Button className={primaryButtonClassName} />}>
+              {copy.close}
+            </DialogClose>
+          </DialogFooter>
         </div>
-        <DialogTitle className="font-heading text-2xl font-light normal-case tracking-tight text-[#4a3e39] sm:text-3xl">
-          {copy.successTitle}
-        </DialogTitle>
-        <DialogFooter className="mt-8 justify-center">
-          <DialogClose render={<Button className={primaryButtonClassName} />}>
-            {copy.close}
-          </DialogClose>
-        </DialogFooter>
       </div>
     );
   }
