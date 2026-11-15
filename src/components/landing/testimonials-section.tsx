@@ -21,6 +21,9 @@ export function TestimonialsSection() {
   const { state, addTestimonial } = useTestimonials(previewSize);
   const copy = testimonialsContent.section;
   const openShare = () => setShareOpen(true);
+  
+  const noStoriesYet =
+    state.status === "ready" && state.testimonials.length === 0;
 
   return (
     <section
@@ -36,16 +39,18 @@ export function TestimonialsSection() {
           <p className="mt-5 text-sm leading-7 text-[#6e5d53] sm:text-base">
             {copy.intro}
           </p>
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <ShareStoryButton onClick={openShare} />
-            <Link
-              href={pagePaths.testimonials}
-              className="motion-button inline-flex min-h-9 items-center justify-center gap-2 rounded-full border border-[#4a3e39] px-7 text-sm font-medium text-[#4a3e39] transition-silk hover:-translate-y-0.5 hover:bg-[#f7efe6]"
-            >
-              {copy.readAll}
-              <ArrowRight size={16} aria-hidden="true" />
-            </Link>
-          </div>
+          {noStoriesYet ? null : (
+            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <ShareStoryButton onClick={openShare} />
+              <Link
+                href={pagePaths.testimonials}
+                className="motion-button inline-flex min-h-9 items-center justify-center gap-2 rounded-full border border-[#4a3e39] px-7 text-sm font-medium text-[#4a3e39] transition-silk hover:-translate-y-0.5 hover:bg-[#f7efe6]"
+              >
+                {copy.readAll}
+                <ArrowRight size={16} aria-hidden="true" />
+              </Link>
+            </div>
+          )}
         </div>
 
         <div className="mt-10 sm:mt-14">

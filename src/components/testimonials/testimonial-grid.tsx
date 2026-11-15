@@ -15,7 +15,8 @@ const staggerGroup = 12;
 
 /**
  * The stories, followed by the invite card. Handles the loading, error,
- * empty, sparse (1–2 stories) and dense (3 or more) states.
+ * empty (the invite card alone), sparse (1–2 stories) and dense (3 or more)
+ * states.
  */
 export function TestimonialGrid({
   state,
@@ -35,12 +36,6 @@ export function TestimonialGrid({
               : "columns-[3_340px] gap-x-6 [&>*]:mb-6 [&>*]:break-inside-avoid",
           )}
         >
-          {state.testimonials.length === 0 ? (
-            <p className="w-full! py-10 text-center text-meta">
-              {testimonialsContent.empty}
-            </p>
-          ) : null}
-
           {state.testimonials.map((testimonial, index) => (
             <TestimonialCard
               key={testimonial.id}
@@ -49,7 +44,10 @@ export function TestimonialGrid({
             />
           ))}
 
-          <TestimonialInviteCard onShare={onShare} />
+          <TestimonialInviteCard
+            onShare={onShare}
+            first={state.testimonials.length === 0}
+          />
         </div>
       ) : (
         <p

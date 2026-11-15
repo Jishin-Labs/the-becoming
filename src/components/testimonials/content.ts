@@ -25,9 +25,6 @@ export const testimonialsContent = {
   loading: "Loading stories...",
   loadError:
     "We could not load the stories right now. Please refresh the page or try again later.",
-  // Shown above the invite card when there are no stories (or none for the
-  // chosen filter).
-  empty: "No stories here yet.",
   // The preview on the home page.
   section: {
     heading: "Client stories of clarity, steadiness, and growth.",
@@ -52,6 +49,8 @@ export const testimonialsContent = {
   },
   invite: {
     heading: "Your story could be next",
+    // Used when there are no stories yet, so the card is the whole list.
+    firstHeading: "Be the first to share your story",
     text: "Worked with Kamo? Share what shifted for you. It may be exactly what someone needs to read.",
   },
   filters: {

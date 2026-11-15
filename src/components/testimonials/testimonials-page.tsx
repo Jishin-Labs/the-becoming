@@ -25,6 +25,8 @@ export function TestimonialsPage() {
   const copy = testimonialsContent.page;
   const ready = state.status === "ready" ? state : null;
 
+  const noStoriesYet = ready?.testimonials.length === 0;
+
   useEffect(() => {
     const previousTitle = document.title;
     document.title = copy.documentTitle;
@@ -49,7 +51,7 @@ export function TestimonialsPage() {
             {copy.intro}
           </p>
           <div className="mt-8">
-            <ShareStoryButton onClick={openShare} />
+            {noStoriesYet ? null : <ShareStoryButton onClick={openShare} />}
           </div>
         </div>
       </section>
