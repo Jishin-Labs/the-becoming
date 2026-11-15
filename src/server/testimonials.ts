@@ -23,19 +23,23 @@ const listOrder = [
 // as "<featured 1|0>~<createdAt>~<id>". The next page starts just after it.
 // This is used instead of page numbers because a new testimonial would push
 // everything down one place, so page 2 would repeat the last story of page 1.
-const cursorSchema = z
-  .string()
-  .transform((value) => {
-    const [featured, createdAt, id] = value.split("~");
-    return { featured, createdAt, id };
-  })
-  .pipe(
-    z.object({
-      featured: z.enum(["0", "1"]).transform((value) => value === "1"),
-      createdAt: z.iso.datetime(),
-      id: z.uuid(),
-    }),
-  );
+const cursorPartsSchema = z.object({
+  featured: z.enum(["0", "1"]),
+  createdAt: z.iso.datetime(),
+  id: z.uuid(),
+});
+
+const cursorSchema = z.string().transform((value, context) => {
+  const [featured, createdAt, id] = value.split("~");
+  const parts = cursorPartsSchema.safeParse({ featured, createdAt, id });
+
+  if (!parts.success) {
+    context.addIssue({ code: "custom", message: "The cursor is not valid." });
+    return z.NEVER;
+  }
+
+  return { ...parts.data, featured: parts.data.featured === "1" };
+});
 
 const listQuerySchema = z.object({
   limit: z.coerce
@@ -130,7 +134,7 @@ async function listTestimonials(request: RequestWithBody, response: ServerRespon
   ]);
 
   const page = rows.slice(0, limit);
-  const last = page.at(-1);
+  const last = page[page.length - 1];
   const nextCursor = rows.length > limit && last ? encodeCursor(last) : null;
 
   sendJson(response, 200, { testimonials: page, nextCursor, summary });

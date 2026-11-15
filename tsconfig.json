@@ -1,9 +1,13 @@
 {
-   "compilerOptions": {
+  "compilerOptions": {
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "target": "es2023",
+    "lib": ["ES2023"],
+    "strict": true,
+    "skipLibCheck": true
   },
   "files": [],
   "references": [
