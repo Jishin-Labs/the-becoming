@@ -1,6 +1,9 @@
 import { useMemo, useState } from "react";
 
 import type { BookingDetails } from "@/components/landing/content";
+import { readApiError } from "@/lib/api";
+import { bookingSchema } from "@/validation/booking";
+import { firstFieldErrors } from "@/validation/field-errors";
 
 export type BookingFieldErrors = Partial<Record<keyof BookingDetails, string>>;
 
@@ -17,37 +20,8 @@ const initialBooking: BookingDetails = {
 };
 
 function validateBooking(booking: BookingDetails): BookingFieldErrors {
-  const errors: BookingFieldErrors = {};
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const phoneDigits = booking.phone.replace(/\D/g, "");
-  const isCorporateRequest = booking.service === "Corporate Wellness";
-
-  if (!booking.service.trim()) {
-    errors.service = "Choose the service you want to discuss.";
-  }
-  if (!booking.date) {
-    errors.date = "Select your preferred date.";
-  }
-  if (!booking.time) {
-    errors.time = "Choose a one-hour slot.";
-  }
-  if (booking.name.trim().length < 2) {
-    errors.name = "Enter your full name.";
-  }
-  if (!emailPattern.test(booking.email.trim())) {
-    errors.email = "Enter a valid email address.";
-  }
-  if (phoneDigits.length !== 10) {
-    errors.phone = "Enter a valid 10-digit South African phone number.";
-  }
-  if (isCorporateRequest && booking.companyName.trim().length < 2) {
-    errors.companyName = "Enter the company or organisation name.";
-  }
-  if (isCorporateRequest && booking.jobTitle.trim().length < 2) {
-    errors.jobTitle = "Enter your role or job title.";
-  }
-
-  return errors;
+  const result = bookingSchema.safeParse(booking);
+  return result.success ? {} : firstFieldErrors(result.error);
 }
 
 /** Consultation booking state, shared by every page through the layout. */
@@ -112,11 +86,11 @@ export function useBooking() {
       });
 
       if (!response.ok) {
-        const result = (await response.json().catch(() => null)) as
-          | { error?: string }
-          | null;
         throw new Error(
-          result?.error ?? "Unable to send the consultation request.",
+          await readApiError(
+            response,
+            "Unable to send the consultation request.",
+          ),
         );
       }
 

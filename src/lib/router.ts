@@ -3,11 +3,12 @@ import { flushSync } from "react-dom";
 
 const NAVIGATE_EVENT = "app:navigate";
 
-export type Page = "home" | "moments";
+export type Page = "home" | "moments" | "testimonials";
 
 export const pagePaths: Record<Page, string> = {
   home: "/",
   moments: "/moments",
+  testimonials: "/testimonials",
 };
 
 function subscribe(onChange: () => void) {
@@ -23,8 +24,11 @@ function normalisePath(pathname: string) {
   return pathname.replace(/\/+$/, "") || "/";
 }
 
+/** The page for a path. Unknown paths show the home page. */
 export function getPage(pathname: string): Page {
-  return normalisePath(pathname) === pagePaths.moments ? "moments" : "home";
+  const path = normalisePath(pathname);
+  const pages = Object.keys(pagePaths) as Page[];
+  return pages.find((page) => pagePaths[page] === path) ?? "home";
 }
 
 export function usePage(): Page {

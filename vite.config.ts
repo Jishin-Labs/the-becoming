@@ -5,6 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 import path from "node:path";
 
 import { handleConsultationRequest } from "./src/server/consultation-request.js";
+import { handleTestimonials } from "./src/server/testimonials.js";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -15,10 +16,13 @@ export default defineConfig({
   },
   plugins: [
     {
-      name: "consultation-api",
+      name: "api",
       configureServer(server) {
         server.middlewares.use("/api/consultation-request", async (request, response) => {
           await handleConsultationRequest(request, response);
+        });
+        server.middlewares.use("/api/testimonials", async (request, response) => {
+          await handleTestimonials(request, response);
         });
       },
     },

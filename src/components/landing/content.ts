@@ -1,20 +1,14 @@
 import { Award, ShieldCheck, Sparkles, type LucideIcon } from "lucide-react";
 
+import type { ServiceTitle } from "@/validation/services";
+
 export type Service = {
-  title: string;
+  title: ServiceTitle;
   duration: string;
   cadence: string;
   description: string;
   bestFor: string[];
   includes: string[];
-};
-
-export type Testimonial = {
-  name: string;
-  role: string;
-  cameFor: string;
-  outcome: string;
-  quote: string;
 };
 
 export type BookingDetails = {
@@ -40,7 +34,7 @@ export const sectionLinks = {
   who: { id: "who-this-is-for", label: "Who this is for" },
   services: { id: "services", label: "Services" },
   approach: { id: "approach", label: "Approach" },
-  // testimonials: { id: "testimonials", label: "Testimonials" },
+  testimonials: { id: "testimonials", label: "Testimonials" },
   faq: { id: "faq", label: "FAQ" },
   contact: { id: "contact", label: "Contact" },
 } as const;
@@ -103,33 +97,6 @@ export const services: Service[] = [
     ],
   },
 ];
-
-// export const testimonials: Testimonial[] = [
-//   {
-//     name: "Naledi D.",
-//     role: "Creative Director, Johannesburg",
-//     cameFor: "Burnout and boundary collapse",
-//     outcome: "Calmer routines and stronger personal limits",
-//     quote:
-//       "I came in exhausted and overwhelmed. The work helped me rebuild boundaries and feel calm again.",
-//   },
-//   {
-//     name: "Brandon M.",
-//     role: "Senior Consultant, Sandton",
-//     cameFor: "Divorce, career change, emotional instability",
-//     outcome: "Clearer decisions and steadier emotional regulation",
-//     quote:
-//       "The sessions helped me navigate divorce, career change, and emotional instability with clarity.",
-//   },
-//   {
-//     name: "Zanele K.",
-//     role: "Social Entrepreneur",
-//     cameFor: "Relational healing and self-trust",
-//     outcome: "More confidence in voice and decision-making",
-//     quote:
-//       "The group coaching space helped me feel seen, supported, and much more confident in my voice.",
-//   },
-// ];
 
 export const faqs = [
   {

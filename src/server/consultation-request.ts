@@ -1,84 +1,9 @@
-import type { IncomingMessage, ServerResponse } from "node:http";
+import type { ServerResponse } from "node:http";
 
 import { config } from "../config/index.js";
 import { createEmailClient } from "../email/emailClient.js";
-
-export type BookingRequestBody = {
-  service?: string;
-  date?: string;
-  time?: string;
-  name?: string;
-  email?: string;
-  phone?: string;
-  companyName?: string;
-  jobTitle?: string;
-  description?: string;
-};
-
-type RequestWithBody = IncomingMessage & {
-  body?: unknown;
-};
-
-function sendJson(
-  response: ServerResponse,
-  statusCode: number,
-  body: Record<string, unknown>,
-) {
-  response.statusCode = statusCode;
-  response.setHeader("Content-Type", "application/json");
-  response.end(JSON.stringify(body));
-}
-
-function validateBooking(body: BookingRequestBody) {
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const phoneDigits = (body.phone ?? "").replace(/\D/g, "");
-  const isCorporateRequest = body.service?.trim() === "Corporate Wellness";
-
-  if (!body.service?.trim()) {
-    return "Choose the service the client wants to discuss.";
-  }
-  if (!body.date) {
-    return "Preferred date is required.";
-  }
-  if (!body.time) {
-    return "Preferred time is required.";
-  }
-  if (!body.name?.trim() || body.name.trim().length < 2) {
-    return "A valid name is required.";
-  }
-  if (!body.email?.trim() || !emailPattern.test(body.email.trim())) {
-    return "A valid email address is required.";
-  }
-  if (phoneDigits.length !== 10) {
-    return "A valid 10-digit South African phone number is required.";
-  }
-  if (isCorporateRequest && (!body.companyName?.trim() || body.companyName.trim().length < 2)) {
-    return "Company or organisation name is required for corporate wellness requests.";
-  }
-  if (isCorporateRequest && (!body.jobTitle?.trim() || body.jobTitle.trim().length < 2)) {
-    return "Your role or job title is required for corporate wellness requests.";
-  }
-
-  return null;
-}
-
-async function readJsonBody(request: RequestWithBody) {
-  if (request.body && typeof request.body === "object") {
-    return request.body as BookingRequestBody;
-  }
-
-  const chunks: Buffer[] = [];
-
-  for await (const chunk of request) {
-    chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
-  }
-
-  if (chunks.length === 0) {
-    return {} as BookingRequestBody;
-  }
-
-  return JSON.parse(Buffer.concat(chunks).toString("utf8")) as BookingRequestBody;
-}
+import { bookingSchema } from "../validation/booking.js";
+import { readJsonBody, sendJson, type RequestWithBody } from "./http.js";
 
 export async function handleConsultationRequest(
   request: RequestWithBody,
@@ -99,13 +24,14 @@ export async function handleConsultationRequest(
   }
 
   try {
-    const body = await readJsonBody(request);
-    const validationError = validateBooking(body);
+    const result = bookingSchema.safeParse(await readJsonBody(request));
 
-    if (validationError) {
-      sendJson(response, 400, { error: validationError });
+    if (!result.success) {
+      sendJson(response, 400, { error: result.error.issues[0].message });
       return;
     }
+
+    const booking = result.data;
 
     const to = config.mail.toEmail ?? config.mail.user;
 
@@ -126,19 +52,19 @@ export async function handleConsultationRequest(
 
     await emailClient.sendMail({
       to,
-      replyTo: body.email,
-      subject: `New consultation request: ${body.service}`,
+      replyTo: booking.email,
+      subject: `New consultation request: ${booking.service}`,
       data: {
-        name: body.name!.trim(),
-        email: body.email!.trim(),
-        phone: body.phone!.trim(),
-        service: body.service!.trim(),
-        companyName: body.companyName?.trim() || undefined,
-        jobTitle: body.jobTitle?.trim() || undefined,
-        preferredDate: body.date!,
-        preferredTime: body.time!,
+        name: booking.name,
+        email: booking.email,
+        phone: booking.phone,
+        service: booking.service,
+        companyName: booking.companyName || undefined,
+        jobTitle: booking.jobTitle || undefined,
+        preferredDate: booking.date,
+        preferredTime: booking.time,
         sentAt: new Date(),
-        notes: body.description?.trim() || undefined,
+        notes: booking.description || undefined,
       },
     });
 

@@ -14,7 +14,9 @@ import {
   WhoIHelpSection,
 } from "@/components/landing/sections";
 import { sectionLinks } from "@/components/landing/content";
+import { TestimonialsSection } from "@/components/landing/testimonials-section";
 import { MomentsPage } from "@/components/moments/moments-page";
+import { TestimonialsPage } from "@/components/testimonials/testimonials-page";
 import { useBooking } from "@/hooks/use-booking";
 import { getPage, usePage } from "@/lib/router";
 
@@ -111,9 +113,16 @@ export default function App() {
       />
 
       <main className="pt-18 sm:pt-20">
-        {page === "moments" ? (
-          <MomentsPage onBook={() => openBooking()} />
-        ) : (
+        {page === "moments" && <MomentsPage onBook={() => openBooking()} />}
+
+        {page === "testimonials" && (
+          <>
+            <TestimonialsPage />
+            <FinalCta onBook={() => openBooking()} />
+          </>
+        )}
+
+        {page === "home" && (
           <>
             <Hero
               servicesHref={`#${sectionLinks.services.id}`}
@@ -126,13 +135,14 @@ export default function App() {
             <ServicesSection onBook={openBooking} />
             <ApproachSection />
 
-            {/* <TestimonialsSection /> */}
+            <TestimonialsSection />
 
             <FaqSection />
 
             <FinalCta onBook={() => openBooking()} />
           </>
         )}
+
         <Footer />
       </main>
 

@@ -5,7 +5,6 @@ import {
   faqs,
   sectionLinks,
   services,
-  // testimonials,
   trustItems,
   whoIHelpItems,
 } from "@/components/landing/content";
@@ -39,8 +38,21 @@ const momentsNavItem: NavItem = {
   page: "moments",
 };
 
-/** Section links point at the home page, so they work from any page. */
+const testimonialsNavItem: NavItem = {
+  key: "testimonials",
+  href: pagePaths.testimonials,
+  label: sectionLinks.testimonials.label,
+  page: "testimonials",
+};
+
+/**
+ * Section links point at the home page, so they work from any page.
+ * Testimonials also has a page of its own, so its link goes there instead.
+ */
 function sectionNavItem(link: { id: string; label: string }): NavItem {
+  if (link.id === sectionLinks.testimonials.id) {
+    return testimonialsNavItem;
+  }
   return { key: link.id, href: `/#${link.id}`, label: link.label };
 }
 
@@ -57,7 +69,7 @@ const primaryLinks = buildNavItems([
   sectionLinks.who,
   sectionLinks.services,
   sectionLinks.approach,
-  // sectionLinks.testimonials,
+  sectionLinks.testimonials,
   sectionLinks.faq,
   sectionLinks.contact,
 ]);
@@ -82,7 +94,7 @@ function BrandMark({ compact = false }: { compact?: boolean }) {
   );
 }
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
+export function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#a98961]">
       {children}
@@ -112,21 +124,22 @@ export function Navbar({
           <BrandMark />
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        {/* The full menu needs about 1280px. Narrower screens use the menu button. */}
+        <nav className="hidden items-center gap-5 xl:flex 2xl:gap-8">
           {buildNavItems(Object.values(links)).map((link) => (
             <Link
               key={link.key}
               href={link.href}
               onClick={onNavigate}
               aria-current={link.page === page ? "page" : undefined}
-              className="motion-link text-xs font-semibold uppercase tracking-[0.18em] text-[#6e5d53] transition-gentle hover:text-[#a98961] aria-[current=page]:text-[#8a6a52]"
+              className="motion-link whitespace-nowrap text-xs font-semibold uppercase tracking-[0.14em] text-[#6e5d53] 2xl:tracking-[0.18em] transition-gentle hover:text-[#a98961] aria-[current=page]:text-[#8a6a52]"
             >
               {link.label}
             </Link>
           ))}
         </nav>
 
-        <div className="hidden md:block">
+        <div className="hidden xl:block">
           <Button
             onClick={onBook}
             className="motion-button rounded-full bg-[#4a3e39] px-6 text-primary-foreground transition-silk hover:-translate-y-0.5 hover:bg-[#7a6457]"
@@ -138,7 +151,7 @@ export function Navbar({
         <button
           type="button"
           onClick={onMenuToggle}
-          className="shrink-0 rounded-full border border-border p-2 text-[#4a3e39] transition-silk hover:rotate-90 hover:bg-[#f7efe6] md:hidden"
+          className="shrink-0 rounded-full border border-border p-2 text-[#4a3e39] transition-silk hover:rotate-90 hover:bg-[#f7efe6] xl:hidden"
           aria-label="Toggle menu"
           aria-expanded={menuOpen}
         >
@@ -149,7 +162,7 @@ export function Navbar({
       <div
         aria-hidden={!menuOpen}
         className={cn(
-          "grid overflow-hidden border-t border-border bg-background transition-[grid-template-rows,opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] md:hidden",
+          "grid overflow-hidden border-t border-border bg-background transition-[grid-template-rows,opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] xl:hidden",
           menuOpen
             ? "grid-rows-[1fr] opacity-100"
             : "pointer-events-none grid-rows-[0fr] opacity-0",
@@ -507,112 +520,6 @@ export function ApproachSection() {
     </section>
   );
 }
-
-// export function TestimonialsSection() {
-//   const [featured, ...supporting] = testimonials;
-
-//   return (
-//     <section
-//       id={sectionLinks.testimonials.id}
-//       className="px-4 py-16 sm:px-6 sm:py-24"
-//     >
-//       <div className="mx-auto max-w-380">
-//         <div className="mx-auto max-w-2xl text-center">
-//           <SectionLabel>Testimonials</SectionLabel>
-//           <h2 className="mt-4 font-heading text-[2rem] font-light tracking-tight sm:text-4xl md:text-5xl">
-//             Client stories of clarity, steadiness, and growth.
-//           </h2>
-//         </div>
-
-//         <div className="mt-10 grid gap-6 sm:mt-14 lg:grid-cols-[1.2fr_0.8fr]">
-//           <article className="motion-card motion-panel rounded-[1.75rem] bg-[#f4eadf] p-5 transition-silk hover:shadow-lg sm:rounded-[2rem] sm:p-8 md:rounded-[2.5rem] md:p-10">
-//             <h3 className="mt-4 max-w-2xl font-heading text-[1.9rem] font-light leading-tight text-[#4a3e39] sm:text-4xl">
-//               “{featured.quote}”
-//             </h3>
-//             <div className="mt-8 grid gap-4 border-t border-[#dbc9b7] pt-6 sm:grid-cols-2">
-//               <div>
-//                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8c7a6b]">
-//                   Came for
-//                 </p>
-//                 <p className="mt-1 text-sm text-[#4a3e39]">
-//                   {featured.cameFor}
-//                 </p>
-//               </div>
-//               <div>
-//                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8c7a6b]">
-//                   Outcome
-//                 </p>
-//                 <p className="mt-1 text-sm text-[#4a3e39]">
-//                   {featured.outcome}
-//                 </p>
-//               </div>
-//             </div>
-
-//             <div className="mt-6 border-t border-[#dbc9b7] pt-6">
-//               <p className="font-semibold text-[#4a3e39]">{featured.name}</p>
-//               <p className="mt-1 text-sm text-[#8c7a6b]">{featured.role}</p>
-//             </div>
-//           </article>
-
-//           <div className="grid gap-6">
-//             {supporting.map((testimonial, index) => (
-//               <article
-//                 key={testimonial.name}
-//                 className={cn(
-//                   "group motion-card motion-panel rounded-[1.75rem] border p-5 shadow-sm transition-silk hover:shadow-lg sm:rounded-[2rem] sm:p-7",
-//                   index === 0
-//                     ? "border-border bg-white"
-//                     : "border-[#e0d0bf] bg-[#fff8ef]",
-//                 )}
-//               >
-//                 <div className="mb-4 flex gap-1 text-[#a98961]">
-//                   {Array.from({ length: 5 }).map((_, starIndex) => (
-//                     <Star
-//                       key={starIndex}
-//                       size={15}
-//                       fill="currentColor"
-//                       className="transition-silk group-hover:scale-110"
-//                       style={{ transitionDelay: `${starIndex * 35}ms` }}
-//                     />
-//                   ))}
-//                 </div>
-//                 <p className="text-sm leading-7 text-[#6e5d53]">
-//                   “{testimonial.quote}”
-//                 </p>
-//                 <div className="mt-6 grid gap-3 border-t border-border pt-5">
-//                   <div className="grid gap-2 sm:grid-cols-2">
-//                     <div>
-//                       <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8c7a6b]">
-//                         Came for
-//                       </p>
-//                       <p className="mt-1 text-sm text-[#4a3e39]">
-//                         {testimonial.cameFor}
-//                       </p>
-//                     </div>
-//                     <div>
-//                       <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[#8c7a6b]">
-//                         Outcome
-//                       </p>
-//                       <p className="mt-1 text-sm text-[#4a3e39]">
-//                         {testimonial.outcome}
-//                       </p>
-//                     </div>
-//                   </div>
-//                   <p className="font-semibold text-[#4a3e39]">
-//                     {testimonial.name}
-//                   </p>
-//                   <p className="mt-1 text-sm text-[#8c7a6b]">
-//                     {testimonial.role}
-//                   </p>
-//                 </div>
-//               </article>
-//             ))}
-//           </div>
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }
 
 export function FaqSection() {
   return (

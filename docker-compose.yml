@@ -2,6 +2,18 @@ name: the-becoming
 
 services:
 
+  db:
+    restart: unless-stopped
+    image: 'postgres:17-alpine'
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: the_becoming
+    volumes:
+      - 'db-data:/var/lib/postgresql/data'
+
   mail:
     restart: unless-stopped
     image: 'axllent/mailpit:latest'
@@ -13,4 +25,5 @@ services:
 
 
 volumes:
+  db-data:
   mail-data:

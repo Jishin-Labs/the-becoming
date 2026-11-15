@@ -142,6 +142,37 @@
   }
 }
 
+/* Testimonial card tokens (testimonial-cards-spec.md). Where the spec's
+   colour is a near-match for a brand colour already used on the site, the
+   brand colour is used instead. `meta` is darker than the spec's #8a7a70,
+   which only reaches about 4.1:1 on white; 4.5:1 is needed for 13px text. */
+@theme {
+  --color-ink: #2a2421;
+  --color-ink-soft: #6e5d53;
+  --color-meta: #75655a;
+  --color-bronze: #8a6a52;
+  --color-bronze-soft: #b79b7d;
+  --color-espresso: #4a3e39;
+  --color-cream: #fbf6ef;
+  --color-sand: #f4eadf;
+  --color-line: #eadfd3;
+  --radius-card: 22px;
+  --shadow-card: 0 1px 2px rgb(74 58 51 / 0.04), 0 8px 24px -12px rgb(74 58 51 / 0.12);
+  --shadow-card-hover: 0 2px 4px rgb(74 58 51 / 0.05), 0 22px 44px -18px rgb(74 58 51 / 0.28);
+  --animate-rise: rise 600ms ease both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
 @keyframes fade-up-soft {
   from {
     opacity: 0;
