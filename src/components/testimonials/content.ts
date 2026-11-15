@@ -72,7 +72,6 @@ export const testimonialsContent = {
     submit: "Share my story",
     submitting: "Sharing...",
     successTitle: "Thank you for sharing",
-    successText: "Your story is now on the site for others to read.",
     close: "Close",
   },
 };

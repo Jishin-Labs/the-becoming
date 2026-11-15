@@ -152,9 +152,6 @@ function TestimonialForm({ onSubmit }: { onSubmit: SubmitTestimonial }) {
         <DialogTitle className="font-heading text-2xl font-light normal-case tracking-tight text-[#4a3e39] sm:text-3xl">
           {copy.successTitle}
         </DialogTitle>
-        <DialogDescription className="mt-4 text-sm leading-7 text-[#6e5d53] sm:text-base">
-          {copy.successText}
-        </DialogDescription>
         <DialogFooter className="mt-8 justify-center">
           <DialogClose render={<Button className={primaryButtonClassName} />}>
             {copy.close}
