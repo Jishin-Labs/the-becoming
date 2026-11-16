@@ -38,6 +38,35 @@ function initials(name: string) {
     .toUpperCase();
 }
 
+/**
+ * Colours for each background the card can sit on. "light" is the
+ * /testimonials page; "dark" is the espresso Stories section on the home page.
+ */
+const tones = {
+  light: {
+    card: "border-line bg-white shadow-card hover:border-line-strong hover:shadow-card-hover before:text-sand",
+    featured: "bg-linear-160 from-paper to-cream",
+    badge: "border-line bg-cream text-bronze",
+    quote: "text-ink",
+    toggle: "text-bronze hover:text-espresso focus-visible:outline-bronze",
+    caption: "border-line",
+    name: "text-ink",
+    date: "text-meta",
+  },
+  dark: {
+    card: "border-transparent bg-espresso hover:border-espresso-soft before:text-espresso-soft",
+    featured: "",
+    badge: "border-white/15 bg-white/5 text-on-dark-muted",
+    quote: "text-cream",
+    toggle: "text-on-dark-muted hover:text-cream focus-visible:outline-on-dark-muted",
+    caption: "border-meta",
+    name: "text-cream",
+    date: "text-on-dark-muted",
+  },
+};
+
+export type TestimonialCardTone = keyof typeof tones;
+
 /** Line breaks in a story start a new paragraph. */
 function paragraphs(message: string) {
   return message
@@ -49,10 +78,13 @@ function paragraphs(message: string) {
 export function TestimonialCard({
   testimonial,
   animationDelayMs,
+  tone = "light",
 }: {
   testimonial: Testimonial;
   animationDelayMs: number;
+  tone?: TestimonialCardTone;
 }) {
+  const colours = tones[tone];
   const quoteId = useId();
   const quoteRef = useRef<HTMLQuoteElement>(null);
   const [expanded, setExpanded] = useState(false);
@@ -84,15 +116,20 @@ export function TestimonialCard({
     <figure
       style={{ animationDelay: `${animationDelayMs}ms` }}
       className={cn(
-        "relative flex flex-col rounded-card border border-line bg-white px-[30px] pt-[34px] pb-[26px] shadow-card transition-[transform,box-shadow,border-color] duration-300 ease-out animate-rise hover:-translate-y-1 hover:border-[#e1d4c8] hover:shadow-card-hover motion-reduce:animate-none motion-reduce:transition-none motion-reduce:hover:translate-y-0 max-[600px]:px-[22px] max-[600px]:pt-[28px] max-[600px]:pb-[22px]",
+        "relative flex flex-col rounded-card border px-[30px] pt-[34px] pb-[26px] transition-[transform,box-shadow,border-color] duration-300 ease-out animate-rise hover:-translate-y-1 motion-reduce:animate-none motion-reduce:transition-none motion-reduce:hover:translate-y-0 max-[600px]:px-[22px] max-[600px]:pt-[28px] max-[600px]:pb-[22px]",
         // The large decorative opening quote mark in the top corner.
-        "before:pointer-events-none before:absolute before:top-1.5 before:right-[22px] before:font-heading before:text-[120px] before:leading-none before:text-sand before:content-['“']",
-        testimonial.featured &&
-          "bg-[linear-gradient(160deg,#fffdfb_0%,var(--color-cream)_100%)]",
+        "before:pointer-events-none before:absolute before:top-1.5 before:right-[22px] before:font-heading before:text-[120px] before:leading-none before:content-['“']",
+        colours.card,
+        testimonial.featured && colours.featured,
       )}
     >
       {testimonial.service ? (
-        <span className="relative mb-5 self-start rounded-full border border-line bg-cream px-[11px] py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-bronze">
+        <span
+          className={cn(
+            "relative mb-5 self-start rounded-full border px-[11px] py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em]",
+            colours.badge,
+          )}
+        >
           {testimonial.service}
         </span>
       ) : null}
@@ -101,7 +138,8 @@ export function TestimonialCard({
         id={quoteId}
         ref={quoteRef}
         className={cn(
-          "relative font-heading text-ink [&>p+p]:mt-3",
+          "relative font-heading [&>p+p]:mt-3",
+          colours.quote,
           testimonial.featured
             ? "text-[23px] leading-[1.55] italic max-[600px]:text-[19px]"
             : "text-[19px] leading-[1.65] max-[600px]:text-[17px]",
@@ -119,26 +157,39 @@ export function TestimonialCard({
           aria-expanded={expanded}
           aria-controls={quoteId}
           onClick={() => setExpanded((value) => !value)}
-          className="relative mt-3 self-start border-b border-current pb-0.5 text-[13px] font-semibold tracking-[0.04em] text-bronze transition-colors hover:text-espresso focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-bronze"
+          className={cn(
+            "relative mt-3 self-start border-b border-current pb-0.5 text-[13px] font-semibold tracking-[0.04em] transition-colors focus-visible:outline-2 focus-visible:outline-offset-3",
+            colours.toggle,
+          )}
         >
           {expanded ? copy.showLess : copy.readMore}
         </button>
       ) : null}
 
-      <figcaption className="mt-[26px] flex items-center gap-3.5 border-t border-line pt-5">
+      <figcaption
+        className={cn(
+          "mt-[26px] flex items-center gap-3.5 border-t pt-5",
+          colours.caption,
+        )}
+      >
         <span
           aria-hidden="true"
-          className="grid size-[46px] flex-none place-items-center rounded-full bg-[linear-gradient(135deg,var(--color-sand),#e6d3c3)] font-heading text-[17px] text-espresso"
+          className="grid size-11.5 flex-none place-items-center rounded-full bg-linear-135 from-sand to-sand-deep font-heading text-[17px] text-espresso"
         >
           {initials(testimonial.name)}
         </span>
         <span className="min-w-0">
-          <span className="block break-words text-[15px] font-semibold text-ink">
+          <span
+            className={cn(
+              "block break-words text-[15px] font-semibold",
+              colours.name,
+            )}
+          >
             {testimonial.name}
           </span>
           <time
             dateTime={testimonial.createdAt}
-            className="mt-[3px] block text-[13px] text-meta"
+            className={cn("mt-[3px] block text-[13px]", colours.date)}
           >
             {relativeDate(testimonial.createdAt, now)}
           </time>

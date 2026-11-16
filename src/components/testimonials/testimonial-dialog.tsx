@@ -5,6 +5,7 @@ import {
   type TestimonialDraft,
   testimonialsContent,
 } from "@/components/testimonials/content";
+import { fieldClassName } from "@/components/form-styles";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -30,11 +31,9 @@ import { testimonialLimits } from "@/validation/testimonial";
 
 const copy = testimonialsContent.form;
 
-const fieldClassName =
-  "motion-field rounded-xl border border-[#e1d4c8] bg-white px-4 focus-visible:border-[#b79b7d] focus-visible:ring-[#d8cbbb]/60";
 
 const primaryButtonClassName =
-  "motion-button rounded-full bg-[#4a3e39] px-7 text-primary-foreground transition-silk hover:bg-[#7a6457] disabled:cursor-not-allowed disabled:bg-[#d8cbbb]";
+  "motion-button rounded-full bg-espresso px-7 text-primary-foreground transition-silk hover:bg-espresso-soft disabled:cursor-not-allowed disabled:bg-line-strong";
 
 type SubmitTestimonial = (draft: TestimonialDraft) => Promise<void>;
 
@@ -55,7 +54,7 @@ export function ShareStoryButton({
       className={cn(
         primaryButtonClassName,
         "focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-bronze",
-        size === "small" && "h-auto px-[22px] py-[13px] text-xs",
+        size === "small" && "h-auto px-5.5 py-3.25 text-xs",
       )}
     >
       {testimonialsContent.shareButton}
@@ -76,7 +75,7 @@ export function TestimonialDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="animate-scale-in-soft max-h-[calc(100vh-0.75rem)] overflow-y-auto rounded-[1.25rem] bg-[#fffdf9] p-0 sm:max-h-[calc(100vh-2rem)] sm:max-w-xl sm:p-0 sm:rounded-[2rem]"
+        className="animate-scale-in-soft max-h-[calc(100vh-0.75rem)] overflow-y-auto rounded-[1.25rem] bg-paper p-0 sm:max-h-[calc(100vh-2rem)] sm:max-w-xl sm:p-0 sm:rounded-[2rem]"
         showCloseButton
       >
         {/* The dialog removes this form when it closes, so it starts empty
@@ -147,10 +146,10 @@ function TestimonialForm({ onSubmit }: { onSubmit: SubmitTestimonial }) {
     return (
       <div className="overflow-hidden">
         <div className="animate-fade-up-soft px-4 py-8 text-center sm:px-8 sm:py-10">
-          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 text-emerald-700">
+          <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-success-soft text-success">
             <Check size={32} />
           </div>
-          <DialogTitle className="font-heading text-2xl font-light normal-case tracking-tight text-[#4a3e39] sm:text-3xl">
+          <DialogTitle className="font-heading text-2xl font-light normal-case tracking-tight text-espresso sm:text-3xl">
             {copy.successTitle}
           </DialogTitle>
           <DialogFooter className="mt-8 justify-center">
@@ -169,11 +168,11 @@ function TestimonialForm({ onSubmit }: { onSubmit: SubmitTestimonial }) {
 
   return (
     <div className="grid">
-      <DialogHeader className="border-b border-border bg-[#fcf6ee] px-4 py-5 sm:px-8 sm:py-6">
-        <DialogTitle className="pr-10 font-heading text-xl font-light normal-case tracking-tight text-[#4a3e39] sm:text-2xl">
+      <DialogHeader className="border-b border-border bg-linen px-4 py-5 sm:px-8 sm:py-6">
+        <DialogTitle className="pr-10 font-heading text-xl font-light normal-case tracking-tight text-espresso sm:text-2xl">
           {copy.title}
         </DialogTitle>
-        <DialogDescription className="text-sm leading-7 text-[#6e5d53]">
+        <DialogDescription className="text-sm leading-7 text-ink-soft">
           {copy.description}
         </DialogDescription>
       </DialogHeader>
@@ -185,7 +184,7 @@ function TestimonialForm({ onSubmit }: { onSubmit: SubmitTestimonial }) {
       >
         <Field data-invalid={Boolean(nameError)}>
           <FieldContent>
-            <Label htmlFor="testimonial-name" className="text-[#6e5d53]">
+            <Label htmlFor="testimonial-name" className="text-ink-soft">
               {copy.nameLabel}
             </Label>
             <Input
@@ -197,7 +196,7 @@ function TestimonialForm({ onSubmit }: { onSubmit: SubmitTestimonial }) {
               onChange={(event) => updateField("name", event.target.value)}
               onBlur={() => markTouched("name")}
               aria-invalid={Boolean(nameError)}
-              className={`${fieldClassName} h-12`}
+              className={cn(fieldClassName, "h-12")}
             />
             <FieldError>{nameError}</FieldError>
           </FieldContent>
@@ -205,13 +204,13 @@ function TestimonialForm({ onSubmit }: { onSubmit: SubmitTestimonial }) {
 
         <Field data-invalid={Boolean(serviceError)}>
           <FieldContent>
-            <Label htmlFor="testimonial-service" className="text-[#6e5d53]">
+            <Label htmlFor="testimonial-service" className="text-ink-soft">
               {copy.serviceLabel}
             </Label>
             <NativeSelect
               id="testimonial-service"
               // Styles the inner <select> to match the other fields.
-              className="w-full [&_select]:h-12 [&_select]:rounded-xl [&_select]:border-[#e1d4c8] [&_select]:bg-white [&_select]:px-4 [&_select]:focus-visible:border-[#b79b7d] [&_svg]:right-4"
+              className="w-full [&_select]:h-12 [&_select]:rounded-xl [&_select]:border-line-strong [&_select]:bg-white [&_select]:px-4 [&_select]:focus-visible:border-bronze-soft [&_svg]:right-4"
               value={draft.service}
               onChange={(event) => updateField("service", event.target.value)}
               onBlur={() => markTouched("service")}
@@ -230,7 +229,7 @@ function TestimonialForm({ onSubmit }: { onSubmit: SubmitTestimonial }) {
 
         <Field data-invalid={Boolean(messageError)}>
           <FieldContent>
-            <Label htmlFor="testimonial-message" className="text-[#6e5d53]">
+            <Label htmlFor="testimonial-message" className="text-ink-soft">
               {copy.messageLabel}
             </Label>
             <Textarea
@@ -242,7 +241,7 @@ function TestimonialForm({ onSubmit }: { onSubmit: SubmitTestimonial }) {
               onBlur={() => markTouched("message")}
               aria-invalid={Boolean(messageError)}
               aria-describedby="testimonial-message-count"
-              className={`${fieldClassName} min-h-36 py-3`}
+              className={cn(fieldClassName, "min-h-36 py-3")}
             />
             <FieldDescription id="testimonial-message-count" className="text-right">
               {draft.message.length} / {testimonialLimits.message.max}
@@ -260,7 +259,7 @@ function TestimonialForm({ onSubmit }: { onSubmit: SubmitTestimonial }) {
             {status === "submitting" ? copy.submitting : copy.submit}
           </Button>
           {submitError ? (
-            <p role="alert" className="text-sm text-red-700">
+            <p role="alert" className="text-sm text-error">
               {submitError}
             </p>
           ) : null}

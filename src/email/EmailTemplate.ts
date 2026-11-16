@@ -13,6 +13,8 @@ import {
 } from "react-email";
 import { render } from "@react-email/render";
 
+import { emailColors, espressoShadow } from "./palette.js";
+
 const h = createElement as (...args: unknown[]) => ReturnType<typeof createElement>;
 
 export type ConsultationRequestEmailProps = {
@@ -143,7 +145,7 @@ export function renderEmail(props: ConsultationRequestEmailProps) {
 }
 
 const main = {
-  backgroundColor: "#f6efe6",
+  backgroundColor: emailColors.sand,
   fontFamily:
     '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
   margin: "0",
@@ -156,22 +158,22 @@ const container = {
 };
 
 const heroPanel = {
-  backgroundColor: "#4a3e39",
+  backgroundColor: emailColors.espresso,
   borderRadius: "28px",
   padding: "32px 32px 28px",
   textAlign: "center" as const,
-  boxShadow: "0 18px 40px rgba(74, 62, 57, 0.14)",
+  boxShadow: `0 18px 40px ${espressoShadow(0.14)}`,
 };
 
 const eyebrow = {
-  color: "#eadfd3",
+  color: emailColors.onDark,
   fontSize: "11px",
   letterSpacing: "0.28em",
   margin: "0 0 14px",
 };
 
 const heroTitle = {
-  color: "#fffdf9",
+  color: emailColors.paper,
   fontSize: "32px",
   lineHeight: "38px",
   fontWeight: "600",
@@ -179,19 +181,19 @@ const heroTitle = {
 };
 
 const heroCopy = {
-  color: "#eadfd3",
+  color: emailColors.onDark,
   fontSize: "15px",
   lineHeight: "24px",
   margin: "16px 0 0",
 };
 
 const content = {
-  backgroundColor: "#fffdf9",
-  border: "1px solid #eadfd3",
+  backgroundColor: emailColors.paper,
+  border: `1px solid ${emailColors.line}`,
   borderRadius: "28px",
   overflow: "hidden",
   marginTop: "18px",
-  boxShadow: "0 12px 32px rgba(74, 62, 57, 0.08)",
+  boxShadow: `0 12px 32px ${espressoShadow(0.08)}`,
 };
 
 const boxInfos = {
@@ -199,30 +201,30 @@ const boxInfos = {
 };
 
 const summaryCard = {
-  backgroundColor: "#fcf6ee",
-  border: "1px solid #eadfd3",
+  backgroundColor: emailColors.linen,
+  border: `1px solid ${emailColors.line}`,
   borderRadius: "22px",
   padding: "22px 22px 18px",
 };
 
 const detailsCard = {
-  backgroundColor: "#ffffff",
-  border: "1px solid #f0e6da",
+  backgroundColor: emailColors.white,
+  border: `1px solid ${emailColors.line}`,
   borderRadius: "22px",
   padding: "22px",
   marginTop: "18px",
 };
 
 const notesCard = {
-  backgroundColor: "#faf6ef",
-  border: "1px solid #eadfd3",
+  backgroundColor: emailColors.cream,
+  border: `1px solid ${emailColors.line}`,
   borderRadius: "22px",
   padding: "22px",
   marginTop: "18px",
 };
 
 const sectionLabel = {
-  color: "#a98961",
+  color: emailColors.bronze,
   fontSize: "11px",
   letterSpacing: "0.24em",
   textTransform: "uppercase" as const,
@@ -230,7 +232,7 @@ const sectionLabel = {
 };
 
 const sectionTitle = {
-  color: "#2a2421",
+  color: emailColors.ink,
   fontSize: "26px",
   lineHeight: "32px",
   fontWeight: "600",
@@ -238,14 +240,14 @@ const sectionTitle = {
 };
 
 const sectionCopy = {
-  color: "#6e5d53",
+  color: emailColors.inkSoft,
   fontSize: "15px",
   lineHeight: "24px",
   margin: "12px 0 0",
 };
 
 const detailRow = {
-  borderBottom: "1px solid #f1e7dc",
+  borderBottom: `1px solid ${emailColors.line}`,
 };
 
 const detailLabelColumn = {
@@ -254,7 +256,7 @@ const detailLabelColumn = {
 };
 
 const detailLabel = {
-  color: "#8c7a6b",
+  color: emailColors.subtle,
   fontSize: "12px",
   lineHeight: "18px",
   fontWeight: "600",
@@ -265,7 +267,7 @@ const detailLabel = {
 };
 
 const detailValue = {
-  color: "#4a3e39",
+  color: emailColors.espresso,
   fontSize: "15px",
   lineHeight: "22px",
   margin: "0",
@@ -273,7 +275,7 @@ const detailValue = {
 };
 
 const notesText = {
-  color: "#4a3e39",
+  color: emailColors.espresso,
   fontSize: "15px",
   lineHeight: "25px",
   margin: "0",
@@ -283,6 +285,6 @@ const notesText = {
 const footer = {
   textAlign: "center" as const,
   fontSize: "12px",
-  color: "#8c7a6b",
+  color: emailColors.subtle,
   margin: "18px 0 0",
 };

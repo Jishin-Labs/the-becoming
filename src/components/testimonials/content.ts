@@ -27,9 +27,8 @@ export const testimonialsContent = {
     "We could not load the stories right now. Please refresh the page or try again later.",
   // The preview on the home page.
   section: {
-    heading: "Client stories of clarity, steadiness, and growth.",
-    intro:
-      "Words from people who have walked part of their becoming with Kamo. If you have worked with us, we would love to hear your story too.",
+    label: "Client stories",
+    heading: "Clarity, steadiness and growth — in their words.",
     readAll: "Read all stories",
   },
   // The /testimonials page.

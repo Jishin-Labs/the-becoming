@@ -24,7 +24,7 @@ import { cn } from "@/lib/utils";
 
 /** Turns the shared centred dialog into a full-screen dark viewer. */
 const fullScreenViewer =
-  "inset-0 top-0 left-0 flex h-dvh w-full max-w-none translate-x-0 translate-y-0 flex-col items-center justify-center gap-5 rounded-none bg-[#1c1614]/95 p-0 text-white shadow-none ring-0 sm:w-full sm:max-w-none sm:p-0";
+  "inset-0 top-0 left-0 flex h-dvh w-full max-w-none translate-x-0 translate-y-0 flex-col items-center justify-center gap-5 rounded-none bg-night/95 p-0 text-white shadow-none ring-0 sm:w-full sm:max-w-none sm:p-0";
 
 const roundIconButton =
   "grid size-12 shrink-0 place-items-center rounded-full border border-white/35 bg-transparent text-white transition-silk hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:opacity-40";
@@ -150,7 +150,7 @@ function LightboxSlides({
                   <div
                     role="img"
                     aria-label={photo.alt}
-                    className="grid aspect-[3/2] w-full max-w-[860px] place-items-center rounded-xl text-xs font-semibold uppercase tracking-[0.18em] text-[#4a3e39]"
+                    className="grid aspect-[3/2] w-full max-w-[860px] place-items-center rounded-xl text-xs font-semibold uppercase tracking-[0.18em] text-espresso"
                     style={{ backgroundColor: placeholderTone(index) }}
                   >
                     Photo {padNumber(index + 1)}
@@ -164,10 +164,10 @@ function LightboxSlides({
         {nextButton("hidden sm:grid")}
       </div>
 
-      <div className="flex items-center gap-5 text-xs uppercase tracking-[0.16em] text-[#f1eae2]">
+      <div className="flex items-center gap-5 text-xs uppercase tracking-[0.16em] text-on-dark">
         {prevButton("sm:hidden")}
         <span className="hidden sm:inline">{title}</span>
-        <span aria-live="polite" className="text-[#d4c8bd]">
+        <span aria-live="polite" className="text-on-dark-muted">
           {current + 1} / {photos.length}
         </span>
         {nextButton("sm:hidden")}
@@ -195,7 +195,7 @@ export function ReelViewer({
     <Dialog open={openIndex !== null} onOpenChange={(open) => !open && onClose()}>
       <DialogContent
         showCloseButton={false}
-        className={cn(fullScreenViewer, "bg-[#1c1614] sm:bg-[#1c1614]/95 sm:p-6")}
+        className={cn(fullScreenViewer, "bg-night sm:bg-night/95 sm:p-6")}
       >
         <ReelPlayer
           key={shownIndex}
@@ -257,7 +257,7 @@ function ReelPlayer({
   return (
     <div
       onKeyDown={handleKeyDown}
-      className="relative size-full overflow-hidden bg-[#1c1614] sm:aspect-[9/16] sm:h-[min(90dvh,52rem)] sm:w-auto sm:rounded-[1.5rem]"
+      className="relative size-full overflow-hidden bg-night sm:aspect-[9/16] sm:h-[min(90dvh,52rem)] sm:w-auto sm:rounded-[1.5rem]"
     >
       <DialogTitle className="sr-only">{title} reels</DialogTitle>
       <DialogDescription className="sr-only">
@@ -282,15 +282,15 @@ function ReelPlayer({
         />
       ) : (
         <div
-          className="absolute inset-0 grid place-items-center text-xs font-semibold uppercase tracking-[0.16em] text-[#4a3e39]"
+          className="absolute inset-0 grid place-items-center text-xs font-semibold uppercase tracking-[0.16em] text-espresso"
           style={{ backgroundColor: placeholderTone(index + 2) }}
         >
           Reel {padNumber(index + 1)} · 9:16 video
         </div>
       )}
 
-      <div aria-hidden="true" className="absolute inset-x-0 top-0 h-40 bg-linear-to-b from-[#1c1614]/65 to-transparent" />
-      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-72 bg-linear-to-t from-[#1c1614]/85 to-transparent" />
+      <div aria-hidden="true" className="absolute inset-x-0 top-0 h-40 bg-linear-to-b from-night/65 to-transparent" />
+      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-72 bg-linear-to-t from-night/85 to-transparent" />
 
       {/* Tap zones: left third goes back, right third goes forward. */}
       <button
@@ -323,7 +323,7 @@ function ReelPlayer({
       <div className="absolute top-8 right-2 left-4 z-20 flex items-center justify-between">
         <div className="flex flex-col gap-0.5">
           <span className="text-xs font-semibold tracking-[0.14em]">THE BECOMING</span>
-          <span className="text-[0.7rem] tracking-[0.1em] text-[#e8dfd6]">
+          <span className="text-[0.7rem] tracking-[0.1em] text-on-dark">
             <span className="sr-only">Reel </span>
             {index + 1} / {reels.length}
           </span>
@@ -350,7 +350,7 @@ function ReelPlayer({
       </div>
 
       <div className="absolute inset-x-0 bottom-0 z-20 flex flex-col gap-3.5 px-5 pb-8">
-        <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-[#e8dfd6]">
+        <p className="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-on-dark">
           {title}
         </p>
         {reel.caption && (
@@ -359,12 +359,12 @@ function ReelPlayer({
         <button
           type="button"
           onClick={onSeeUpcoming}
-          className="motion-button mt-1 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#faf6ef] px-6 text-xs font-semibold uppercase tracking-[0.14em] text-[#2a2421] transition-silk hover:bg-white"
+          className="motion-button mt-1 inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-cream px-6 text-xs font-semibold uppercase tracking-[0.14em] text-ink transition-silk hover:bg-white"
         >
           Upcoming experiences
           <ArrowRight size={15} />
         </button>
-        <p className="text-center text-[0.7rem] uppercase tracking-[0.12em] text-[#e8dfd6]">
+        <p className="text-center text-[0.7rem] uppercase tracking-[0.12em] text-on-dark">
           Tap the sides to skip
         </p>
       </div>

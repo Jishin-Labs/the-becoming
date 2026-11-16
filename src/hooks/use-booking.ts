@@ -1,6 +1,9 @@
 import { useMemo, useState } from "react";
 
-import type { BookingDetails } from "@/components/landing/content";
+import {
+  type BookingDetails,
+  clarityConsultationService,
+} from "@/components/landing/content";
 import { readApiError } from "@/lib/api";
 import { bookingSchema } from "@/validation/booking";
 import { firstFieldErrors } from "@/validation/field-errors";
@@ -8,7 +11,7 @@ import { firstFieldErrors } from "@/validation/field-errors";
 export type BookingFieldErrors = Partial<Record<keyof BookingDetails, string>>;
 
 const initialBooking: BookingDetails = {
-  service: "Free Clarity Consultation",
+  service: clarityConsultationService,
   date: "",
   time: "",
   name: "",

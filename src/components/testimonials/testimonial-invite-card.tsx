@@ -13,7 +13,7 @@ export function TestimonialInviteCard({
   first?: boolean;
 }) {
   return (
-    <aside className="flex flex-col items-center gap-3.5 rounded-card border-[1.5px] border-dashed border-[#dbc9b7] bg-cream/60 px-[30px] py-[38px] text-center">
+    <aside className="flex flex-col items-center gap-3.5 rounded-card border-[1.5px] border-dashed border-line-strong bg-cream px-[30px] py-[38px] text-center">
       <span
         aria-hidden="true"
         className="grid size-[52px] place-items-center rounded-full border border-line bg-white text-bronze"

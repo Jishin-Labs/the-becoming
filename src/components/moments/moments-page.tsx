@@ -17,13 +17,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 type MomentsTab = "gallery" | "highlights" | "upcoming";
 
 const tabTriggerClass =
-  "h-auto flex-none px-2.5 py-4 text-[0.68rem] tracking-[0.1em] sm:tracking-[0.18em] text-[#6e5d53] hover:text-[#2a2421] data-active:text-[#2a2421] after:bg-[#2a2421] group-data-horizontal/tabs:after:bottom-0 sm:px-6 sm:py-5 sm:text-xs";
+  "h-auto flex-none px-2.5 py-4 text-[0.68rem] tracking-[0.1em] sm:tracking-[0.18em] text-ink-soft hover:text-ink data-active:text-ink after:bg-ink group-data-horizontal/tabs:after:bottom-0 sm:px-6 sm:py-5 sm:text-xs";
 
 const darkButtonClass =
-  "motion-button h-12 rounded-full bg-[#4a3e39] px-7 text-primary-foreground transition-silk hover:-translate-y-0.5 hover:bg-[#7a6457]";
+  "motion-button h-12 rounded-full bg-espresso px-7 text-primary-foreground transition-silk hover:-translate-y-0.5 hover:bg-espresso-soft";
 
 const outlineButtonClass =
-  "motion-button inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[#4a3e39] px-7 text-xs font-semibold uppercase tracking-[0.14em] text-[#4a3e39] transition-silk hover:-translate-y-0.5 hover:bg-[#f7efe6]";
+  "motion-button inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-espresso px-7 text-xs font-semibold uppercase tracking-[0.14em] text-espresso transition-silk hover:-translate-y-0.5 hover:bg-sand";
 
 export function MomentsPage({ onBook }: { onBook: () => void }) {
   const latest = pastExperiences[0];
@@ -55,13 +55,13 @@ export function MomentsPage({ onBook }: { onBook: () => void }) {
   return (
     <>
       <section className="relative overflow-hidden">
-        <div className="animate-glow-pulse absolute left-1/2 top-0 h-[320px] w-[320px] -translate-x-1/2 rounded-full bg-[#f2e8dc] blur-3xl sm:h-[460px] sm:w-[460px]" />
+        <div className="animate-glow-pulse absolute left-1/2 top-0 h-[320px] w-[320px] -translate-x-1/2 rounded-full bg-sand-deep blur-3xl sm:h-[460px] sm:w-[460px]" />
         <div className="relative mx-auto flex max-w-3xl animate-fade-up-soft flex-col items-center px-4 py-14 text-center sm:px-6 sm:py-24">
           <Eyebrow>Moments &amp; Experiences</Eyebrow>
-          <h1 className="mt-5 font-heading text-[2.5rem] font-light leading-[1.05] tracking-tight text-[#2a2421] sm:text-6xl md:text-7xl">
-            Moments we&rsquo;ve <em className="text-[#8a6a52]">shared</em>
+          <h1 className="mt-5 font-heading text-[2.5rem] font-light leading-[1.05] tracking-tight text-ink sm:text-6xl md:text-7xl">
+            Moments we&rsquo;ve <em className="text-bronze">shared</em>
           </h1>
-          <p className="mt-5 max-w-xl text-sm leading-7 text-[#6e5d53] sm:mt-6 sm:text-base sm:leading-8 md:text-lg">
+          <p className="mt-5 max-w-xl text-sm leading-7 text-ink-soft sm:mt-6 sm:text-base sm:leading-8 md:text-lg">
             Gatherings for creativity, conversation and connection. Look back on
             the moments we&rsquo;ve shared, and see what&rsquo;s coming next.
           </p>
@@ -72,7 +72,7 @@ export function MomentsPage({ onBook }: { onBook: () => void }) {
         ref={tabsRef}
         value={tab}
         onValueChange={(value) => setTab(value as MomentsTab)}
-        className="scroll-mt-18 gap-0 sm:scroll-mt-20"
+        className="gap-0"
       >
         <div className="sticky top-18 z-30 border-y border-border bg-background/95 backdrop-blur-xl sm:top-20">
           <TabsList
@@ -124,12 +124,12 @@ export function MomentsPage({ onBook }: { onBook: () => void }) {
       </Tabs>
 
       {/* <section className="px-4 pb-16 sm:px-6 sm:pb-24">
-        <div className="motion-panel mx-auto flex max-w-6xl flex-col items-center gap-5 rounded-[1.75rem] bg-[#f2e8dc] px-5 py-12 text-center sm:rounded-[2rem] sm:px-8 sm:py-16 md:rounded-[2.5rem]">
-          <h2 className="max-w-2xl font-heading text-[2rem] font-light leading-tight tracking-tight text-[#2a2421] sm:text-4xl md:text-5xl">
+        <div className="motion-panel mx-auto flex max-w-6xl flex-col items-center gap-5 rounded-[1.75rem] bg-sand-deep px-5 py-12 text-center sm:rounded-[2rem] sm:px-8 sm:py-16 md:rounded-[2.5rem]">
+          <h2 className="max-w-2xl font-heading text-[2rem] font-light leading-tight tracking-tight text-ink sm:text-4xl md:text-5xl">
             Want to be part of the{" "}
-            <em className="text-[#8a6a52]">next moment?</em>
+            <em className="text-bronze">next moment?</em>
           </h2>
-          <p className="max-w-lg text-sm leading-7 text-[#6e5d53] sm:text-base">
+          <p className="max-w-lg text-sm leading-7 text-ink-soft sm:text-base">
             See what&rsquo;s coming up next, or book a one-on-one consultation.
           </p>
           <div className="mt-2 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center">
@@ -158,7 +158,7 @@ function HighlightsPanel({
     <div className="flex flex-col gap-10">
       <div>
         <Eyebrow>Event highlights</Eyebrow>
-        <h2 className="mt-4 font-heading text-[2rem] font-light tracking-tight text-[#2a2421] sm:text-4xl md:text-5xl">
+        <h2 className="mt-4 font-heading text-[2rem] font-light tracking-tight text-ink sm:text-4xl md:text-5xl">
           Every gathering, in one place
         </h2>
       </div>
@@ -181,23 +181,23 @@ function HighlightsPanel({
                       className="motion-card-media absolute inset-0 size-full object-cover"
                     />
                   )}
-                  <span className="absolute top-4 left-4 rounded-full bg-[#faf6ef] px-3 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-[#4a3e39]">
+                  <span className="absolute top-4 left-4 rounded-full bg-cream px-3 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-espresso">
                     {index === 0 ? "Latest" : "Past"}
                   </span>
                 </div>
                 <div className="flex flex-col gap-1.5">
-                  <p className="text-xs uppercase tracking-[0.14em] text-[#6e5d53]">
+                  <p className="text-xs uppercase tracking-[0.14em] text-ink-soft">
                     {experience.date}
                   </p>
-                  <h3 className="font-heading text-2xl font-light text-[#2a2421] sm:text-3xl">
+                  <h3 className="font-heading text-2xl font-light text-ink sm:text-3xl">
                     {experience.title}
                   </h3>
-                  <p className="text-sm text-[#6e5d53]">{mediaCount(experience)}</p>
+                  <p className="text-sm text-ink-soft">{mediaCount(experience)}</p>
                 </div>
                 <button
                   type="button"
                   onClick={() => onOpen(experience.id)}
-                  className="motion-link inline-flex min-h-11 items-center gap-2 self-start text-xs font-semibold uppercase tracking-[0.16em] text-[#4a3e39] transition-gentle hover:text-[#8a6a52]"
+                  className="motion-link inline-flex min-h-11 items-center gap-2 self-start text-xs font-semibold uppercase tracking-[0.16em] text-espresso transition-gentle hover:text-bronze"
                 >
                   View gallery
                   <span className="sr-only">: {experience.title}</span>
@@ -217,17 +217,17 @@ function UpcomingPanel({ onBook }: { onBook: () => void }) {
     <div className="flex flex-col gap-10">
       <div>
         <Eyebrow>Upcoming experiences</Eyebrow>
-        <h2 className="mt-4 font-heading text-[2rem] font-light tracking-tight text-[#2a2421] sm:text-4xl md:text-5xl">
+        <h2 className="mt-4 font-heading text-[2rem] font-light tracking-tight text-ink sm:text-4xl md:text-5xl">
           Save the date
         </h2>
       </div>
 
       {upcomingExperiences.length === 0 ? (
-        <div className="flex flex-col items-start gap-4 rounded-[1.75rem] border border-dashed border-[#d8cbbb] px-6 py-10 sm:rounded-[2rem] sm:px-10">
-          <h3 className="font-heading text-2xl font-light text-[#2a2421] sm:text-3xl">
+        <div className="flex flex-col items-start gap-4 rounded-[1.75rem] border border-dashed border-line-strong px-6 py-10 sm:rounded-[2rem] sm:px-10">
+          <h3 className="font-heading text-2xl font-light text-ink sm:text-3xl">
             The next experience is being planned
           </h3>
-          <p className="max-w-xl text-sm leading-7 text-[#6e5d53]">
+          <p className="max-w-xl text-sm leading-7 text-ink-soft">
             New dates will be shared here soon. In the meantime, you can book a
             one-on-one consultation.
           </p>
@@ -252,7 +252,7 @@ function UpcomingPanel({ onBook }: { onBook: () => void }) {
                       className="absolute inset-0 size-full object-cover"
                     />
                   )}
-                  <p className="absolute top-5 left-5 flex flex-col items-center gap-0.5 rounded-2xl bg-[#faf6ef] px-4 py-3 text-center text-[#2a2421]">
+                  <p className="absolute top-5 left-5 flex flex-col items-center gap-0.5 rounded-2xl bg-cream px-4 py-3 text-center text-ink">
                     <span className="font-heading text-4xl leading-none font-light">{event.day}</span>
                     <span className="text-[0.65rem] font-semibold uppercase tracking-[0.16em]">
                       {event.month}
@@ -262,19 +262,19 @@ function UpcomingPanel({ onBook }: { onBook: () => void }) {
 
                 <div className="flex flex-1 flex-col gap-5 px-5 py-8 sm:px-10 sm:py-10">
                   <Eyebrow>{index === 0 ? "Next experience" : "Coming up"}</Eyebrow>
-                  <h3 className="font-heading text-3xl font-light leading-tight text-[#2a2421] sm:text-4xl">
+                  <h3 className="font-heading text-3xl font-light leading-tight text-ink sm:text-4xl">
                     {event.title}
                   </h3>
-                  <p className="max-w-xl text-sm leading-7 text-[#6e5d53] sm:text-base sm:leading-8">
+                  <p className="max-w-xl text-sm leading-7 text-ink-soft sm:text-base sm:leading-8">
                     {event.description}
                   </p>
-                  <dl className="flex flex-wrap gap-x-7 gap-y-3 text-sm text-[#2a2421]">
+                  <dl className="flex flex-wrap gap-x-7 gap-y-3 text-sm text-ink">
                     <EventDetail icon={<Clock size={16} />} label="Time" value={event.time} />
                     <EventDetail icon={<MapPin size={16} />} label="Venue" value={event.venue} />
                     <EventDetail icon={<Ticket size={16} />} label="Price" value={event.price} />
                   </dl>
                   <div className="flex flex-col items-stretch gap-3 pt-2 sm:flex-row sm:items-center">
-                    <span className="inline-flex min-h-12 items-center justify-center rounded-full bg-[#f7efe6] px-6 text-xs font-semibold uppercase tracking-[0.14em] text-[#6e5d53]">
+                    <span className="inline-flex min-h-12 items-center justify-center rounded-full bg-sand px-6 text-xs font-semibold uppercase tracking-[0.14em] text-ink-soft">
                       Reservations open soon
                     </span>
                     <a
@@ -306,7 +306,7 @@ function EventDetail({
 }) {
   return (
     <div className="flex items-center gap-2">
-      <dt className="text-[#8a6a52]">
+      <dt className="text-bronze">
         <span aria-hidden="true">{icon}</span>
         <span className="sr-only">{label}</span>
       </dt>

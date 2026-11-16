@@ -1,5 +1,11 @@
 import { z } from "zod";
 
+import {
+  earliestBookableDate,
+  findBookingSlot,
+  isSlotOpen,
+  johannesburgClock,
+} from "./booking-slots.js";
 import type { ServiceTitle } from "./services.js";
 
 // The browser and the server both import this file, so it uses relative
@@ -20,11 +26,23 @@ const corporateFields = z.object({
   jobTitle: z.string(),
 });
 
+// Only the fields the date and time rules read.
+const scheduleFields = z.object({
+  date: z.string(),
+  time: z.string(),
+});
+
 export const bookingSchema = z
   .object({
     service: requiredText("Choose the service you want to discuss."),
-    date: requiredText("Select your preferred date."),
-    time: requiredText("Choose a one-hour slot."),
+    date: requiredText("Select your preferred date.").regex(
+      /^\d{4}-\d{2}-\d{2}$/,
+      "Select your preferred date.",
+    ),
+    time: requiredText("Choose a one-hour slot.").refine(
+      (time) => findBookingSlot(time) !== undefined,
+      "Choose a one-hour slot.",
+    ),
     name: text("Enter your full name.").min(2, "Enter your full name."),
     email: text("Enter a valid email address.").pipe(
       z.email("Enter a valid email address."),
@@ -56,6 +74,25 @@ export const bookingSchema = z
       path: ["jobTitle"],
       error: "Enter your role or job title.",
       when: (payload) => corporateFields.safeParse(payload.value).success,
+    },
+  )
+  // Dates and times are judged on the Johannesburg clock (see booking-slots.ts).
+  .refine((booking) => booking.date >= earliestBookableDate(), {
+    path: ["date"],
+    error: "Choose a date that still has open times.",
+    when: (payload) => scheduleFields.safeParse(payload.value).success,
+  })
+  .refine(
+    (booking) => {
+      const slot = findBookingSlot(booking.time);
+      const clock = johannesburgClock();
+      // A past date already has its own error, so it is not repeated here.
+      return !slot || booking.date < clock.date || isSlotOpen(booking.date, slot, clock);
+    },
+    {
+      path: ["time"],
+      error: "This time has already started. Choose a later one.",
+      when: (payload) => scheduleFields.safeParse(payload.value).success,
     },
   );
 

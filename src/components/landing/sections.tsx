@@ -1,13 +1,31 @@
 import { ArrowRight, Mail, Menu, Phone, X } from "lucide-react";
 
 import {
-  approachPrinciples,
-  faqs,
+  aboutContent,
+  approachContent,
+  beginContent,
+  bookCta,
+  contactDetails,
+  faqContent,
+  finalCtaContent,
+  footerContent,
+  heroContent,
+  heroTrustItems,
+  pillars,
   sectionLinks,
   services,
-  trustItems,
-  whoIHelpItems,
+  servicesContent,
+  type Service,
+  whoContent,
 } from "@/components/landing/content";
+import {
+  container,
+  pillLight,
+  pillOutline,
+  pillSolid,
+  sectionSpacing,
+  sectionTitle,
+} from "@/components/landing/styles";
 import {
   Accordion,
   AccordionContent,
@@ -15,78 +33,55 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Link } from "@/components/link";
 import { type Page, pagePaths } from "@/lib/router";
 import { cn } from "@/lib/utils";
 
-type SectionLinkMap = typeof sectionLinks;
-
 type NavItem = { key: string; href: string; label: string; page?: Page };
 
-const momentsNavItem: NavItem = {
-  key: "moments",
-  href: pagePaths.moments,
-  label: "Moments",
-  page: "moments",
-};
-
-const testimonialsNavItem: NavItem = {
-  key: "testimonials",
-  href: pagePaths.testimonials,
-  label: sectionLinks.testimonials.label,
-  page: "testimonials",
-};
-
-/**
- * Section links point at the home page, so they work from any page.
- * Testimonials also has a page of its own, so its link goes there instead.
- */
 function sectionNavItem(link: { id: string; label: string }): NavItem {
-  if (link.id === sectionLinks.testimonials.id) {
-    return testimonialsNavItem;
-  }
   return { key: link.id, href: `/#${link.id}`, label: link.label };
 }
 
-/** Section links in order, with Moments slotted in before the FAQ. */
-function buildNavItems(links: Array<{ id: string; label: string }>): NavItem[] {
-  const items = links.map(sectionNavItem);
-  const faqIndex = items.findIndex((item) => item.key === sectionLinks.faq.id);
-  items.splice(faqIndex === -1 ? items.length : faqIndex, 0, momentsNavItem);
-  return items;
+const primaryLinks: NavItem[] = [
+  sectionNavItem(sectionLinks.about),
+  sectionNavItem(sectionLinks.services),
+  sectionNavItem(sectionLinks.approach),
+  {
+    key: "testimonials",
+    href: pagePaths.testimonials,
+    label: sectionLinks.testimonials.label,
+    page: "testimonials",
+  },
+  { key: "moments", href: pagePaths.moments, label: "Moments", page: "moments" },
+  sectionNavItem(sectionLinks.faq),
+  sectionNavItem(sectionLinks.contact),
+];
+
+const footerLinks: NavItem[] = [
+  sectionNavItem(sectionLinks.about),
+  sectionNavItem(sectionLinks.services),
+  sectionNavItem(sectionLinks.faq),
+  sectionNavItem(sectionLinks.contact),
+];
+
+function titleId(sectionId: string) {
+  return `${sectionId}-title`;
 }
 
-const primaryLinks = buildNavItems([
-  sectionLinks.about,
-  sectionLinks.who,
-  sectionLinks.services,
-  sectionLinks.approach,
-  sectionLinks.testimonials,
-  sectionLinks.faq,
-  sectionLinks.contact,
-]);
-
-function BrandMark({ compact = false }: { compact?: boolean }) {
+function BrandMark() {
   return (
     <span className="group/brand flex items-center gap-3">
       <img
         src="/logo.jpeg"
-        alt="The Becoming logo"
-        className="size-11 rounded-full border border-[#e7d9cb] object-cover shadow-sm transition-silk group-hover/brand:scale-[1.03] group-hover/brand:shadow-md sm:size-12"
+        alt=""
+        className="size-11 rounded-full border border-line object-cover transition-silk group-hover/brand:scale-[1.03]"
       />
-      <span className={cn("leading-none", compact && "hidden sm:block")}>
-        <span className="block font-heading text-sm tracking-[0.22em] text-[#4a3e39] transition-gentle group-hover/brand:text-[#7a6457] sm:text-lg sm:tracking-[0.28em]">
-          THE BECOMING
+      <span className="flex flex-col leading-[1.1]">
+        <span className="font-heading text-lg tracking-[0.02em] text-ink sm:text-xl">
+          The Becoming
         </span>
-        <span className="block text-[9px] uppercase tracking-[0.3em] text-[#8c7a6b] transition-gentle group-hover/brand:text-[#9a866f] sm:text-[10px] sm:tracking-[0.35em]">
+        <span className="text-[11px] uppercase tracking-[0.22em] text-subtle">
           by Kamohelo
         </span>
       </span>
@@ -94,9 +89,20 @@ function BrandMark({ compact = false }: { compact?: boolean }) {
   );
 }
 
-export function SectionLabel({ children }: { children: React.ReactNode }) {
+export function SectionLabel({
+  children,
+  onDark = false,
+}: {
+  children: React.ReactNode;
+  onDark?: boolean;
+}) {
   return (
-    <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#a98961]">
+    <p
+      className={cn(
+        "text-[13px] font-semibold uppercase tracking-[0.2em]",
+        onDark ? "text-on-dark-muted" : "text-subtle",
+      )}
+    >
       {children}
     </p>
   );
@@ -104,65 +110,79 @@ export function SectionLabel({ children }: { children: React.ReactNode }) {
 
 export function Navbar({
   page,
-  links,
   menuOpen,
   onNavigate,
   onMenuToggle,
   onBook,
 }: {
   page: Page;
-  links: SectionLinkMap;
   menuOpen: boolean;
   onNavigate: () => void;
   onMenuToggle: () => void;
   onBook: () => void;
 }) {
   return (
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-border/80 bg-background/90 backdrop-blur-xl">
-      <div className="mx-auto flex h-[4.5rem] w-full max-w-380 items-center justify-between gap-3 px-4 sm:h-20 sm:px-6">
-        <Link href={pagePaths.home} onClick={onNavigate} className="shrink-0">
+    <header className="fixed inset-x-0 top-0 z-40 border-b border-line bg-cream/95 backdrop-blur-xl">
+      <div
+        className={cn(
+          container,
+          "flex h-18 items-center justify-between gap-5 sm:h-20",
+        )}
+      >
+        <Link
+          href={pagePaths.home}
+          onClick={onNavigate}
+          aria-label="The Becoming by Kamohelo, home"
+          className="shrink-0"
+        >
           <BrandMark />
         </Link>
 
-        {/* The full menu needs about 1280px. Narrower screens use the menu button. */}
-        <nav className="hidden items-center gap-5 xl:flex 2xl:gap-8">
-          {buildNavItems(Object.values(links)).map((link) => (
+        <nav
+          aria-label="Primary"
+          className="hidden items-center gap-6 lg:flex xl:gap-8"
+        >
+          {primaryLinks.map((link) => (
             <Link
               key={link.key}
               href={link.href}
               onClick={onNavigate}
               aria-current={link.page === page ? "page" : undefined}
-              className="motion-link whitespace-nowrap text-xs font-semibold uppercase tracking-[0.14em] text-[#6e5d53] 2xl:tracking-[0.18em] transition-gentle hover:text-[#a98961] aria-[current=page]:text-[#8a6a52]"
+              className="motion-link whitespace-nowrap py-2.5 text-[15px] text-ink transition-gentle hover:text-espresso-soft aria-[current=page]:text-bronze"
             >
               {link.label}
             </Link>
           ))}
         </nav>
 
-        <div className="hidden xl:block">
-          <Button
-            onClick={onBook}
-            className="motion-button rounded-full bg-[#4a3e39] px-6 text-primary-foreground transition-silk hover:-translate-y-0.5 hover:bg-[#7a6457]"
-          >
-            Book Consultation
-          </Button>
-        </div>
+        <Button
+          onClick={onBook}
+          className={cn(pillSolid, "hidden h-11 px-5.5 text-[15px] lg:inline-flex")}
+        >
+          {bookCta}
+        </Button>
 
         <button
           type="button"
           onClick={onMenuToggle}
-          className="shrink-0 rounded-full border border-border p-2 text-[#4a3e39] transition-silk hover:rotate-90 hover:bg-[#f7efe6] xl:hidden"
-          aria-label="Toggle menu"
+          className="grid size-11 shrink-0 place-items-center rounded-full border border-line-strong text-espresso transition-silk hover:bg-sand lg:hidden"
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
           aria-expanded={menuOpen}
+          aria-controls="mobile-menu"
         >
-          {menuOpen ? <X size={20} /> : <Menu size={20} />}
+          {menuOpen ? (
+            <X size={20} aria-hidden="true" />
+          ) : (
+            <Menu size={20} aria-hidden="true" />
+          )}
         </button>
       </div>
 
       <div
-        aria-hidden={!menuOpen}
+        id="mobile-menu"
+        inert={!menuOpen}
         className={cn(
-          "grid overflow-hidden border-t border-border bg-background transition-[grid-template-rows,opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] xl:hidden",
+          "grid overflow-hidden border-t border-line bg-cream transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] lg:hidden",
           menuOpen
             ? "grid-rows-[1fr] opacity-100"
             : "pointer-events-none grid-rows-[0fr] opacity-0",
@@ -170,39 +190,27 @@ export function Navbar({
       >
         <div className="min-h-0">
           <nav
+            aria-label="Mobile"
             className={cn(
-              "flex flex-col gap-5 px-4 py-5 transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] sm:px-6",
-              menuOpen
-                ? "translate-y-0 opacity-100"
-                : "-translate-y-3 opacity-0",
+              container,
+              "flex flex-col gap-1 py-4 transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+              menuOpen ? "translate-y-0 opacity-100" : "-translate-y-3 opacity-0",
             )}
           >
-            {primaryLinks.map((link, index) => (
+            {primaryLinks.map((link) => (
               <Link
                 key={link.key}
                 href={link.href}
                 onClick={onNavigate}
                 aria-current={link.page === page ? "page" : undefined}
-                className="motion-link text-sm font-semibold uppercase tracking-[0.18em] text-[#4a3e39] transition-gentle hover:text-[#a98961] aria-[current=page]:text-[#8a6a52]"
-                style={{
-                  transitionDelay: menuOpen ? `${index * 40}ms` : "0ms",
-                }}
+                className="flex min-h-11 items-center text-base text-ink transition-gentle hover:text-espresso-soft aria-[current=page]:text-bronze"
               >
                 {link.label}
               </Link>
             ))}
 
-            <Button
-              onClick={onBook}
-              className={cn(
-                "motion-button rounded-full bg-[#4a3e39] px-6 text-primary-foreground transition-silk hover:bg-[#7a6457]",
-                menuOpen ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0",
-              )}
-              style={{
-                transitionDelay: menuOpen ? `${primaryLinks.length * 40}ms` : "0ms",
-              }}
-            >
-              Book Consultation
+            <Button onClick={onBook} className={cn(pillSolid, "mt-3 w-full")}>
+              {bookCta}
             </Button>
           </nav>
         </div>
@@ -211,200 +219,163 @@ export function Navbar({
   );
 }
 
-export function Hero({
-  onBook,
-  servicesHref,
-}: {
-  onBook: () => void;
-  servicesHref: string;
-}) {
-  return (
-    <section className="relative overflow-hidden">
-      <div className="animate-glow-pulse absolute left-1/2 top-0 h-[380px] w-[380px] -translate-x-1/2 rounded-full bg-[#f2e8dc] blur-3xl sm:h-[520px] sm:w-[520px]" />
-
-      <div className="relative mx-auto grid min-h-[calc(100vh-4.5rem)] max-w-380 items-center gap-10 px-4 py-12 sm:min-h-[calc(100vh-5rem)] sm:px-6 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
-        <div className="order-2 animate-fade-up-soft lg:order-1">
-          <h1 className="max-w-3xl font-heading text-[2.25rem] font-light leading-[1.08] tracking-tight text-[#2a2421] sm:text-5xl md:text-7xl">
-            Move from burnout, anxiety, and transition into clarity and peace.
-          </h1>
-
-          <p className="mt-5 max-w-xl text-sm leading-7 text-[#6e5d53] sm:mt-6 sm:text-base sm:leading-8 md:text-lg">
-            Somatic wellness support for high-capacity people who look composed
-            on the outside but feel overextended, anxious, or disconnected on
-            the inside.
-          </p>
-
-          <p className="mt-4 max-w-xl text-sm leading-7 text-muted-foreground sm:mt-5">
-            This is coaching and wellness support, not therapy. Start with a
-            clarity consultation request to understand which format fits your
-            season and what support makes sense next.
-          </p>
-
-          <div className="animate-fade-up-soft-delay-1 mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row sm:gap-4">
-            <Button
-              onClick={onBook}
-              className="motion-button w-full rounded-full bg-[#4a3e39] px-6 text-primary-foreground transition-silk hover:-translate-y-0.5 hover:bg-[#7a6457] sm:w-auto sm:px-7"
-            >
-              Request Consultation
-              <ArrowRight size={16} className="transition-silk group-hover/button:translate-x-1" />
-            </Button>
-
-            <a
-              href={servicesHref}
-              className="motion-button inline-flex min-h-11 w-full items-center justify-center rounded-full border border-[#d8cbbb] px-6 text-center text-xs font-semibold uppercase tracking-[0.12em] text-[#4a3e39] transition-silk hover:-translate-y-0.5 hover:border-[#4a3e39] hover:bg-[#f7efe6] sm:w-auto sm:px-7 sm:text-sm"
-            >
-              View Services
-            </a>
-          </div>
-        </div>
-
-        <div className="relative order-1 animate-fade-up-soft-delay-1 lg:order-2">
-          <div>
-            <img
-              src="/hero-image.jpeg"
-              alt="Portrait for The Becoming hero section"
-              className="motion-card-media animate-drift-soft h-full w-full rounded-[1.4rem] object-cover sm:rounded-[2rem]"
-            />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export function TrustSection() {
-  return (
-    <section className="border-y border-border bg-[#faf6ef] py-12 sm:py-16">
-      <div className="mx-auto grid max-w-380 gap-4 px-4 sm:px-6 md:grid-cols-3">
-        {trustItems.map((item) => (
-          <div
-            key={item.title}
-            className="motion-card motion-panel group rounded-[1.75rem] border border-[#eadfd3] bg-white p-6 transition-silk hover:shadow-md"
-          >
-            <item.icon
-              className="mb-4 text-[#a98961] transition-silk group-hover:scale-105 group-hover:-translate-y-0.5"
-              size={24}
-            />
-            <h3 className="text-sm font-bold uppercase tracking-[0.18em] text-[#4a3e39]">
-              {item.title}
-            </h3>
-            <p className="mt-3 text-sm leading-6 text-[#6e5d53]">{item.text}</p>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-export function AboutSection({ onBook }: { onBook: () => void }) {
+export function Hero({ onBook }: { onBook: () => void }) {
   return (
     <section
-      id={sectionLinks.about.id}
-      className="mx-auto grid max-w-380 gap-8 px-4 py-16 sm:gap-10 sm:px-6 sm:py-24 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12"
+      className={cn(
+        container,
+        "grid items-center gap-x-16 gap-y-8 pt-10 pb-16 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:pt-18 lg:pb-20",
+      )}
     >
-      <div className="motion-card motion-panel group overflow-hidden rounded-[1.75rem] border border-border bg-[#f8f1e8] transition-silk sm:rounded-[2.5rem]">
+      <div className="flex animate-fade-up-soft flex-col gap-6 lg:self-end">
+        <SectionLabel>{heroContent.eyebrow}</SectionLabel>
+        <h1 className="font-heading text-[clamp(2.6rem,4.6vw,4.25rem)] font-normal leading-[1.06] tracking-[-0.015em] text-ink">
+          {heroContent.titleStart}{" "}
+          <em className="text-bronze">{heroContent.titleEmphasis}</em>
+        </h1>
+        <p className="max-w-2xl text-lg leading-[1.6] text-ink-soft sm:text-[19px]">
+          {heroContent.intro}
+        </p>
+      </div>
+
+      <div className="relative mx-auto w-full max-w-135 animate-fade-up-soft-delay-1 pr-4 pb-4 sm:pr-7 sm:pb-7 lg:col-start-2 lg:row-span-2 lg:row-start-1">
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 top-4 left-4 rounded-[28px] bg-sand-deep sm:top-7 sm:left-7"
+        />
         <img
-          src="/about-image.jpeg"
-          alt="About Kamohelo"
-          className="motion-card-media h-full w-full rounded-[1.25rem] object-cover sm:rounded-[2rem]"
+          src="/hero-image.jpeg"
+          alt={heroContent.imageAlt}
+          fetchPriority="high"
+          className="relative aspect-4/5 w-full rounded-[28px] object-cover"
         />
       </div>
 
-      <div className="flex flex-col justify-center">
-        <SectionLabel>About Kamohelo</SectionLabel>
-        <h2 className="mt-4 font-heading text-[2rem] font-light tracking-tight sm:text-4xl md:text-5xl">
-          Grounded guidance for people who need both emotional safety and real
-          direction.
-        </h2>
-
-        <div className="mt-6 space-y-4 text-sm leading-7 text-[#6e5d53] sm:mt-7 sm:space-y-5 sm:text-base sm:leading-8">
-          <p>
-            The Becoming exists for people who look functional on the outside
-            but feel overwhelmed, tired, anxious, or disconnected on the inside.
-          </p>
-          <p>
-            The work combines coaching, somatic awareness, emotional reflection,
-            practical boundaries, and grounded next steps.
-          </p>
-          <p>
-            Kamo’s credibility comes from the combination of calm presence,
-            structured reflection, and practical integration. The work is meant
-            to help you understand yourself more clearly, not perform progress.
-          </p>
-        </div>
-
-        <div className="mt-8">
-          <Button
-            onClick={onBook}
-            className="motion-button w-full rounded-full bg-[#4a3e39] px-7 text-primary-foreground transition-silk hover:-translate-y-0.5 hover:bg-[#7a6457] sm:w-auto"
-          >
-            Start with a clarity consultation
+      <div className="flex animate-fade-up-soft-delay-1 flex-col gap-6 lg:self-start">
+        <div className="flex flex-col gap-3.5 sm:flex-row sm:flex-wrap sm:items-center">
+          <Button onClick={onBook} className={cn(pillSolid, "w-full sm:w-auto")}>
+            {bookCta}
+            <ArrowRight
+              aria-hidden="true"
+              className="transition-silk group-hover/button:translate-x-1"
+            />
           </Button>
+          <a
+            href={`#${sectionLinks.services.id}`}
+            className={cn(pillOutline, "w-full px-6 sm:w-auto")}
+          >
+            {heroContent.secondaryCta}
+          </a>
         </div>
+
+        <ul
+          aria-label={heroContent.trustLabel}
+          className="flex max-w-[36rem] flex-wrap gap-x-6.5 gap-y-2.5 border-t border-line pt-5 text-sm text-ink-soft"
+        >
+          {heroTrustItems.map((item) => (
+            <li key={item.text} className="flex items-center gap-2">
+              <item.icon
+                size={16}
+                strokeWidth={1.8}
+                aria-hidden="true"
+                className="shrink-0 text-subtle"
+              />
+              {item.text}
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );
 }
 
-export function WhoIHelpSection() {
+export function WhoSection({ onBook }: { onBook: () => void }) {
+  const id = sectionLinks.who.id;
+
+  return (
+    <section id={id} aria-labelledby={titleId(id)} className="bg-sand">
+      <div className={cn(container, sectionSpacing, "flex flex-col gap-11 md:py-22")}>
+        <div className="flex max-w-[44rem] flex-col gap-3.5">
+          <SectionLabel>{whoContent.eyebrow}</SectionLabel>
+          <h2 id={titleId(id)} className={cn(sectionTitle, "text-ink")}>
+            {whoContent.title}
+          </h2>
+          <p className="text-[17px] leading-[1.65] text-ink-soft">
+            {whoContent.intro}
+          </p>
+        </div>
+
+        <ul className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,300px),1fr))] gap-4">
+          {whoContent.statements.map((statement) => (
+            <li
+              key={statement}
+              className="rounded-[18px] bg-cream px-7 py-6.5 font-heading text-[22px] leading-[1.35] text-ink italic"
+            >
+              “{statement}”
+            </li>
+          ))}
+        </ul>
+
+        <p className="text-base text-ink-soft">
+          {whoContent.closingStart}{" "}
+          <button
+            type="button"
+            onClick={onBook}
+            className="font-medium text-ink underline decoration-line-strong underline-offset-4 transition-gentle hover:decoration-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bronze"
+          >
+            {whoContent.closingLink}
+          </button>
+          .
+        </p>
+      </div>
+    </section>
+  );
+}
+
+export function AboutSection() {
+  const id = sectionLinks.about.id;
+
   return (
     <section
-      id={sectionLinks.who.id}
-      className="relative overflow-hidden bg-[#f7f1e8] py-16 sm:py-24"
+      id={id}
+      aria-labelledby={titleId(id)}
+      className={cn(container, sectionSpacing, "flex flex-wrap items-center gap-12 lg:gap-16")}
     >
-      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-white/80 to-transparent" />
-      <div className="absolute right-[-5rem] top-16 h-56 w-56 rounded-full bg-[#ead9c4] blur-3xl" />
-      <div className="absolute left-[-4rem] bottom-8 h-44 w-44 rounded-full bg-[#efe1cf] blur-3xl" />
+      <img
+        src="/about-image.jpeg"
+        alt={aboutContent.imageAlt}
+        loading="lazy"
+        className="mx-auto aspect-[695/1000] w-full min-w-0 max-w-[440px] flex-[1_1_340px] rounded-[28px] bg-sand-deep object-cover"
+      />
 
-      <div className="relative mx-auto grid max-w-380 gap-8 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-10">
-        <div className="motion-panel rounded-[2rem] border border-[#e5d5c5] bg-[#4a3e39] p-6 text-white shadow-[0_24px_70px_rgba(74,62,57,0.14)] sm:rounded-[2.5rem] sm:p-8">
-          <SectionLabel>Who this is for</SectionLabel>
-          <h2 className="mt-4 font-heading text-[2rem] font-light tracking-tight text-white sm:text-4xl md:text-5xl">
-            Support for the season where carrying everything alone no longer
-            works.
-          </h2>
-          <p className="mt-6 max-w-xl text-sm leading-7 text-[#eadfd3] sm:text-base sm:leading-8">
-            This space is built for people who have kept functioning, coping,
-            and showing up, but can feel that something underneath now needs
-            care, language, and steadier support.
+      <div className="flex min-w-0 flex-[1_1_480px] flex-col gap-5.5">
+        <SectionLabel>{aboutContent.eyebrow}</SectionLabel>
+        <h2 id={titleId(id)} className={cn(sectionTitle, "text-ink")}>
+          {aboutContent.titleStart}{" "}
+          <em className="text-bronze">{aboutContent.titleEmphasis}</em>{" "}
+          {aboutContent.titleEnd}
+        </h2>
+        {aboutContent.paragraphs.map((paragraph) => (
+          <p key={paragraph} className="text-[17px] leading-[1.7] text-ink-soft">
+            {paragraph}
           </p>
-          <div className="mt-8 rounded-[1.5rem] border border-white/12 bg-white/8 p-5 backdrop-blur-sm sm:p-6">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#d9c3a5]">
-              What this usually sounds like
-            </p>
-            <p className="mt-3 text-sm leading-7 text-[#f3e8dc] sm:text-base">
-              You may not be in full collapse. You may simply know that the way
-              you have been holding everything is no longer sustainable.
-            </p>
-          </div>
-        </div>
+        ))}
 
-        <div className="grid auto-rows-fr gap-4 sm:grid-cols-2">
-          {whoIHelpItems.map((item, index) => (
-            <article
-              key={item}
-              className={[
-                "motion-card motion-panel group relative flex h-full min-h-[11rem] flex-col overflow-hidden rounded-[1.5rem] border p-5 shadow-sm transition-silk hover:-translate-y-1 hover:shadow-xl sm:rounded-[1.75rem] sm:p-6",
-                index % 3 === 0
-                  ? "border-[#d7c3ad] bg-[#fff8ef]"
-                  : index % 3 === 1
-                    ? "border-[#e5d9cd] bg-white"
-                    : "border-[#d8cbbb] bg-[#f9f2e8]",
-              ].join(" ")}
+        <ul className="mt-2 grid grid-cols-[repeat(auto-fit,minmax(170px,1fr))] gap-5">
+          {pillars.map((pillar) => (
+            <li
+              key={pillar.title}
+              className="flex flex-col gap-1.5 border-t border-line-strong pt-4"
             >
-              <div className="absolute inset-x-0 top-0 h-1 bg-linear-to-r from-[#c49a6c] via-[#e7d4bf] to-transparent opacity-80 transition-silk group-hover:opacity-100" />
-              <div className="flex items-start justify-between gap-4">
-                <span className="inline-flex size-10 items-center justify-center rounded-full border border-[#dbc9b7] bg-white/80 text-xs font-semibold tracking-[0.18em] text-[#8c7a6b]">
-                  0{index + 1}
-                </span>
-       
-              </div>
-              <p className="mt-8 flex-1 text-base font-medium leading-7 text-[#4a3e39] sm:text-lg">
-                {item}
-              </p>
-            </article>
+              <span className="text-[15px] font-semibold text-ink">
+                {pillar.title}
+              </span>
+              <span className="text-sm leading-[1.55] text-meta">
+                {pillar.text}
+              </span>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );
@@ -415,143 +386,218 @@ export function ServicesSection({
 }: {
   onBook: (service: string) => void;
 }) {
+  const id = sectionLinks.services.id;
+
   return (
     <section
-      id={sectionLinks.services.id}
-      className="bg-[#faf6ef] py-16 sm:py-24"
+      id={id}
+      aria-labelledby={titleId(id)}
+      className="bg-espresso-deep text-cream"
     >
-      <div className="mx-auto max-w-380 px-4 sm:px-6">
-        <div>
-          <SectionLabel>Services</SectionLabel>
-          <h2 className="mt-4 font-heading text-[2rem] font-light tracking-tight sm:text-4xl md:text-5xl">
-            Choose the format that matches the support you need.
-          </h2>
-          <p className="mt-5 max-w-3xl text-sm leading-7 text-muted-foreground sm:text-base sm:leading-8">
-            Compare the format, pace, and support level first, then request the
-            option that feels most aligned with what you are navigating now.
+      <div className={cn(container, sectionSpacing, "flex flex-col gap-11")}>
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <div className="flex max-w-[40rem] flex-col gap-3.5">
+            <SectionLabel onDark>{servicesContent.eyebrow}</SectionLabel>
+            <h2 id={titleId(id)} className={sectionTitle}>
+              {servicesContent.title}
+            </h2>
+          </div>
+          <p className="max-w-[24rem] text-[15px] leading-[1.6] text-on-dark-muted">
+            {servicesContent.aside}
           </p>
         </div>
 
-        <div className="mt-10 grid gap-6 sm:mt-14 lg:grid-cols-2">
+        {/* Fixed column counts (1, 2, then 4) so four cards never split 3 + 1. */}
+        <div className="grid gap-4.5 sm:grid-cols-2 xl:grid-cols-4">
           {services.map((service) => (
-            <Card
-              key={service.title}
-              className="motion-card motion-panel group rounded-[1.75rem] border border-border bg-white py-0 shadow-sm transition-silk hover:shadow-xl sm:rounded-[2rem]"
-            >
-              <CardHeader className="rounded-t-[1.75rem] border-b border-border bg-[#fcf8f2] px-5 py-6 sm:rounded-t-[2rem] sm:px-8 sm:py-8">
-                <div className="flex flex-wrap items-start justify-between gap-4">
-                  <div className="min-w-0">
-                    <CardTitle className="font-heading text-[1.75rem] font-light tracking-tight text-[#4a3e39] normal-case sm:text-3xl">
-                      {service.title}
-                    </CardTitle>
-                    <CardDescription className="mt-2 text-xs uppercase tracking-[0.18em] text-[#a98961]">
-                      {service.duration}
-                    </CardDescription>
-                  </div>
-                  <div className="rounded-full border border-[#d8cbbb] bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#6e5d53] transition-silk group-hover:border-[#bfa58a] group-hover:bg-[#fff8ef]">
-                    {service.cadence}
-                  </div>
-                </div>
-                <p className="mt-5 text-sm leading-7 text-[#6e5d53]">
-                  {service.description}
-                </p>
-              </CardHeader>
-
-              <CardContent className="grid gap-6 px-5 py-6 sm:grid-cols-2 sm:px-8 sm:py-8">
-                <ServiceList title="Best for" items={service.bestFor} />
-                <ServiceList title="Includes" items={service.includes} />
-              </CardContent>
-
-              <CardFooter className="flex-col items-stretch justify-between gap-4 border-t border-border px-5 py-6 sm:px-8 md:flex-row md:items-center">
-                <Button
-                  onClick={() => onBook(service.title)}
-                  className="motion-button w-full justify-center rounded-full bg-[#4a3e39] px-6 text-primary-foreground transition-silk hover:-translate-y-0.5 hover:bg-[#7a6457] md:w-auto"
-                >
-                  Book this service
-                  <ArrowRight size={15} className="transition-silk group-hover/button:translate-x-1" />
-                </Button>
-              </CardFooter>
-            </Card>
+            <ServiceCard key={service.title} service={service} onBook={onBook} />
           ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function ServiceCard({
+  service,
+  onBook,
+}: {
+  service: Service;
+  onBook: (service: string) => void;
+}) {
+  const ctaClassName = cn(
+    service.recommended ? pillSolid : pillOutline,
+    "mt-auto h-12 w-full px-5 text-[15px]",
+    !service.recommended && "border-espresso",
+  );
+
+  return (
+    <article className="flex flex-col gap-4.5 rounded-[22px] bg-cream px-7 py-7.5 text-ink">
+      <span
+        className={cn(
+          "self-start rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em]",
+          service.recommended ? "bg-bronze text-cream" : "bg-sand-deep text-espresso",
+        )}
+      >
+        {service.badge}
+      </span>
+      <h3 className="font-heading text-[26px] font-normal leading-tight">
+        {service.title}
+      </h3>
+      <p className="text-sm font-semibold text-meta">{service.format}</p>
+      <p className="text-[15px] leading-[1.6] text-ink-soft">
+        {service.description}
+      </p>
+      <ul className="grow list-disc pl-4.5 text-sm leading-[1.8] text-ink-soft marker:text-bronze-soft">
+        {service.includes.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+      <p className="text-[13px] text-meta">
+        <span className="font-semibold">{servicesContent.bestForLabel}</span>{" "}
+        {service.bestFor}
+      </p>
+
+      {/* "contact" is a plain link to the contact card further down the page. */}
+      {service.cta.action === "book" ? (
+        <Button onClick={() => onBook(service.title)} className={ctaClassName}>
+          {service.cta.label}
+        </Button>
+      ) : (
+        <a href={`#${sectionLinks.contact.id}`} className={ctaClassName}>
+          {service.cta.label}
+        </a>
+      )}
+    </article>
   );
 }
 
 export function ApproachSection() {
+  const id = sectionLinks.approach.id;
+
   return (
     <section
-      id={sectionLinks.approach.id}
-      className="bg-[#4a3e39] py-16 text-white sm:py-24"
+      id={id}
+      aria-labelledby={titleId(id)}
+      className={cn(container, sectionSpacing, "flex flex-wrap gap-14")}
     >
-      <div className="mx-auto grid max-w-380 gap-10 px-4 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:gap-12">
-        <div>
-          <SectionLabel>Kamo’s approach</SectionLabel>
-          <h2 className="mt-4 font-heading text-[2rem] font-light tracking-tight text-white sm:text-4xl md:text-5xl">
-            How the work is held, paced, and made practical.
-          </h2>
-          <p className="mt-6 max-w-xl text-sm leading-7 text-[#eadfd3] sm:text-base sm:leading-8">
-            The work is held with emotional steadiness, body awareness, and
-            practical structure so each session feels safe, useful, and easier
-            to carry into daily life.
-          </p>
-        </div>
+      <div className="flex min-w-0 flex-[1_1_340px] flex-col gap-4">
+        <SectionLabel>{approachContent.eyebrow}</SectionLabel>
+        <h2 id={titleId(id)} className={cn(sectionTitle, "text-ink")}>
+          {approachContent.title}
+        </h2>
+        <p className="text-[17px] leading-[1.65] text-ink-soft">
+          {approachContent.intro}
+        </p>
+      </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
-          {approachPrinciples.map((principle, index) => (
-            <div
-              key={principle.title}
-              className="motion-card rounded-[1.5rem] border border-white/15 bg-white/8 p-5 backdrop-blur-sm transition-silk hover:bg-white/10 sm:rounded-[2rem] sm:p-6"
+      <ol className="grid min-w-0 flex-[2_1_560px] grid-cols-[repeat(auto-fit,minmax(min(100%,250px),1fr))] gap-x-10 gap-y-9">
+        {approachContent.principles.map((principle, index) => (
+          <li
+            key={principle.title}
+            className="flex flex-col gap-2.5 border-t border-line-strong pt-5"
+          >
+            <span
+              aria-hidden="true"
+              className="font-heading text-[28px] text-bronze italic"
             >
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#d9c3a5]">
-                0{index + 1}
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <h3 className="text-lg font-semibold text-ink">{principle.title}</h3>
+            <p className="text-[15px] leading-[1.65] text-ink-soft">
+              {principle.text}
+            </p>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+}
+
+export function BeginSection() {
+  const id = "begin";
+
+  return (
+    <section aria-labelledby={titleId(id)} className="bg-sand">
+      <div className={cn(container, sectionSpacing, "flex flex-col gap-10 md:py-22")}>
+        <h2 id={titleId(id)} className={cn(sectionTitle, "text-ink")}>
+          {beginContent.title}
+        </h2>
+
+        <ol className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,260px),1fr))] gap-4.5">
+          {beginContent.steps.map((step, index) => (
+            <li
+              key={step.title}
+              className="flex flex-col gap-3 rounded-[20px] bg-cream p-7.5"
+            >
+              <span className="text-[13px] font-semibold uppercase tracking-[0.12em] text-bronze">
+                {beginContent.stepLabel} {index + 1}
+              </span>
+              <h3 className="text-[19px] font-semibold text-ink">{step.title}</h3>
+              <p className="text-[15px] leading-[1.65] text-ink-soft">
+                {step.text}
               </p>
-              <h3 className="mt-4 font-heading text-xl text-white sm:text-2xl">
-                {principle.title}
-              </h3>
-              <p className="mt-3 text-sm leading-7 text-[#eadfd3]">
-                {principle.text}
-              </p>
-            </div>
+            </li>
           ))}
-        </div>
+        </ol>
       </div>
     </section>
   );
 }
 
+function faqValue(index: number) {
+  return `faq-${index}`;
+}
+
 export function FaqSection() {
+  const id = sectionLinks.faq.id;
+
   return (
     <section
-      id={sectionLinks.faq.id}
-      className="mx-auto max-w-4xl px-4 py-16 sm:px-6 sm:py-24"
+      id={id}
+      aria-labelledby={titleId(id)}
+      className={cn(container, sectionSpacing, "flex flex-wrap gap-14")}
     >
-      <div className="text-center">
-        <SectionLabel>FAQ</SectionLabel>
-        <h2 className="mt-4 font-heading text-[2rem] font-light tracking-tight sm:text-4xl md:text-5xl">
-          Common questions.
+      <div className="flex min-w-0 flex-[1_1_300px] flex-col gap-4">
+        <SectionLabel>{faqContent.eyebrow}</SectionLabel>
+        <h2 id={titleId(id)} className={cn(sectionTitle, "text-ink")}>
+          {faqContent.title}
         </h2>
+        <p className="text-base leading-[1.6] text-ink-soft">
+          {faqContent.asideStart}{" "}
+          <a
+            href={`#${sectionLinks.contact.id}`}
+            className="font-medium text-ink underline decoration-line-strong underline-offset-4 transition-gentle hover:decoration-ink"
+          >
+            {faqContent.asideLink}
+          </a>
+        </p>
       </div>
 
+      {/* Only the first answer starts open. */}
       <Accordion
-        defaultValue={["faq-0"]}
-        className="mt-10 rounded-[1.5rem] border border-border bg-white px-4 sm:mt-12 sm:rounded-[2rem] sm:px-6"
+        defaultValue={[faqValue(0)]}
+        className="min-w-0 flex-[2_1_560px] border-b border-line-strong"
       >
-        {faqs.map((faq, index) => (
+        {faqContent.items.map((item, index) => (
           <AccordionItem
-            key={faq.question}
-            value={`faq-${index}`}
-            className={cn(
-              "border-border",
-              index !== faqs.length - 1 && "border-b",
-            )}
+            key={item.question}
+            value={faqValue(index)}
+            className="border-t border-line-strong py-1"
           >
-            <AccordionTrigger className="py-5 text-left text-sm font-semibold text-[#4a3e39] transition-silk hover:text-[#7a6457] hover:no-underline sm:py-6 sm:text-base">
-              {faq.question}
+            {/* The handoff uses a "+" that turns into "×", so the trigger's
+                built-in chevron is hidden. */}
+            <AccordionTrigger className="min-h-16 items-center gap-4 py-3 text-lg font-medium text-ink hover:no-underline focus-visible:border-transparent focus-visible:ring-bronze/40 **:data-[slot=accordion-trigger-icon]:hidden">
+              {item.question}
+              <span
+                aria-hidden="true"
+                className="text-[26px] font-light leading-none transition-transform duration-200 group-aria-expanded/accordion-trigger:rotate-45"
+              >
+                +
+              </span>
             </AccordionTrigger>
-            <AccordionContent className="pb-6 text-sm leading-7 text-[#6e5d53]">
-              {faq.answer}
+            <AccordionContent className="max-w-[40rem] pb-5.5 text-base leading-[1.7] text-ink-soft">
+              {item.answer}
             </AccordionContent>
           </AccordionItem>
         ))}
@@ -561,35 +607,53 @@ export function FaqSection() {
 }
 
 export function FinalCta({ onBook }: { onBook: () => void }) {
+  const id = sectionLinks.book.id;
+
   return (
-    <section
-      id={sectionLinks.contact.id}
-      className="px-4 pb-16 sm:px-6 sm:pb-24"
-    >
-      <div className="motion-panel mx-auto max-w-6xl rounded-[1.75rem] bg-[#4a3e39] px-5 py-10 text-center text-white transition-silk hover:shadow-xl sm:rounded-[2rem] sm:px-8 sm:py-16 md:rounded-[2.5rem] md:px-16">
-        <h2 className="mx-auto max-w-3xl font-heading text-[2rem] font-light tracking-tight sm:text-4xl md:text-5xl">
-          You do not need to have the right words before asking for support.
-        </h2>
-
-        <p className="mx-auto mt-6 max-w-2xl text-sm leading-7 text-[#eadfd3]">
-          Start with a simple clarity consultation request. You can explain
-          where you are, and Kamohelo will follow up with the best next step.
-        </p>
-
-        <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-          <Button
-            onClick={onBook}
-            className="motion-button w-full rounded-full bg-white px-8 text-[#4a3e39] transition-silk hover:-translate-y-0.5 hover:bg-[#f2e8dc] sm:w-auto"
+    <section id={id} aria-labelledby={titleId(id)} className="px-4 pb-16 sm:px-8 md:pb-24">
+      <div className="mx-auto flex max-w-[1176px] flex-wrap items-center justify-between gap-12 rounded-[28px] bg-espresso-deep px-6 py-12 text-cream sm:rounded-[32px] sm:px-14 sm:py-16">
+        <div className="flex min-w-0 flex-[1_1_420px] flex-col gap-4">
+          <h2
+            id={titleId(id)}
+            className="font-heading text-[clamp(2rem,3.4vw,3rem)] font-normal leading-[1.12]"
           >
-            Request Consultation
-            <ArrowRight size={16} className="transition-silk group-hover/button:translate-x-1" />
-          </Button>
-          {/* <a
-            href="mailto:kamohelo@thebecoming.co.za"
-            className="motion-button inline-flex min-h-11 w-full items-center justify-center rounded-full border border-white/20 px-8 text-sm font-semibold text-white transition-silk hover:-translate-y-0.5 hover:bg-white/8 sm:w-auto"
+            {finalCtaContent.title}
+          </h2>
+          <p className="max-w-[32rem] text-[17px] leading-[1.6] text-on-dark">
+            {finalCtaContent.text}
+          </p>
+          <div className="pt-2">
+            <Button onClick={onBook} className={cn(pillLight, "w-full sm:w-auto")}>
+              {bookCta}
+              <ArrowRight
+                aria-hidden="true"
+                className="transition-silk group-hover/button:translate-x-1"
+              />
+            </Button>
+          </div>
+        </div>
+
+        <div
+          id={sectionLinks.contact.id}
+          className="flex min-w-0 flex-[0_1_340px] flex-col gap-3.5 rounded-[22px] bg-espresso p-7"
+        >
+          <p className="text-[13px] font-semibold uppercase tracking-[0.2em] text-on-dark-muted">
+            {finalCtaContent.contactLabel}
+          </p>
+          <a
+            href={`mailto:${contactDetails.email}`}
+            className="flex min-h-11 items-center gap-2.5 break-all text-base text-cream underline-offset-4 hover:underline"
           >
-            Email Kamohelo
-          </a> */}
+            <Mail size={18} strokeWidth={1.8} aria-hidden="true" className="shrink-0" />
+            {contactDetails.email}
+          </a>
+          <a
+            href={contactDetails.phoneHref}
+            className="flex min-h-11 items-center gap-2.5 text-base text-cream underline-offset-4 hover:underline"
+          >
+            <Phone size={18} strokeWidth={1.8} aria-hidden="true" className="shrink-0" />
+            {contactDetails.phoneLabel}
+          </a>
         </div>
       </div>
     </section>
@@ -598,99 +662,28 @@ export function FinalCta({ onBook }: { onBook: () => void }) {
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-white py-12">
-      <div className="mx-auto max-w-360 px-4 sm:px-6">
-        <div className="grid gap-8 md:grid-cols-[1.4fr_1fr_1fr]">
-          <div>
-            <BrandMark />
-            <p className="mt-4 max-w-sm text-sm leading-7 text-[#6e5d53]">
-              Somatic support, and wellness guidance for emotional clarity and
-              personal growth.
-            </p>
-            {/* <p className="mt-5 text-xs tracking-[0.08em] text-[#8c7a6b]">
-              Website by{" "}
-              <a
-                href="https://jishin-website.vercel.app/"
-                target="_blank"
-                rel="noreferrer"
-                className="motion-link font-medium text-[#6e5d53] transition-gentle hover:text-[#a98961]"
-              >
-                Jishin Labs
-              </a>
-            </p> */}
-          </div>
-
-          <div>
-            <h4 className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-[#4a3e39]">
-              Contact
-            </h4>
-
-            <div className="space-y-3 text-sm text-[#6e5d53]">
-              <a
-                href="mailto:kamohelomariti98@yahoo.com"
-                className="motion-link flex items-center gap-2 break-all transition-gentle hover:text-[#a98961] sm:break-normal"
-              >
-                <Mail size={15} className="text-[#a98961]" />
-                kamohelomariti98@yahoo.com
-              </a>
-              <a
-                href="tel:+27724567891"
-                className="motion-link flex items-center gap-2 transition-gentle hover:text-[#a98961]"
-              >
-                <Phone size={15} className="text-[#a98961]" />
-                +27 74 698 6276
-              </a>
-              <p className="pt-2 text-xs leading-6 text-[#8c7a6b]">
-                Ready to begin? Request a consultation. Need to ask a question
-                first? Email or call directly.
-              </p>
-            </div>
-          </div>
-
-          <div>
-            <h4 className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-[#4a3e39]">
-              Links
-            </h4>
-
-            <div className="flex flex-col gap-3 text-sm text-[#6e5d53]">
-              {primaryLinks.map((link) => (
-                <Link
-                  key={link.key}
-                  href={link.href}
-                  className="motion-link transition-gentle hover:text-[#a98961]"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-10 border-t border-border pt-6 text-center">
-          <p className="text-xs tracking-[0.08em] text-[#8c7a6b]">
-            © {new Date().getFullYear()} The Becoming. All rights reserved.
-          </p>
-        </div>
+    <footer className="border-t border-line">
+      <div
+        className={cn(
+          container,
+          "flex flex-wrap items-center justify-between gap-4 py-8 text-sm text-meta",
+        )}
+      >
+        <p>
+          © {new Date().getFullYear()} {footerContent.notice}
+        </p>
+        <nav aria-label={footerContent.navLabel} className="flex flex-wrap gap-x-6">
+          {footerLinks.map((link) => (
+            <Link
+              key={link.key}
+              href={link.href}
+              className="py-2.5 text-ink underline-offset-4 hover:underline"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
       </div>
     </footer>
-  );
-}
-
-function ServiceList({ title, items }: { title: string; items: string[] }) {
-  return (
-    <div>
-      <h4 className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-[#4a3e39]">
-        {title}
-      </h4>
-
-      <ul className="space-y-3">
-        {items.map((item) => (
-          <li key={item} className="flex gap-3 text-sm text-[#6e5d53]">
-            <span className="mt-1 size-2 shrink-0 rounded-full bg-[#a98961]" />
-            <span>{item}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
   );
 }

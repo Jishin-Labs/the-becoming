@@ -52,7 +52,7 @@ export function TestimonialGrid({
       ) : (
         <p
           role="status"
-          className="mx-auto max-w-xl rounded-[1.5rem] border border-dashed border-[#dbc9b7] px-6 py-8 text-center text-sm leading-7 text-ink-soft"
+          className="mx-auto max-w-xl rounded-[1.5rem] border border-dashed border-line-strong px-6 py-8 text-center text-sm leading-7 text-ink-soft"
         >
           {state.status === "loading"
             ? testimonialsContent.loading

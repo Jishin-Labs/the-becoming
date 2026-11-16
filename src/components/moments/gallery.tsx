@@ -56,16 +56,16 @@ export function ExperienceGallery({
       <div className="flex flex-wrap items-end justify-between gap-6">
         <div>
           <Eyebrow>Past experience</Eyebrow>
-          <h2 className="mt-4 font-heading text-[2rem] font-light tracking-tight text-[#2a2421] sm:text-4xl md:text-5xl">
+          <h2 className="mt-4 font-heading text-[2rem] font-light tracking-tight text-ink sm:text-4xl md:text-5xl">
             {experience.title}
           </h2>
-          <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-[#6e5d53]">
+          <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink-soft">
             <span className="flex items-center gap-2">
-              <CalendarDays size={16} className="text-[#8a6a52]" aria-hidden="true" />
+              <CalendarDays size={16} className="text-bronze" aria-hidden="true" />
               {experience.date}
             </span>
             <span className="flex items-center gap-2">
-              <MapPin size={16} className="text-[#8a6a52]" aria-hidden="true" />
+              <MapPin size={16} className="text-bronze" aria-hidden="true" />
               {experience.venue}
             </span>
             <span>{mediaCount(experience)}</span>
@@ -86,7 +86,7 @@ export function ExperienceGallery({
                 key={option.value}
                 value={option.value}
                 variant="outline"
-                className="h-11 rounded-full border-[#d8cbbb] px-5 text-[#4a3e39] transition-silk hover:border-[#4a3e39] hover:bg-[#f7efe6] aria-pressed:border-[#4a3e39] aria-pressed:bg-[#4a3e39] aria-pressed:text-white aria-pressed:hover:bg-[#4a3e39]"
+                className="h-11 rounded-full border-line-strong px-5 text-espresso transition-silk hover:border-espresso hover:bg-sand aria-pressed:border-espresso aria-pressed:bg-espresso aria-pressed:text-white aria-pressed:hover:bg-espresso"
               >
                 {option.label}
               </ToggleGroupItem>
@@ -98,11 +98,11 @@ export function ExperienceGallery({
       {showReels && (
         <section aria-labelledby="moments-reels-heading" className="flex flex-col gap-5">
           <div className="flex items-baseline justify-between gap-4">
-            <h3 id="moments-reels-heading" className="font-heading text-2xl font-light text-[#2a2421] sm:text-3xl">
+            <h3 id="moments-reels-heading" className="font-heading text-2xl font-light text-ink sm:text-3xl">
               Reels
             </h3>
             {reels.length > 2 && (
-              <span aria-hidden="true" className="text-xs tracking-[0.08em] text-[#6e5d53]">
+              <span aria-hidden="true" className="text-xs tracking-[0.08em] text-ink-soft">
                 <span className="sm:hidden">Swipe for more →</span>
                 <span className="hidden sm:inline">Scroll for more →</span>
               </span>
@@ -127,7 +127,7 @@ export function ExperienceGallery({
                       className="motion-card-media absolute inset-0 size-full object-cover group-hover:scale-[1.035]"
                     />
                   )}
-                  <span className="absolute top-1/2 left-1/2 grid size-12 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-[#2a2421] shadow-sm transition-silk group-hover:scale-105 sm:size-15">
+                  <span className="absolute top-1/2 left-1/2 grid size-12 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-white/90 text-ink shadow-sm transition-silk group-hover:scale-105 sm:size-15">
                     <Play size={20} fill="currentColor" aria-hidden="true" />
                   </span>
                   <span className="absolute inset-x-3 bottom-3 flex justify-between gap-2">
@@ -143,7 +143,7 @@ export function ExperienceGallery({
 
       {showPhotos && (
         <section aria-labelledby="moments-photos-heading" className="flex flex-col gap-5">
-          <h3 id="moments-photos-heading" className="font-heading text-2xl font-light text-[#2a2421] sm:text-3xl">
+          <h3 id="moments-photos-heading" className="font-heading text-2xl font-light text-ink sm:text-3xl">
             Photos
           </h3>
 
@@ -154,7 +154,7 @@ export function ExperienceGallery({
                   type="button"
                   onClick={() => setPhotoIndex(index)}
                   aria-label={`Open photo ${index + 1}: ${photo.alt}`}
-                  className="group relative grid size-full cursor-zoom-in place-items-center overflow-hidden rounded-xl text-[#6e5d53] sm:rounded-2xl"
+                  className="group relative grid size-full cursor-zoom-in place-items-center overflow-hidden rounded-xl text-ink-soft sm:rounded-2xl"
                   style={{ backgroundColor: placeholderTone(index) }}
                 >
                   {photo.src ? (
@@ -182,7 +182,7 @@ export function ExperienceGallery({
               <button
                 type="button"
                 onClick={() => setVisiblePhotos((count) => count + PHOTOS_PER_PAGE)}
-                className="motion-button inline-flex min-h-12 items-center justify-center rounded-full border border-[#4a3e39] px-8 text-xs font-semibold uppercase tracking-[0.16em] text-[#4a3e39] transition-silk hover:-translate-y-0.5 hover:bg-[#f7efe6]"
+                className="motion-button inline-flex min-h-12 items-center justify-center rounded-full border border-espresso px-8 text-xs font-semibold uppercase tracking-[0.16em] text-espresso transition-silk hover:-translate-y-0.5 hover:bg-sand"
               >
                 Load more moments
               </button>

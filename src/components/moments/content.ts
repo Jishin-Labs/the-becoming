@@ -9,6 +9,8 @@
  * Bracketed text like "[Event date]" is placeholder copy to replace.
  */
 
+import { contactDetails } from "@/components/landing/content";
+
 /** How many grid cells a photo covers: wide = 2 columns, tall = 2 rows, large = both. */
 export type PhotoLayout = "standard" | "wide" | "tall" | "large";
 
@@ -112,16 +114,15 @@ export const upcomingExperiences: UpcomingExperience[] = [
   },
 ];
 
-export const contactEmail = "kamohelomariti98@yahoo.com";
+export const contactEmail = contactDetails.email;
 
-/** Warm neutral tones for placeholder tiles. */
 const placeholderTones = [
-  "#e4d8cc",
-  "#d3c1af",
-  "#c6af99",
-  "#ede4da",
-  "#b9a08a",
-  "#ddcfc1",
+  "var(--color-line-strong)",
+  "var(--color-line-bold)",
+  "var(--color-bronze-soft)",
+  "var(--color-sand-deep)",
+  "var(--color-on-dark-muted)",
+  "var(--color-line)",
 ];
 
 export function placeholderTone(index: number) {

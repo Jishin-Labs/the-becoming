@@ -44,7 +44,9 @@ Marketing site for The Becoming, a South African coaching/wellness practice: a l
 - Site text lives in `content.ts` files (`src/components/landing/`, `src/components/moments/`, `src/components/testimonials/`); the components only render it. Edit the text there. Write in British/South African English ("organisation", "colour"). Phone numbers are 10-digit South African numbers.
 - `src/components/ui/` holds generated shadcn components (base-ui, `base-sera` style). Add new ones with `pnpm dlx shadcn add <name>` instead of writing them by hand.
 - React Compiler is on, so leave out manual `useMemo`/`useCallback`/`memo` in new code.
-- Brand palette: warm neutrals (`#fbf6ef`, `#eadfd3`, `#a98961`, `#4a3e39`, `#2a2421`). The testimonial cards use named Tailwind tokens for these (`text-ink`, `bg-cream`, `border-line`, `shadow-card`, `rounded-card` and others), defined in the `@theme` block in `src/index.css`. Fonts: Playfair Display for headings (`font-heading`), Noto Sans for body text.
+- Colours come only from the named colours in the `@theme` block in `src/index.css` (`text-ink`, `bg-paper`, `border-line`, `shadow-card` and others), plus Tailwind's `white`. A new colour gets a name there first. Inline styles use the same names through `var(--color-<name>)`. The confirmation email can't read CSS variables, so `src/email/palette.ts` copies the values: change both together.
+- Form fields share `fieldClassName` from `src/components/form-styles.ts`.
+- Fonts: Playfair Display for headings (`font-heading`), Noto Sans for body text.
 
 ## Commits
 

@@ -3,6 +3,7 @@
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/noto-sans";
 @import "@fontsource-variable/playfair-display";
+@import "@fontsource-variable/playfair-display/wght-italic.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -12,22 +13,22 @@
     --duration-fast: 220ms;
     --duration-base: 320ms;
     --duration-slow: 560ms;
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.147 0.004 49.3);
+    --background: var(--color-cream);
+    --foreground: var(--color-ink);
     --card: oklch(1 0 0);
     --card-foreground: oklch(0.147 0.004 49.3);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.147 0.004 49.3);
-    --primary: oklch(0.214 0.009 43.1);
+    --primary: var(--color-espresso);
     --primary-foreground: oklch(0.986 0.002 67.8);
     --secondary: oklch(0.96 0.002 17.2);
     --secondary-foreground: oklch(0.214 0.009 43.1);
     --muted: oklch(0.96 0.002 17.2);
-    --muted-foreground: oklch(0.547 0.021 43.1);
+    --muted-foreground: var(--color-subtle);
     --accent: oklch(0.96 0.002 17.2);
     --accent-foreground: oklch(0.214 0.009 43.1);
     --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0.005 34.3);
+    --border: var(--color-line);
     --input: oklch(0.922 0.005 34.3);
     --ring: oklch(0.714 0.014 41.2);
     --chart-1: oklch(0.868 0.007 39.5);
@@ -134,6 +135,9 @@
   html {
     @apply font-sans;
     overflow-x: hidden;
+    /* Section links stop below the fixed header (4.5rem on phones, 5rem from sm up). */
+    scroll-padding-top: 5rem;
+    scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
   }
   img {
@@ -142,23 +146,54 @@
   }
 }
 
-/* Testimonial card tokens (testimonial-cards-spec.md). Where the spec's
-   colour is a near-match for a brand colour already used on the site, the
-   brand colour is used instead. `meta` is darker than the spec's #8a7a70,
-   which only reaches about 4.1:1 on white; 4.5:1 is needed for 13px text. */
-@theme {
-  --color-ink: #2a2421;
-  --color-ink-soft: #6e5d53;
-  --color-meta: #75655a;
-  --color-bronze: #8a6a52;
+@theme static {
+  /* Text on light backgrounds, darkest first */
+  --color-ink: #2b2220;
+  --color-ink-soft: #4a3c37;
+  --color-meta: #5a4a44;
+  --color-subtle: #6b5a53;
+  --color-bronze: #7a5c2b;
+  /* Decorative only (borders, list markers): too light for text */
   --color-bronze-soft: #b79b7d;
-  --color-espresso: #4a3e39;
-  --color-cream: #fbf6ef;
-  --color-sand: #f4eadf;
-  --color-line: #eadfd3;
+
+  /* Dark backgrounds and dark buttons */
+  --color-espresso: #3e302b;
+  --color-espresso-soft: #5a463f;
+  --color-espresso-deep: #2f2420;
+  /* The full-screen photo and video viewer */
+  --color-night: #1c1614;
+
+  /* Light backgrounds, lightest first */
+  --color-paper: #fffdf9;
+  --color-cream: #fbf8f4;
+  --color-linen: #fcf6ee;
+  --color-sand: #f3ebe2;
+  --color-sand-deep: #efe4d8;
+
+  /* Borders and dividers, faintest first */
+  --color-line: #ece3d9;
+  --color-line-strong: #dccfc2;
+  --color-line-bold: #cdbfb2;
+
+  /* Text and borders on dark backgrounds */
+  --color-on-dark: #e6dacd;
+  --color-on-dark-muted: #d9c9b8;
+  --color-on-dark-line: #8c7a70;
+
+  /* Form messages (Tailwind's emerald-700, emerald-50 and red-700) */
+  --color-success: oklch(50.8% 0.118 165.612);
+  --color-success-soft: oklch(97.9% 0.021 166.113);
+  --color-error: oklch(50.5% 0.213 27.518);
+
+  /* Shadows are tinted with espresso rather than grey */
+  --shadow-card: 0 1px 2px color-mix(in srgb, var(--color-espresso) 4%, transparent), 0 8px 24px -12px color-mix(in srgb, var(--color-espresso) 12%, transparent);
+  --shadow-card-hover: 0 2px 4px color-mix(in srgb, var(--color-espresso) 5%, transparent), 0 22px 44px -18px color-mix(in srgb, var(--color-espresso) 28%, transparent);
+  /* A selected option that lifts off the page */
+  --shadow-raised: 0 10px 24px color-mix(in srgb, var(--color-espresso) 18%, transparent);
+  /* The logo on the loading screen */
+  --shadow-float: 0 18px 55px color-mix(in srgb, var(--color-espresso) 18%, transparent);
+
   --radius-card: 22px;
-  --shadow-card: 0 1px 2px rgb(74 58 51 / 0.04), 0 8px 24px -12px rgb(74 58 51 / 0.12);
-  --shadow-card-hover: 0 2px 4px rgb(74 58 51 / 0.05), 0 22px 44px -18px rgb(74 58 51 / 0.28);
   --animate-rise: rise 600ms ease both;
 
   @keyframes rise {
