@@ -635,7 +635,7 @@ export function FinalCta({ onBook }: { onBook: () => void }) {
 
         <div
           id={sectionLinks.contact.id}
-          className="flex min-w-0 flex-[0_1_340px] flex-col gap-3.5 rounded-[22px] bg-espresso p-7"
+          className="flex min-w-0 flex-[0_1_340px] flex-col gap-3.5 rounded-card bg-espresso p-7"
         >
           <p className="text-[13px] font-semibold uppercase tracking-[0.2em] text-on-dark-muted">
             {finalCtaContent.contactLabel}
@@ -647,13 +647,12 @@ export function FinalCta({ onBook }: { onBook: () => void }) {
             <Mail size={18} strokeWidth={1.8} aria-hidden="true" className="shrink-0" />
             {contactDetails.email}
           </a>
-          <a
-            href={contactDetails.phoneHref}
-            className="flex min-h-11 items-center gap-2.5 text-base text-cream underline-offset-4 hover:underline"
+          <div
+            className="flex min-h-11 items-center gap-2.5 text-base text-cream underline-offset-4"
           >
             <Phone size={18} strokeWidth={1.8} aria-hidden="true" className="shrink-0" />
             {contactDetails.phoneLabel}
-          </a>
+          </div>
         </div>
       </div>
     </section>
