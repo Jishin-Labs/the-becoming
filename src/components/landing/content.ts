@@ -58,8 +58,7 @@ export const bookCta = "Book a clarity call";
 
 export const contactDetails = {
   email: "kamohelomariti98@yahoo.com",
-  phoneHref: "tel:+27724567891",
-  phoneLabel: "+27 72 456 7891",
+  phoneLabel: "+27 74 698 6276",
 };
 
 export const heroContent = {
